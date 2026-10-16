@@ -305,7 +305,7 @@
       cursor: pointer;
     }
 
-    /* COMPACT CLICKABLE 7-DAY STRIP */
+    /* SLIDABLE 30-DAY MONTH STRIP */
     .week-strip-header {
       font-size: 12px;
       font-weight: 700;
@@ -316,24 +316,28 @@
       align-items: center;
       padding: 0 2px;
     }
-    .week-strip {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: 5px;
-      width: 100%;
-      margin-bottom: 20px;
+    .month-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 2px 10px;
+      margin-bottom: 14px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    .month-strip::-webkit-scrollbar { display: none; }
     .day-cell {
+      flex: 0 0 56px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 2px;
-      border-radius: 14px;
+      padding: 9px 4px;
+      border-radius: 16px;
       border: 1.5px solid #e2e8f0;
       background: #ffffff;
       cursor: pointer;
-      min-width: 0;
       transition: all 0.15s ease;
     }
     .day-cell.is-today {
@@ -343,19 +347,26 @@
     .day-cell.selected-day {
       border-color: #0d9488;
       background: #ecfdf5;
-      box-shadow: 0 4px 10px rgba(13, 148, 136, 0.16);
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.18);
       transform: translateY(-2px);
     }
+    .day-month-tag {
+      font-size: 9px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .day-cell.selected-day .day-month-tag { color: #0d9488; }
     .day-name {
-      font-size: 10.5px;
+      font-size: 11px;
       color: var(--text-muted);
       font-weight: 700;
-      text-transform: uppercase;
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
     .day-cell.selected-day .day-name { color: #0f766e; }
     .day-num {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text-main);
       font-weight: 800;
       margin-bottom: 5px;
@@ -372,7 +383,7 @@
     }
     .dot-missed { background-color: #ef4444; }
     .day-mini-count {
-      font-size: 9.5px;
+      font-size: 10px;
       font-weight: 700;
       color: #475569;
       white-space: nowrap;
@@ -522,7 +533,7 @@
     .bar-fill { width: 100%; max-width: 24px; background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%); border-radius: 6px 6px 3px 3px; min-height: 6px; }
     .bar-day { font-size: 10.5px; color: #64748b; margin-top: 6px; font-weight: 600; }
 
-    /* 3. ADMIN PANEL SCREEN (STEP 7) */
+    /* 3. ADMIN PANEL SCREEN */
     .admin-card {
       background: #ffffff;
       border-radius: 22px;
@@ -751,11 +762,12 @@
         </div>
       </div>
 
+      <!-- 30-DAY SLIDING MONTH STRIP -->
       <div class="week-strip-header">
-        <span>Tap any day to log or edit past count:</span>
-        <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;">Jump to Today</span>
+        <span>◀ Slide 30 days & tap any date:</span>
+        <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;">Jump to Today ▶</span>
       </div>
-      <div class="week-strip" id="week-strip-container"></div>
+      <div class="month-strip" id="week-strip-container"></div>
 
       <div class="personal-stats-grid">
         <div class="mint-stat-card">
@@ -839,18 +851,16 @@
       </div>
     </div>
 
-    <!-- VIEW C: ADMIN PANEL SCREEN (STEP 7) -->
+    <!-- VIEW C: ADMIN PANEL SCREEN -->
     <div id="admin-view" class="hidden">
       <div class="stats-top-header">
         <button class="back-btn" id="back-from-admin-btn">←</button>
         <div class="stats-header-title">👑 Circle Admin Panel</div>
       </div>
 
-      <!-- 1. Today's Completions Per Aamaal -->
       <div class="section-heading"><span>✅ Today's Completions (IST)</span></div>
       <div class="admin-card" id="admin-today-completions"></div>
 
-      <!-- 2. Weekly & Monthly Reports -->
       <div class="section-heading"><span>📈 Weekly & Monthly Reports</span></div>
       <div class="admin-card">
         <table class="report-table">
@@ -865,7 +875,6 @@
         </table>
       </div>
 
-      <!-- 3. Manage Aamaal (Add / Edit / Pause) -->
       <div class="section-heading"><span>📿 Manage Daily Aamaal</span></div>
       <div class="admin-card">
         <div id="admin-aamaal-list"></div>
@@ -891,7 +900,6 @@
         </div>
       </div>
 
-      <!-- 4. Member Management (Respecting Privacy) -->
       <div class="section-heading"><span>👥 Circle & Family Members</span></div>
       <div class="admin-card" id="admin-members-list"></div>
     </div>
@@ -1004,18 +1012,21 @@
       return keys;
     }
 
-    function getLast7ISTDays() {
+    // Generates full 30-day list (or 7-day list) in chronological order (oldest -> Today)
+    function getISTDaysList(numDays = 30) {
       const days = [];
       const now = new Date();
-      for (let i = 6; i >= 0; i--) {
+      for (let i = numDays - 1; i >= 0; i--) {
         const d = new Date(now.getTime() - i * 86400000);
         const dateKey = getISTDateString(d);
         const weekday = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', weekday: 'short' }).format(d);
+        const monthShort = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', month: 'short' }).format(d);
         const dayNum = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', day: 'numeric' }).format(d);
         const prettyLabel = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', weekday: 'short', day: 'numeric', month: 'short' }).format(d);
         days.push({
           dateKey,
-          shortDay: weekday.slice(0, 2),
+          shortDay: weekday.slice(0, 3),
+          monthShort,
           dayNum,
           prettyLabel,
           isToday: i === 0
@@ -1097,7 +1108,7 @@
 
       await loadAamaalTabs();
       await loadMembersAndProfiles(user.uid);
-      await loadLogsAndRender();
+      await loadLogsAndRender(true);
 
       document.getElementById("splash-screen").classList.add("hidden");
       document.getElementById("app-container").classList.remove("hidden");
@@ -1135,7 +1146,7 @@
           activeAamaal = item;
           selectedDateIST = getISTDateString();
           renderAamaalTabs();
-          await loadLogsAndRender();
+          await loadLogsAndRender(true);
         });
         container.appendChild(btn);
       });
@@ -1181,7 +1192,7 @@
           selectedDateIST = getISTDateString();
           menu.classList.add("hidden");
           updateTopBarUI();
-          renderDailyScreen();
+          renderDailyScreen(true);
           renderStatsScreen();
         });
         menu.appendChild(item);
@@ -1196,24 +1207,24 @@
     });
     document.addEventListener("click", () => { quickMemberMenu.classList.add("hidden"); });
 
-    async function loadLogsAndRender() {
+    async function loadLogsAndRender(scrollStripToSelected = false) {
       if (!activeAamaal) return;
       const q = query(collection(db, "logs"));
       const snap = await getDocs(q);
       allLogsForAamaal = [];
       snap.forEach(d => allLogsForAamaal.push(d.data()));
 
-      renderDailyScreen();
+      renderDailyScreen(scrollStripToSelected);
       renderStatsScreen();
       renderAdminScreen();
     }
 
-    function renderDailyScreen() {
+    function renderDailyScreen(scrollStripToSelected = false) {
       if (!activeAamaal || !activeProfile) return;
       const todayIST = getISTDateString();
-      const last7Days = getLast7ISTDays();
-      const weekDateKeys = new Set(last7Days.map(d => d.dateKey));
-      const selectedDayObj = last7Days.find(d => d.dateKey === selectedDateIST) || last7Days[6];
+      const last30Days = getISTDaysList(30);
+      const last7DaysKeys = getLastNDaysKeys(7);
+      const selectedDayObj = last30Days.find(d => d.dateKey === selectedDateIST) || last30Days[last30Days.length - 1];
 
       document.getElementById("current-aamaal-title").textContent = activeAamaal.name;
       document.getElementById("current-aamaal-arabic").textContent = activeAamaal.arabic;
@@ -1246,12 +1257,16 @@
         extraPanel.classList.add("hidden");
       }
 
+      // Render Slidable 30-Day Strip
       const stripContainer = document.getElementById("week-strip-container");
+      const previousScrollLeft = stripContainer.scrollLeft;
       stripContainer.innerHTML = "";
       const myDoneMap = {};
       myLogs.forEach(l => { myDoneMap[l.dateKey] = l.count; });
 
-      last7Days.forEach(d => {
+      let selectedElement = null;
+
+      last30Days.forEach(d => {
         const count = myDoneMap[d.dateKey] || 0;
         const done = count > 0;
         const isSelected = (d.dateKey === selectedDateIST);
@@ -1259,6 +1274,7 @@
         cell.className = "day-cell" + (isSelected ? " selected-day" : "") + (d.isToday ? " is-today" : "");
 
         cell.innerHTML = `
+          <div class="day-month-tag">${d.monthShort}</div>
           <div class="day-name">${d.isToday ? 'Today' : d.shortDay}</div>
           <div class="day-num">${d.dayNum}</div>
           <div class="status-dot ${done ? 'dot-done' : 'dot-missed'}"></div>
@@ -1266,15 +1282,24 @@
         `;
         cell.addEventListener("click", () => {
           selectedDateIST = d.dateKey;
-          renderDailyScreen();
+          renderDailyScreen(false);
         });
         stripContainer.appendChild(cell);
+        if (isSelected) selectedElement = cell;
       });
+
+      if (scrollStripToSelected && selectedElement) {
+        setTimeout(() => {
+          selectedElement.scrollIntoView({ behavior: 'smooth', inline: 'end', block: 'nearest' });
+        }, 50);
+      } else {
+        stripContainer.scrollLeft = previousScrollLeft;
+      }
 
       const todayLog = myLogs.find(l => l.dateKey === todayIST);
       const myTodayCount = todayLog ? Number(todayLog.count) : 0;
       const myWeekCount = myLogs
-        .filter(l => weekDateKeys.has(l.dateKey))
+        .filter(l => last7DaysKeys.has(l.dateKey))
         .reduce((sum, l) => sum + Number(l.count || 0), 0);
 
       document.getElementById("my-today-total").textContent = myTodayCount.toLocaleString('en-IN');
@@ -1283,7 +1308,7 @@
 
     document.getElementById("reset-to-today-link").addEventListener("click", () => {
       selectedDateIST = getISTDateString();
-      renderDailyScreen();
+      renderDailyScreen(true);
     });
 
     document.getElementById("mark-recited-btn").addEventListener("click", async () => {
@@ -1298,7 +1323,7 @@
         count: Number(activeAamaal.target),
         updatedAt: Date.now()
       });
-      await loadLogsAndRender();
+      await loadLogsAndRender(false);
     });
 
     document.getElementById("toggle-extra-btn").addEventListener("click", () => {
@@ -1321,7 +1346,7 @@
           count: newTotal,
           updatedAt: Date.now()
         }, { merge: true });
-        await loadLogsAndRender();
+        await loadLogsAndRender(false);
       });
     });
 
@@ -1344,19 +1369,19 @@
         }, { merge: true });
       }
       document.getElementById("extra-count-panel").classList.add("hidden");
-      await loadLogsAndRender();
+      await loadLogsAndRender(false);
     });
 
     document.getElementById("undo-today-btn").addEventListener("click", async () => {
       const logId = `${selectedDateIST}_${activeAamaal.id}_${activeProfile.id}`;
       await deleteDoc(doc(db, "logs", logId));
-      await loadLogsAndRender();
+      await loadLogsAndRender(false);
     });
 
     function renderStatsScreen() {
       if (!activeAamaal || !activeProfile) return;
       const todayIST = getISTDateString();
-      const last7Days = getLast7ISTDays();
+      const last7Days = getISTDaysList(7);
       const weekDateKeys = new Set(last7Days.map(d => d.dateKey));
 
       document.getElementById("stats-header-aamaal").textContent = activeAamaal.name;
@@ -1460,7 +1485,6 @@
       });
     }
 
-    // --- STEP 7: RENDER ADMIN PANEL (RESPECTING PRIVACY) ---
     function getPrivacySafeMemberName(member) {
       if (!member) return "Unknown";
       if (member.privacy === "anonymous") return "Anonymous Member";
@@ -1475,7 +1499,6 @@
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
 
-      // 1. Today's Completions per Aamaal
       const todayBox = document.getElementById("admin-today-completions");
       todayBox.innerHTML = "";
       allAamaalRaw.forEach(a => {
@@ -1501,7 +1524,6 @@
         todayBox.appendChild(row);
       });
 
-      // 2. Weekly (7d) & Monthly (30d) Reports
       const reportTbody = document.getElementById("admin-report-tbody");
       reportTbody.innerHTML = "";
       allAamaalRaw.forEach(a => {
@@ -1517,7 +1539,6 @@
         reportTbody.appendChild(tr);
       });
 
-      // 3. Manage Aamaal List
       const aamaalAdminList = document.getElementById("admin-aamaal-list");
       aamaalAdminList.innerHTML = "";
       allAamaalRaw.forEach(a => {
@@ -1550,12 +1571,11 @@
         div.querySelector(".toggle-a-btn").addEventListener("click", async () => {
           await updateDoc(doc(db, "aamaal", a.id), { active: isPaused });
           await loadAamaalTabs();
-          await loadLogsAndRender();
+          await loadLogsAndRender(false);
         });
         aamaalAdminList.appendChild(div);
       });
 
-      // 4. Member Management (Privacy-Respecting)
       const memBox = document.getElementById("admin-members-list");
       memBox.innerHTML = "";
       allMembers.forEach(m => {
@@ -1600,7 +1620,6 @@
       });
     }
 
-    // Save / Add Aamaal Handler
     function resetAamaalForm() {
       document.getElementById("aamaal-form-title").textContent = "+ Add New Aamaal";
       document.getElementById("edit-aamaal-id").value = "";
@@ -1635,11 +1654,10 @@
 
       resetAamaalForm();
       await loadAamaalTabs();
-      await loadLogsAndRender();
+      await loadLogsAndRender(false);
       alert("Aamaal saved!");
     });
 
-    // Screen Navigation (Daily <-> Stats <-> Admin)
     document.getElementById("open-stats-btn").addEventListener("click", () => {
       renderStatsScreen();
       document.getElementById("daily-view").classList.add("hidden");
@@ -1669,7 +1687,6 @@
       window.scrollTo(0, 0);
     });
 
-    // Settings Modal
     const settingsModal = document.getElementById("settings-modal");
     const privacyOptions = document.querySelectorAll(".privacy-option");
 
