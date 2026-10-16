@@ -7,14 +7,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-soft: #f4f6f5;
-      --teal-dark: #062c28;
-      --teal-mid: #0a403a;
-      --teal-deep: #041f1c;
+      --bg-soft: #f5f7f6;
+      --teal-dark: #072c28;
+      --teal-mid: #0b433d;
+      --teal-deep: #041917;
       --accent-green: #bef264;
-      --text-main: #0f172a;
+      --mint-card: #d9ece8;
+      --mint-border: #bce0d8;
+      --text-main: #1e293b;
       --text-muted: #64748b;
-      --card-radius: 24px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
@@ -26,7 +27,7 @@
     }
     .hidden { display: none !important; }
 
-    /* SPLASH & LOGIN SCREEN */
+    /* 1. SPLASH SCREEN */
     #splash-screen {
       background: linear-gradient(160deg, var(--teal-dark) 0%, var(--teal-mid) 55%, var(--teal-deep) 100%);
       color: #ffffff;
@@ -47,8 +48,8 @@
       font-weight: 600;
     }
     .logo-wrap {
-      width: 185px;
-      height: 185px;
+      width: 180px;
+      height: 180px;
       margin-bottom: 24px;
       display: flex;
       align-items: center;
@@ -67,7 +68,7 @@
       text-transform: uppercase;
       color: var(--accent-green);
       font-weight: 700;
-      margin-bottom: 42px;
+      margin-bottom: 40px;
     }
     .google-btn {
       background: linear-gradient(90deg, #d9f99d 0%, #a7f3d0 100%);
@@ -83,29 +84,24 @@
       gap: 12px;
       cursor: pointer;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-      transition: transform 0.15s ease;
     }
-    .google-btn:active { transform: scale(0.97); }
-    .splash-loader {
-      font-size: 14px;
-      color: #a7f3d0;
-      margin-top: 12px;
-    }
+    .splash-loader { font-size: 13px; color: #a7f3d0; margin-top: 14px; }
 
-    /* MAIN APP CONTAINER */
+    /* MAIN APP WRAPPER */
     #app-container {
-      max-width: 480px;
+      max-width: 460px;
       margin: 0 auto;
       min-height: 100vh;
-      padding: 16px 16px 40px;
+      padding: 14px 16px 36px;
     }
 
-    /* TOP HEADER & PROFILE SWITCHER */
+    /* TOP BAR & QUICK MEMBER DROPDOWN */
     .top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 16px;
+      position: relative;
+      margin-bottom: 14px;
     }
     .icon-btn {
       width: 42px;
@@ -117,68 +113,533 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       font-size: 18px;
+      color: var(--teal-dark);
     }
-    .active-profile-pill {
+    .member-dropdown-wrapper {
+      position: relative;
+    }
+    .member-dropdown-btn {
       background: #ffffff;
       border: 1px solid #cbd5e1;
-      padding: 8px 14px;
+      padding: 9px 16px;
       border-radius: 999px;
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--teal-dark);
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     }
-    .privacy-badge {
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: #ecfccb;
-      color: #365314;
+    .quick-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.14);
+      min-width: 210px;
+      z-index: 60;
+      padding: 6px;
+      overflow: hidden;
+    }
+    .quick-dropdown-item {
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .quick-dropdown-item.active {
+      background: #ecfdf5;
+      color: #0d9488;
       font-weight: 700;
-      text-transform: capitalize;
     }
 
-    /* STEP 4 VERIFICATION CARD */
-    .hero-card {
-      background: linear-gradient(145deg, #073530 0%, #041d1a 100%);
+    /* AAMAAL SWITCHER TABS */
+    .aamaal-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      scrollbar-width: none;
+    }
+    .aamaal-tabs::-webkit-scrollbar { display: none; }
+    .aamaal-tab {
+      white-space: nowrap;
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: #ffffff;
+      color: var(--text-muted);
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .aamaal-tab.active {
+      background: var(--teal-dark);
       color: #ffffff;
-      border-radius: var(--card-radius);
-      padding: 26px 20px;
+      border-color: var(--teal-dark);
+    }
+
+    /* DAILY SCREEN: ARABIC & HERO CARD (IMAGE 1 STYLE) */
+    .aamaal-heading-title {
       text-align: center;
-      box-shadow: 0 12px 28px rgba(6, 44, 40, 0.18);
-      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
     }
-    .hero-card h2 {
-      font-size: 20px;
-      margin-bottom: 8px;
-      color: var(--accent-green);
+    .arabic-banner {
+      font-family: 'Amiri', serif;
+      font-size: 30px;
+      line-height: 1.5;
+      text-align: center;
+      color: #111827;
+      margin: 4px 0 14px;
+      direction: rtl;
     }
-    .hero-card p {
-      font-size: 14px;
+    .daily-target-card {
+      background: radial-gradient(circle at 20% 20%, #11423d 0%, #062320 65%, #031412 100%);
+      color: #ffffff;
+      border-radius: 26px;
+      padding: 26px 22px;
+      text-align: center;
+      box-shadow: 0 14px 30px rgba(6, 35, 32, 0.2);
+      margin-bottom: 22px;
+    }
+    .salam-arabic {
+      font-family: 'Amiri', serif;
+      font-size: 22px;
+      color: #ffffff;
+      margin-bottom: 14px;
+      direction: rtl;
+    }
+    .target-question {
+      font-size: 16px;
       color: #cbd5e1;
       line-height: 1.5;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
+      font-weight: 500;
     }
-    .action-btn {
-      background: linear-gradient(90deg, #d9f99d 0%, #bbf7d0 100%);
-      color: #062c28;
+    .mark-recited-btn {
+      background: linear-gradient(90deg, #e2f9b8 0%, #c8f5e0 100%);
+      color: #0b2e29;
       border: none;
-      padding: 14px 24px;
+      padding: 15px 32px;
       border-radius: 999px;
+      font-size: 16px;
       font-weight: 700;
-      font-size: 15px;
       font-family: inherit;
       cursor: pointer;
-      width: 100%;
+      min-width: 220px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+      transition: transform 0.12s ease;
+    }
+    .mark-recited-btn:active { transform: scale(0.97); }
+    
+    /* COMPLETED STATE CONTROLS */
+    .completed-badge {
+      display: inline-block;
+      background: rgba(190, 242, 100, 0.16);
+      border: 1px solid rgba(190, 242, 100, 0.5);
+      color: #d9f99d;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .completed-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .secondary-pill-btn {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .extra-count-box {
+      margin-top: 14px;
+      background: rgba(0, 0, 0, 0.28);
+      padding: 12px;
+      border-radius: 16px;
+    }
+    .quick-add-chips {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .chip-btn {
+      background: rgba(190, 242, 100, 0.2);
+      border: 1px solid rgba(190, 242, 100, 0.45);
+      color: #ecfccb;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
-    /* MODALS (PRIVACY & SETTINGS/FAMILY) */
+    /* 7-DAY CALENDAR STRIP */
+    .week-strip {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 22px;
+      align-items: center;
+    }
+    .day-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 4px;
+      border-radius: 16px;
+      border: 1.5px solid transparent;
+    }
+    .day-cell.is-today {
+      border-color: #cbd5e1;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .day-name {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .day-cell.is-today .day-name {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+    .day-num {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .day-cell.is-today .day-num {
+      color: var(--text-main);
+      font-weight: 800;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+    .dot-done { background-color: #16a34a; }
+    .dot-missed { background-color: #ef4444; }
+
+    /* TWO PERSONAL STAT CARDS */
+    .personal-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .mint-stat-card {
+      background: linear-gradient(145deg, #d8ede8 0%, #e3f3ef 100%);
+      border: 1.5px solid var(--mint-border);
+      border-radius: 22px;
+      padding: 16px 14px;
+    }
+    .mint-stat-label {
+      font-size: 12px;
+      color: #475569;
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .mint-stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+    .mint-stat-sub {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* BOTTOM NAVIGATION PILL TO STATS SCREEN */
+    .worldwide-pill-btn {
+      width: 100%;
+      background: #ffffff;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 999px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    }
+    .worldwide-pill-text {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #475569;
+      line-height: 1.35;
+      text-align: center;
+      flex: 1;
+    }
+    .double-arrow {
+      font-size: 16px;
+      color: #64748b;
+      font-weight: 700;
+      padding: 0 4px;
+    }
+
+    /* 2. GROUP STATISTICS SCREEN (IMAGE 2 STYLE) */
+    .stats-top-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .back-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #0f172a;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+    .stats-header-title {
+      flex: 1;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.35;
+      padding-right: 32px;
+    }
+
+    /* LIFETIME HERO CARD WITH DOME ART */
+    .lifetime-hero-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(120deg, #041413 0%, #093532 55%, #135d56 100%);
+      color: #ffffff;
+      border-radius: 26px;
+      padding: 26px 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 12px 28px rgba(6, 44, 40, 0.18);
+    }
+    .lifetime-dome-svg {
+      position: absolute;
+      right: -10px;
+      bottom: -15px;
+      width: 190px;
+      height: 190px;
+      opacity: 0.32;
+      pointer-events: none;
+    }
+    .lifetime-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+    }
+    .lifetime-number {
+      font-size: 40px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+      letter-spacing: -1px;
+      position: relative;
+      z-index: 2;
+    }
+    .lifetime-sub {
+      font-size: 13px;
+      color: #cbd5e1;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* MEMBER COUNT WHITE CARDS */
+    .member-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .white-stat-card {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 18px 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    }
+    .white-stat-label {
+      font-size: 12.5px;
+      color: #94a3b8;
+      margin-bottom: 8px;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+    .white-stat-val {
+      font-size: 24px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .section-heading {
+      font-size: 16px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 12px;
+    }
+
+    /* LEADERBOARD CARD */
+    .white-list-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 8px 18px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+      margin-bottom: 24px;
+    }
+    .leader-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .leader-row:last-child { border-bottom: none; }
+    .leader-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .rank-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .crescent-badge {
+      width: 26px;
+      height: 20px;
+      border-radius: 4px;
+      background: #065f46;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    .leader-name {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #334155;
+    }
+    .leader-score {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    /* DAILY PERFORMANCE CARD */
+    .daily-perf-card {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 18px 20px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .perf-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .perf-num {
+      min-width: 85px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+    .perf-label {
+      font-size: 14px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    /* WEEKLY BAR CHART CARD */
+    .weekly-chart-card {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 20px 16px 16px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+    }
+    .bars-wrap {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      height: 120px;
+      align-items: flex-end;
+      padding-top: 20px;
+    }
+    .bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+    }
+    .bar-val {
+      font-size: 10px;
+      color: #64748b;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .bar-fill {
+      width: 100%;
+      max-width: 26px;
+      background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%);
+      border-radius: 8px 8px 4px 4px;
+      min-height: 6px;
+      transition: height 0.3s ease;
+    }
+    .bar-day {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* SETTINGS MODAL */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -218,8 +679,6 @@
       padding: 14px;
       margin-bottom: 10px;
       cursor: pointer;
-      text-align: left;
-      transition: all 0.15s ease;
     }
     .privacy-option.selected {
       border-color: #0d9488;
@@ -238,26 +697,6 @@
       color: var(--text-muted);
       line-height: 1.4;
     }
-    .family-list {
-      margin: 12px 0 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .family-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1.5px solid #e2e8f0;
-      background: #f8fafc;
-      cursor: pointer;
-    }
-    .family-item.active {
-      border-color: #0d9488;
-      background: #ecfdf5;
-    }
     .input-row {
       display: flex;
       gap: 8px;
@@ -265,7 +704,7 @@
     }
     .text-input {
       flex: 1;
-      padding: 12px 14px;
+      padding: 11px 14px;
       border-radius: 12px;
       border: 1.5px solid #cbd5e1;
       font-family: inherit;
@@ -281,10 +720,18 @@
       font-size: 13px;
       cursor: pointer;
     }
-    .divider {
-      height: 1px;
-      background: #e2e8f0;
-      margin: 18px 0;
+    .divider { height: 1px; background: #e2e8f0; margin: 18px 0; }
+    .action-btn {
+      background: linear-gradient(90deg, #d9f99d 0%, #bbf7d0 100%);
+      color: #062c28;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+      font-family: inherit;
+      cursor: pointer;
+      width: 100%;
     }
     .signout-btn {
       width: 100%;
@@ -302,12 +749,11 @@
 </head>
 <body>
 
-  <!-- 1. SPLASH & GOOGLE SIGN-IN SCREEN -->
+  <!-- 1. SPLASH SCREEN -->
   <div id="splash-screen">
     <div class="welcome-label">Welcome To</div>
-
     <div class="logo-wrap">
-      <svg viewBox="0 0 220 200" width="185" height="185" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 220 200" width="180" height="180" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="circleGrad" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#14b8a6"/>
@@ -341,7 +787,6 @@
         <path d="M82 150 L82 132 C82 124, 98 124, 98 132 L98 150 Z" fill="#062c28"/>
       </svg>
     </div>
-
     <h1 class="brand-title">ISLAAH FOUNDATION'S</h1>
     <div class="brand-subtitle">Aamaal Circle</div>
 
@@ -357,47 +802,171 @@
     <div id="splash-status" class="splash-loader">Connecting to Aamaal Circle...</div>
   </div>
 
-  <!-- 2. MAIN APP SCREEN (LOGGED IN) -->
+  <!-- 2. MAIN APP CONTAINER -->
   <div id="app-container" class="hidden">
-    <div class="top-bar">
-      <button class="icon-btn" id="open-settings-btn" title="Settings & Family">⚙️</button>
-      
-      <div class="active-profile-pill" id="profile-switcher-pill">
-        <span>👤 <span id="active-member-name">Loading...</span></span>
-        <span class="privacy-badge" id="active-member-privacy">Public</span>
-        <span>▾</span>
+    
+    <!--DAILY AAMAAL VIEW (IMAGE 1)-->
+    <div id="daily-view">
+      <!-- Top Bar: Settings on Left, Simple Name Switcher in Center, Admin on Right -->
+      <div class="top-bar">
+        <button class="icon-btn" id="open-settings-btn" title="Settings">⚙️</button>
+
+        <div class="member-dropdown-wrapper">
+          <button class="member-dropdown-btn" id="quick-member-btn">
+            <span>👤 <span id="active-member-name">Loading...</span></span>
+            <span style="font-size:11px;">▼</span>
+          </button>
+          <!-- Lightweight Name-Only Dropdown -->
+          <div id="quick-member-menu" class="quick-dropdown-menu hidden"></div>
+        </div>
+
+        <button id="admin-badge" class="icon-btn hidden" title="Admin Panel">👑</button>
+        <div id="admin-spacer" style="width:42px;"></div>
       </div>
 
-      <div id="admin-badge" class="icon-btn hidden" title="Admin">👑</div>
-    </div>
+      <!-- Aamaal Tabs -->
+      <div class="aamaal-tabs" id="aamaal-tabs-container"></div>
 
-    <!-- Step 4 Status Card (Will become Daily Aamaal Screen in Step 5) -->
-    <div class="hero-card">
-      <h2>Assalamu Alaikum!</h2>
-      <p>
-        You are signed in and logging aamaal for:<br>
-        <strong id="card-member-name" style="color:#ffffff;font-size:17px;">...</strong>
-      </p>
-      <button class="action-btn" id="manage-family-btn">
-        👨‍👩‍👧‍👦 Switch / Add Family Member & Privacy
+      <!-- Current Aamaal Title & Arabic Text -->
+      <div class="aamaal-heading-title" id="current-aamaal-title">Durood Shareef</div>
+      <div class="arabic-banner" id="current-aamaal-arabic">اللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ</div>
+
+      <!-- Dark Rounded Target Card -->
+      <div class="daily-target-card">
+        <div class="salam-arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
+        <div class="target-question" id="target-question-text">
+          Have you recited your daily target of 313 times Durood Shareef today?
+        </div>
+
+        <!-- Default Unmarked Button -->
+        <div id="not-recited-box">
+          <button class="mark-recited-btn" id="mark-recited-btn">Mark as Recited</button>
+        </div>
+
+        <!-- Completed State (With Add Extra / Edit & Undo) -->
+        <div id="recited-box" class="hidden">
+          <div class="completed-badge">
+            ✓ Recited Today: <span id="today-logged-num">313</span>
+          </div>
+          <div class="completed-actions">
+            <button class="secondary-pill-btn" id="toggle-extra-btn">+ Add Extra / Edit Count</button>
+            <button class="secondary-pill-btn" id="undo-today-btn" style="color:#fca5a5;border-color:rgba(252,165,165,0.4);">Undo</button>
+          </div>
+
+          <!-- Expandable Box to Add More or Type Custom Number (e.g. 500) -->
+          <div id="extra-count-panel" class="extra-count-box hidden">
+            <div style="font-size:12px;color:#cbd5e1;margin-bottom:8px;">Quick add to today's count, or type your total:</div>
+            <div class="quick-add-chips">
+              <button class="chip-btn" data-add="100">+100</button>
+              <button class="chip-btn" data-add="313">+313</button>
+              <button class="chip-btn" data-add="500">+500</button>
+            </div>
+            <div class="input-row">
+              <input type="number" id="custom-count-input" class="text-input" placeholder="Or enter exact total (e.g. 500)" style="background:#ffffff;color:#0f172a;">
+              <button class="small-btn" id="save-custom-count-btn" style="background:#bef264;color:#062c28;">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7-Day Calendar Strip (Midnight IST) -->
+      <div class="week-strip" id="week-strip-container"></div>
+
+      <!-- Two Personal Stat Cards -->
+      <div class="personal-stats-grid">
+        <div class="mint-stat-card">
+          <div class="mint-stat-label">Recited by you this week</div>
+          <div class="mint-stat-value" id="my-week-total">0</div>
+          <div class="mint-stat-sub" id="stat-card-aamaal-1">Durood Shareef</div>
+        </div>
+        <div class="mint-stat-card">
+          <div class="mint-stat-label">Recited by you today</div>
+          <div class="mint-stat-value" id="my-today-total">0</div>
+          <div class="mint-stat-sub" id="stat-card-aamaal-2">Durood Shareef</div>
+        </div>
+      </div>
+
+      <!-- Bottom Button to Group Statistics Screen -->
+      <button class="worldwide-pill-btn" id="open-stats-btn">
+        <span class="double-arrow">«</span>
+        <span class="worldwide-pill-text">
+          View the total number of <span id="bottom-btn-aamaal">Durood Shareef</span><br>recited by our circle
+        </span>
+        <span class="double-arrow">»</span>
       </button>
     </div>
-  </div>
 
-  <!-- 3. FIRST-TIME PRIVACY & SETTINGS MODAL -->
-  <div id="settings-modal" class="modal-backdrop hidden">
-    <div class="modal-sheet">
-      <div class="modal-title" id="modal-heading">Privacy & Family Circle</div>
-      <div class="modal-sub" id="modal-subheading">
-        Choose whose aamaal you are logging right now, or update their leaderboard privacy.
+    <!--GROUP STATISTICS VIEW (IMAGE 2)-->
+    <div id="stats-view" class="hidden">
+      <div class="stats-top-header">
+        <button class="back-btn" id="back-to-daily-btn">←</button>
+        <div class="stats-header-title">
+          View the total number of <span id="stats-header-aamaal">Durood</span><br>recited by our circle
+        </div>
       </div>
 
-      <!-- Family Switcher Section -->
-      <div id="family-section">
-        <label style="font-size:12px;font-weight:700;color:#475569;text-transform:uppercase;">Logging Aamaal For:</label>
-        <div class="family-list" id="family-list-container"></div>
+      <!-- Lifetime Hero Card -->
+      <div class="lifetime-hero-card">
+        <div class="lifetime-title">Total <span id="lifetime-aamaal-name">Durood Shareef</span> (Lifetime)</div>
+        <div class="lifetime-number" id="group-lifetime-total">0</div>
+        <div class="lifetime-sub">Recited by the entire community so far</div>
+        <!-- Decorative Dome Silhouette -->
+        <svg class="lifetime-dome-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M100 20 L100 45" stroke="#a7f3d0" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="100" cy="16" r="5" stroke="#a7f3d0" stroke-width="3"/>
+          <path d="M40 135 C40 65, 160 65, 160 135 Z" fill="#a7f3d0"/>
+          <rect x="30" y="135" width="140" height="65" fill="#a7f3d0"/>
+        </svg>
+      </div>
 
-        <label style="font-size:12px;font-weight:700;color:#475569;">Add a Family Member (reports through you):</label>
+      <!-- New Reciters & Total Reciters -->
+      <div class="member-stats-grid">
+        <div class="white-stat-card">
+          <div class="white-stat-label">New Reciters (Last 10 Days)</div>
+          <div class="white-stat-val" id="stats-new-members">+0</div>
+        </div>
+        <div class="white-stat-card">
+          <div class="white-stat-label">Total Reciters</div>
+          <div class="white-stat-val" id="stats-total-members">0</div>
+        </div>
+      </div>
+
+      <!-- Top Reciters This Week Leaderboard -->
+      <div class="section-heading">Top <span id="leader-aamaal-name">Durood Shareef</span> Reciters This Week</div>
+      <div class="white-list-card" id="leaderboard-container"></div>
+
+      <!-- Daily Performance Card -->
+      <div class="section-heading">Daily Performance</div>
+      <div class="daily-perf-card">
+        <div class="perf-row">
+          <div class="perf-num" id="group-today-total">0</div>
+          <div class="perf-label">Recited today (all readers)</div>
+        </div>
+        <div class="perf-row">
+          <div class="perf-num" id="my-contrib-today">0</div>
+          <div class="perf-label">Your contribution today</div>
+        </div>
+      </div>
+
+      <!-- Weekly Performance Bar Chart -->
+      <div class="section-heading">Weekly Performance</div>
+      <div class="weekly-chart-card">
+        <div class="bars-wrap" id="weekly-bars-container"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 3. SETTINGS MODAL (ONLY ROUTED VIA TOP-LEFT GEAR BUTTON) -->
+  <div id="settings-modal" class="modal-backdrop hidden">
+    <div class="modal-sheet">
+      <div class="modal-title" id="modal-heading">Settings & Family Setup</div>
+      <div class="modal-sub" id="modal-subheading">
+        Add family members who report through you, or adjust leaderboard privacy for the currently selected person.
+      </div>
+
+      <div id="family-add-section">
+        <label style="font-size:12px;font-weight:700;color:#475569;">Add a Family Member (to show in top dropdown):</label>
         <div class="input-row">
           <input type="text" id="new-family-name" class="text-input" placeholder="e.g., Mother, Father, Brother">
           <button class="small-btn" id="add-family-btn">+ Add</button>
@@ -405,61 +974,38 @@
         <div class="divider"></div>
       </div>
 
-      <!-- Privacy Selector -->
       <label style="font-size:12px;font-weight:700;color:#475569;text-transform:uppercase;display:block;margin-bottom:10px;">
-        Privacy Setting for <span id="privacy-target-name" style="color:#0d9488;">...</span>:
+        Leaderboard Privacy for <span id="privacy-target-name" style="color:#0d9488;">...</span>:
       </label>
 
       <div class="privacy-option" data-privacy="public">
-        <div class="privacy-option-title">
-          <span>🌍 Public</span>
-          <span class="check-mark"></span>
-        </div>
-        <div class="privacy-option-desc">Your name and recitation counts appear on the group leaderboard.</div>
+        <div class="privacy-option-title"><span>🌍 Public</span><span class="check-mark"></span></div>
+        <div class="privacy-option-desc">Name and recitation counts appear on the group leaderboard.</div>
       </div>
 
       <div class="privacy-option" data-privacy="private">
-        <div class="privacy-option-title">
-          <span>🔒 Private</span>
-          <span class="check-mark"></span>
-        </div>
-        <div class="privacy-option-desc">Counted on the leaderboard, but your name is shown as "Hidden Member".</div>
+        <div class="privacy-option-title"><span>🔒 Private</span><span class="check-mark"></span></div>
+        <div class="privacy-option-desc">Counted on the leaderboard, but name is hidden as "Hidden Member".</div>
       </div>
 
       <div class="privacy-option" data-privacy="anonymous">
-        <div class="privacy-option-title">
-          <span>🕵️ Anonymous</span>
-          <span class="check-mark"></span>
-        </div>
-        <div class="privacy-option-desc">Not shown on the leaderboard at all. Only added to the group's total recitations.</div>
+        <div class="privacy-option-title"><span>🕵️ Anonymous</span><span class="check-mark"></span></div>
+        <div class="privacy-option-desc">Hidden from leaderboard. Only added to the group's total recitations.</div>
       </div>
 
-      <button class="action-btn" id="save-settings-btn" style="margin-top:10px;">Save & Continue</button>
+      <button class="action-btn" id="save-settings-btn" style="margin-top:10px;">Save Settings</button>
       <button class="signout-btn" id="signout-btn">Sign Out of Google Account</button>
     </div>
   </div>
 
-  <!-- FIREBASE & APP LOGIC -->
+  <!-- FIREBASE & APPLICATION SCRIPT -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { 
-      getAuth, 
-      GoogleAuthProvider, 
-      signInWithPopup, 
-      signOut, 
-      onAuthStateChanged 
+      getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { 
-      getFirestore, 
-      doc, 
-      getDoc, 
-      setDoc, 
-      updateDoc, 
-      collection, 
-      query, 
-      where, 
-      getDocs, 
-      serverTimestamp 
+      getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, query, where, getDocs 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -477,26 +1023,54 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // App State
+    // State
     let currentUser = null;
-    let myProfiles = []; // Main user + added family members
+    let myProfiles = [];
+    let allMembers = [];
     let activeProfile = null;
+    let aamaalList = [];
+    let activeAamaal = null;
+    let allLogsForAamaal = [];
     let selectedPrivacy = "public";
     let isFirstLogin = false;
 
-    // UI Elements
-    const splashScreen = document.getElementById("splash-screen");
-    const appContainer = document.getElementById("app-container");
-    const loginBtn = document.getElementById("login-btn");
-    const splashStatus = document.getElementById("splash-status");
-    const settingsModal = document.getElementById("settings-modal");
-    const familySection = document.getElementById("family-section");
-    const familyListContainer = document.getElementById("family-list-container");
+    // --- IST DATE HELPERS (Resets strictly at Midnight India Standard Time) ---
+    function getISTDateString(dateObj = new Date()) {
+      return new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).format(dateObj);
+    }
 
-    // 1. Seed initial 3 Aamaal if database is empty
+    function getLast7ISTDays() {
+      const days = [];
+      const now = new Date();
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 86400000);
+        const dateKey = getISTDateString(d);
+        const weekday = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', weekday: 'short' }).format(d);
+        const dayNum = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', day: 'numeric' }).format(d);
+        days.push({
+          dateKey,
+          shortDay: weekday.slice(0, 2),
+          dayNum,
+          isToday: i === 0
+        });
+      }
+      return days;
+    }
+
+    function formatCompactNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+      return num.toLocaleString('en-IN');
+    }
+
+    // 1. Seed Default 3 Aamaal
     async function ensureDefaultAamaal() {
-      const aamaalSnap = await getDocs(collection(db, "aamaal"));
-      if (aamaalSnap.empty) {
+      const snap = await getDocs(collection(db, "aamaal"));
+      if (snap.empty) {
         const defaults = [
           {
             id: "durood_313",
@@ -529,141 +1103,445 @@
       }
     }
 
-    // 2. Listen for Auth State
+    // 2. Auth Listener
     onAuthStateChanged(auth, async (user) => {
+      const splash = document.getElementById("splash-screen");
+      const appBox = document.getElementById("app-container");
+      const loginBtn = document.getElementById("login-btn");
+      const status = document.getElementById("splash-status");
+
       if (user) {
         currentUser = user;
-        splashStatus.textContent = "Loading your profile...";
+        status.textContent = "Loading Aamaal Circle...";
         loginBtn.classList.add("hidden");
-        await initializeMemberProfiles(user);
+        await bootApp(user);
       } else {
         currentUser = null;
-        splashScreen.classList.remove("hidden");
-        appContainer.classList.add("hidden");
+        splash.classList.remove("hidden");
+        appBox.classList.add("hidden");
         loginBtn.classList.remove("hidden");
-        splashStatus.textContent = "Sign in with Google to join the circle";
+        status.textContent = "Sign in with Google to join the circle";
       }
     });
 
-    // 3. Google Login Button
-    loginBtn.addEventListener("click", async () => {
+    document.getElementById("login-btn").addEventListener("click", async () => {
       try {
-        splashStatus.textContent = "Opening Google Sign-In...";
         await signInWithPopup(auth, provider);
       } catch (err) {
         alert("Sign-in error: " + err.message);
-        splashStatus.textContent = "Tap Continue with Google to try again";
       }
     });
 
-    // 4. Load or Create Member Profile
-    async function initializeMemberProfiles(user) {
+    // 3. Boot App Data
+    async function bootApp(user) {
       await ensureDefaultAamaal();
 
-      const mainDocRef = doc(db, "members", user.uid);
-      const mainDocSnap = await getDoc(mainDocRef);
+      const mainRef = doc(db, "members", user.uid);
+      const mainSnap = await getDoc(mainRef);
 
-      if (!mainDocSnap.exists()) {
-        // Check if this is the very first member in the database -> make Admin
-        const allMembersSnap = await getDocs(collection(db, "members"));
-        const isFirstMemberEver = allMembersSnap.empty;
-
-        const newProfile = {
+      if (!mainSnap.exists()) {
+        const allSnap = await getDocs(collection(db, "members"));
+        const isFirstEver = allSnap.empty;
+        await setDoc(mainRef, {
           id: user.uid,
           parentUid: user.uid,
           isPrimary: true,
-          name: user.displayName || "Circle Member",
+          name: user.displayName || "Member",
           email: user.email || "",
           privacy: "public",
-          role: isFirstMemberEver ? "admin" : "member",
+          role: isFirstEver ? "admin" : "member",
           createdAt: Date.now()
-        };
-        await setDoc(mainDocRef, newProfile);
+        });
         isFirstLogin = true;
       }
 
-      await refreshProfilesList(user.uid);
+      await loadAamaalTabs();
+      await loadMembersAndProfiles(user.uid);
+      await loadLogsAndRender();
 
-      splashScreen.classList.add("hidden");
-      appContainer.classList.remove("hidden");
+      document.getElementById("splash-screen").classList.add("hidden");
+      document.getElementById("app-container").classList.remove("hidden");
 
       if (isFirstLogin) {
         openSettingsModal(true);
       }
     }
 
-    // 5. Fetch Primary + Family Profiles
-    async function refreshProfilesList( savedActiveId ) {
-      const q = query(collection(db, "members"), where("parentUid", "==", currentUser.uid));
-      const snap = await getDocs(q);
-      myProfiles = [];
-      snap.forEach((d) => myProfiles.push(d.data()));
-
-      // Sort so primary user is always first
-      myProfiles.sort((a, b) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0));
-
-      const found = myProfiles.find(p => p.id === savedActiveId);
-      activeProfile = found || myProfiles[0];
-      selectedPrivacy = activeProfile.privacy || "public";
-
-      updateHeaderUI();
-      renderFamilyListInModal();
-    }
-
-    function updateHeaderUI() {
-      if (!activeProfile) return;
-      document.getElementById("active-member-name").textContent = activeProfile.name;
-      document.getElementById("active-member-privacy").textContent = activeProfile.privacy;
-      document.getElementById("card-member-name").textContent = activeProfile.name;
-      document.getElementById("privacy-target-name").textContent = activeProfile.name;
-
-      const primaryProfile = myProfiles.find(p => p.isPrimary);
-      const adminBadge = document.getElementById("admin-badge");
-      if (primaryProfile && primaryProfile.role === "admin") {
-        adminBadge.classList.remove("hidden");
-      } else {
-        adminBadge.classList.add("hidden");
+    async function loadAamaalTabs() {
+      const snap = await getDocs(collection(db, "aamaal"));
+      aamaalList = [];
+      snap.forEach(d => {
+        const data = d.data();
+        if (data.active !== false) aamaalList.push(data);
+      });
+      aamaalList.sort((a, b) => (a.order || 1) - (b.order || 1));
+      if (!activeAamaal || !aamaalList.find(a => a.id === activeAamaal.id)) {
+        activeAamaal = aamaalList[0];
       }
-      highlightPrivacyOption(activeProfile.privacy);
+      renderAamaalTabs();
     }
 
-    // 6. Render Family Switcher inside Modal
-    function renderFamilyListInModal() {
-      familyListContainer.innerHTML = "";
-      myProfiles.forEach((prof) => {
-        const div = document.createElement("div");
-        div.className = "family-item" + (prof.id === activeProfile.id ? " active" : "");
-        div.innerHTML = `
-          <div>
-            <div style="font-weight:700;font-size:14px;color:#062c28;">
-              ${prof.name} ${prof.isPrimary ? "(You)" : ""}
-            </div>
-            <div style="font-size:11px;color:#64748b;text-transform:capitalize;">
-              Privacy: ${prof.privacy}
-            </div>
-          </div>
-          <div style="font-size:13px;font-weight:700;color:#0d9488;">
-            ${prof.id === activeProfile.id ? "✓ Active" : "Switch"}
-          </div>
-        `;
-        div.addEventListener("click", () => {
-          activeProfile = prof;
-          selectedPrivacy = prof.privacy;
-          updateHeaderUI();
-          renderFamilyListInModal();
+    function renderAamaalTabs() {
+      const container = document.getElementById("aamaal-tabs-container");
+      container.innerHTML = "";
+      aamaalList.forEach(item => {
+        const btn = document.createElement("button");
+        btn.className = "aamaal-tab" + (item.id === activeAamaal.id ? " active" : "");
+        btn.textContent = item.name;
+        btn.addEventListener("click", async () => {
+          activeAamaal = item;
+          renderAamaalTabs();
+          await loadLogsAndRender();
         });
-        familyListContainer.appendChild(div);
+        container.appendChild(btn);
       });
     }
 
-    // 7. Add Family Member
+    async function loadMembersAndProfiles(preferredProfileId) {
+      const snap = await getDocs(collection(db, "members"));
+      allMembers = [];
+      myProfiles = [];
+      snap.forEach(d => {
+        const m = d.data();
+        allMembers.push(m);
+        if (m.parentUid === currentUser.uid) {
+          myProfiles.push(m);
+        }
+      });
+      myProfiles.sort((a, b) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0));
+
+      activeProfile = myProfiles.find(p => p.id === preferredProfileId) || myProfiles[0];
+      selectedPrivacy = activeProfile.privacy || "public";
+
+      updateTopBarUI();
+    }
+
+    // 4. Top Bar & Lightweight Member Dropdown (Only Myself + Family Names)
+    function updateTopBarUI() {
+      document.getElementById("active-member-name").textContent = activeProfile.name;
+      document.getElementById("privacy-target-name").textContent = activeProfile.name;
+
+      const primary = myProfiles.find(p => p.isPrimary);
+      const isAdmin = primary && primary.role === "admin";
+      document.getElementById("admin-badge").classList.toggle("hidden", !isAdmin);
+      document.getElementById("admin-spacer").classList.toggle("hidden", isAdmin);
+
+      const menu = document.getElementById("quick-member-menu");
+      menu.innerHTML = "";
+      myProfiles.forEach(prof => {
+        const item = document.createElement("div");
+        item.className = "quick-dropdown-item" + (prof.id === activeProfile.id ? " active" : "");
+        item.innerHTML = `
+          <span>${prof.name}</span>
+          <span>${prof.id === activeProfile.id ? "✓" : ""}</span>
+        `;
+        item.addEventListener("click", async () => {
+          activeProfile = prof;
+          selectedPrivacy = prof.privacy || "public";
+          menu.classList.add("hidden");
+          updateTopBarUI();
+          renderDailyScreen();
+          renderStatsScreen();
+        });
+        menu.appendChild(item);
+      });
+    }
+
+    // Toggle lightweight dropdown
+    const quickMemberBtn = document.getElementById("quick-member-btn");
+    const quickMemberMenu = document.getElementById("quick-member-menu");
+    quickMemberBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      quickMemberMenu.classList.toggle("hidden");
+    });
+    document.addEventListener("click", () => {
+      quickMemberMenu.classList.add("hidden");
+    });
+
+    // 5. Load Logs & Render Daily + Stats Views
+    async function loadLogsAndRender() {
+      if (!activeAamaal) return;
+      const q = query(collection(db, "logs"), where("aamaalId", "==", activeAamaal.id));
+      const snap = await getDocs(q);
+      allLogsForAamaal = [];
+      snap.forEach(d => allLogsForAamaal.push(d.data()));
+
+      renderDailyScreen();
+      renderStatsScreen();
+    }
+
+    function renderDailyScreen() {
+      if (!activeAamaal || !activeProfile) return;
+      const todayIST = getISTDateString();
+      const last7Days = getLast7ISTDays();
+      const weekDateKeys = new Set(last7Days.map(d => d.dateKey));
+
+      // Header & Labels
+      document.getElementById("current-aamaal-title").textContent = activeAamaal.name;
+      document.getElementById("current-aamaal-arabic").textContent = activeAamaal.arabic;
+      document.getElementById("target-question-text").textContent =
+        `Have you recited your daily target of ${activeAamaal.target} times ${activeAamaal.name} today?`;
+      document.getElementById("stat-card-aamaal-1").textContent = activeAamaal.name;
+      document.getElementById("stat-card-aamaal-2").textContent = activeAamaal.name;
+      document.getElementById("bottom-btn-aamaal").textContent = activeAamaal.name;
+
+      // Filter current member's logs
+      const myLogs = allLogsForAamaal.filter(l => l.memberId === activeProfile.id);
+      const todayLog = myLogs.find(l => l.dateKey === todayIST);
+
+      // Toggle Mark as Recited vs Completed Box
+      const notRecitedBox = document.getElementById("not-recited-box");
+      const recitedBox = document.getElementById("recited-box");
+      const extraPanel = document.getElementById("extra-count-panel");
+
+      if (todayLog) {
+        notRecitedBox.classList.add("hidden");
+        recitedBox.classList.remove("hidden");
+        document.getElementById("today-logged-num").textContent = todayLog.count.toLocaleString('en-IN');
+        document.getElementById("custom-count-input").value = todayLog.count;
+      } else {
+        notRecitedBox.classList.remove("hidden");
+        recitedBox.classList.add("hidden");
+        extraPanel.classList.add("hidden");
+      }
+
+      // Render 7-Day Strip
+      const stripContainer = document.getElementById("week-strip-container");
+      stripContainer.innerHTML = "";
+      const myDoneDates = new Set(myLogs.map(l => l.dateKey));
+
+      last7Days.forEach(d => {
+        const done = myDoneDates.has(d.dateKey);
+        const cell = document.createElement("div");
+        cell.className = "day-cell" + (d.isToday ? " is-today" : "");
+        cell.innerHTML = `
+          <div class="day-name">${d.shortDay}</div>
+          <div class="day-num">${d.dayNum}</div>
+          <div class="status-dot ${done ? 'dot-done' : 'dot-missed'}"></div>
+        `;
+        stripContainer.appendChild(cell);
+      });
+
+      // Calculate Personal Weekly & Today Totals
+      const myTodayCount = todayLog ? Number(todayLog.count) : 0;
+      const myWeekCount = myLogs
+        .filter(l => weekDateKeys.has(l.dateKey))
+        .reduce((sum, l) => sum + Number(l.count || 0), 0);
+
+      document.getElementById("my-today-total").textContent = myTodayCount.toLocaleString('en-IN');
+      document.getElementById("my-week-total").textContent = myWeekCount.toLocaleString('en-IN');
+    }
+
+    // 6. Mark as Recited, Add Extra / Edit Count, and Undo
+    document.getElementById("mark-recited-btn").addEventListener("click", async () => {
+      if (!activeAamaal || !activeProfile) return;
+      const todayIST = getISTDateString();
+      const logId = `${todayIST}_${activeAamaal.id}_${activeProfile.id}`;
+      await setDoc(doc(db, "logs", logId), {
+        id: logId,
+        aamaalId: activeAamaal.id,
+        memberId: activeProfile.id,
+        parentUid: currentUser.uid,
+        dateKey: todayIST,
+        count: Number(activeAamaal.target),
+        updatedAt: Date.now()
+      });
+      await loadLogsAndRender();
+    });
+
+    document.getElementById("toggle-extra-btn").addEventListener("click", () => {
+      document.getElementById("extra-count-panel").classList.toggle("hidden");
+    });
+
+    // Quick +100, +313, +500 chips
+    document.querySelectorAll(".chip-btn").forEach(chip => {
+      chip.addEventListener("click", async () => {
+        const addVal = Number(chip.dataset.add);
+        const todayIST = getISTDateString();
+        const logId = `${todayIST}_${activeAamaal.id}_${activeProfile.id}`;
+        const existing = allLogsForAamaal.find(l => l.id === logId);
+        const newTotal = (existing ? Number(existing.count) : Number(activeAamaal.target)) + addVal;
+
+        await updateDoc(doc(db, "logs", logId), {
+          count: newTotal,
+          updatedAt: Date.now()
+        });
+        await loadLogsAndRender();
+      });
+    });
+
+    // Save exact custom total (e.g. 500)
+    document.getElementById("save-custom-count-btn").addEventListener("click", async () => {
+      const val = Number(document.getElementById("custom-count-input").value);
+      if (!val || val <= 0) return alert("Please enter a valid positive number.");
+      const todayIST = getISTDateString();
+      const logId = `${todayIST}_${activeAamaal.id}_${activeProfile.id}`;
+      await updateDoc(doc(db, "logs", logId), {
+        count: val,
+        updatedAt: Date.now()
+      });
+      document.getElementById("extra-count-panel").classList.add("hidden");
+      await loadLogsAndRender();
+    });
+
+    // Undo Today Only
+    document.getElementById("undo-today-btn").addEventListener("click", async () => {
+      const todayIST = getISTDateString();
+      const logId = `${todayIST}_${activeAamaal.id}_${activeProfile.id}`;
+      await deleteDoc(doc(db, "logs", logId));
+      await loadLogsAndRender();
+    });
+
+    // 7. Render Group Statistics Screen (Image 2)
+    function renderStatsScreen() {
+      if (!activeAamaal || !activeProfile) return;
+      const todayIST = getISTDateString();
+      const last7Days = getLast7ISTDays();
+      const weekDateKeys = new Set(last7Days.map(d => d.dateKey));
+
+      document.getElementById("stats-header-aamaal").textContent = activeAamaal.name;
+      document.getElementById("lifetime-aamaal-name").textContent = activeAamaal.name;
+      document.getElementById("leader-aamaal-name").textContent = activeAamaal.name;
+
+      // 1. Lifetime Total
+      const lifetimeTotal = allLogsForAamaal.reduce((sum, l) => sum + Number(l.count || 0), 0);
+      document.getElementById("group-lifetime-total").textContent = formatCompactNumber(lifetimeTotal);
+
+      // 2. Total Members & New Members (Last 10 Days)
+      const tenDaysAgo = Date.now() - (10 * 86400000);
+      const newMembersCount = allMembers.filter(m => (m.createdAt || 0) >= tenDaysAgo).length;
+      document.getElementById("stats-new-members").textContent = `+${newMembersCount}`;
+      document.getElementById("stats-total-members").textContent = allMembers.length.toLocaleString('en-IN');
+
+      // 3. Top Reciters This Week Leaderboard (Respecting Privacy)
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
+
+      const weeklyByMember = {};
+      allLogsForAamaal
+        .filter(l => weekDateKeys.has(l.dateKey))
+        .forEach(l => {
+          weeklyByMember[l.memberId] = (weeklyByMember[l.memberId] || 0) + Number(l.count || 0);
+        });
+
+      const leaderboardRows = [];
+      Object.keys(weeklyByMember).forEach(memberId => {
+        const m = memberMap[memberId];
+        if (!m) return;
+        if (m.privacy === "anonymous") return; // Anonymous only added to group totals
+        const displayName = m.privacy === "private" ? "Hidden Member" : m.name;
+        leaderboardRows.push({
+          name: displayName,
+          score: weeklyByMember[memberId]
+        });
+      });
+
+      leaderboardRows.sort((a, b) => b.score - a.score);
+      const top5 = leaderboardRows.slice(0, 5);
+
+      const leaderBox = document.getElementById("leaderboard-container");
+      leaderBox.innerHTML = "";
+      if (top5.length === 0) {
+        leaderBox.innerHTML = `<div style="padding:18px 4px;text-align:center;color:#94a3b8;font-size:13px;">No public/private recitations logged this week yet.</div>`;
+      } else {
+        top5.forEach((item, idx) => {
+          const row = document.createElement("div");
+          row.className = "leader-row";
+          row.innerHTML = `
+            <div class="leader-left">
+              <div class="rank-circle">${idx + 1}</div>
+              <div class="crescent-badge">☪</div>
+              <div class="leader-name">${item.name}</div>
+            </div>
+            <div class="leader-score">${item.score.toLocaleString('en-IN')}</div>
+          `;
+          leaderBox.appendChild(row);
+        });
+      }
+
+      // 4. Daily Performance Card
+      const groupTodayTotal = allLogsForAamaal
+        .filter(l => l.dateKey === todayIST)
+        .reduce((sum, l) => sum + Number(l.count || 0), 0);
+
+      const myTodayLog = allLogsForAamaal.find(l => l.dateKey === todayIST && l.memberId === activeProfile.id);
+      const myTodayTotal = myTodayLog ? Number(myTodayLog.count) : 0;
+
+      document.getElementById("group-today-total").textContent = groupTodayTotal.toLocaleString('en-IN');
+      document.getElementById("my-contrib-today").textContent = myTodayTotal.toLocaleString('en-IN');
+
+      // 5. Weekly Performance Bar Chart
+      const barsContainer = document.getElementById("weekly-bars-container");
+      barsContainer.innerHTML = "";
+      const dailyTotals = last7Days.map(d => {
+        const sum = allLogsForAamaal
+          .filter(l => l.dateKey === d.dateKey)
+          .reduce((acc, l) => acc + Number(l.count || 0), 0);
+        return { ...d, total: sum };
+      });
+      const maxDayTotal = Math.max(...dailyTotals.map(d => d.total), 1);
+
+      dailyTotals.forEach(d => {
+        const heightPct = Math.max(Math.round((d.total / maxDayTotal) * 85), 6);
+        const col = document.createElement("div");
+        col.className = "bar-col";
+        col.innerHTML = `
+          <div class="bar-val">${d.total > 0 ? formatCompactNumber(d.total) : ''}</div>
+          <div class="bar-fill" style="height:${heightPct}%;"></div>
+          <div class="bar-day">${d.shortDay}</div>
+        `;
+        barsContainer.appendChild(col);
+      });
+    }
+
+    // 8. Switch Between Daily Screen & Group Statistics Screen
+    document.getElementById("open-stats-btn").addEventListener("click", () => {
+      renderStatsScreen();
+      document.getElementById("daily-view").classList.add("hidden");
+      document.getElementById("stats-view").classList.remove("hidden");
+      window.scrollTo(0, 0);
+    });
+
+    document.getElementById("back-to-daily-btn").addEventListener("click", () => {
+      document.getElementById("stats-view").classList.add("hidden");
+      document.getElementById("daily-view").classList.remove("hidden");
+      window.scrollTo(0, 0);
+    });
+
+    // 9. Settings Modal (Only Routed via Top-Left Gear Button)
+    const settingsModal = document.getElementById("settings-modal");
+    const privacyOptions = document.querySelectorAll(".privacy-option");
+
+    function highlightPrivacyOption(priv) {
+      privacyOptions.forEach(opt => {
+        const isMatch = opt.dataset.privacy === priv;
+        opt.classList.toggle("selected", isMatch);
+        opt.querySelector(".check-mark").textContent = isMatch ? "✓" : "";
+      });
+    }
+
+    privacyOptions.forEach(opt => {
+      opt.addEventListener("click", () => {
+        selectedPrivacy = opt.dataset.privacy;
+        highlightPrivacyOption(selectedPrivacy);
+      });
+    });
+
+    function openSettingsModal(firstLoginMode = false) {
+      document.getElementById("privacy-target-name").textContent = activeProfile.name;
+      highlightPrivacyOption(activeProfile.privacy || "public");
+      settingsModal.classList.remove("hidden");
+    }
+
+    document.getElementById("open-settings-btn").addEventListener("click", () => openSettingsModal(false));
+
     document.getElementById("add-family-btn").addEventListener("click", async () => {
       const input = document.getElementById("new-family-name");
       const name = input.value.trim();
       if (!name) return alert("Please enter a family member's name.");
 
       const famId = currentUser.uid + "_fam_" + Date.now();
-      const famProfile = {
+      await setDoc(doc(db, "members", famId), {
         id: famId,
         parentUid: currentUser.uid,
         isPrimary: false,
@@ -672,47 +1550,13 @@
         privacy: "public",
         role: "family",
         createdAt: Date.now()
-      };
-      await setDoc(doc(db, "members", famId), famProfile);
+      });
       input.value = "";
-      await refreshProfilesList(famId);
-    });
-
-    // 8. Privacy Selection UI
-    const privacyOptions = document.querySelectorAll(".privacy-option");
-    function highlightPrivacyOption(priv) {
-      privacyOptions.forEach((opt) => {
-        const isMatch = opt.dataset.privacy === priv;
-        opt.classList.toggle("selected", isMatch);
-        opt.querySelector(".check-mark").textContent = isMatch ? "✓" : "";
-      });
-    }
-
-    privacyOptions.forEach((opt) => {
-      opt.addEventListener("click", () => {
-        selectedPrivacy = opt.dataset.privacy;
-        highlightPrivacyOption(selectedPrivacy);
-      });
-    });
-
-    // 9. Open & Save Modal
-    function openSettingsModal(firstLoginMode = false) {
-      if (firstLoginMode) {
-        document.getElementById("modal-heading").textContent = "Welcome! Choose Your Privacy";
-        document.getElementById("modal-subheading").textContent = "How should your name appear on the circle's leaderboard? You can change this anytime in Settings.";
-        familySection.classList.add("hidden");
-      } else {
-        document.getElementById("modal-heading").textContent = "Privacy & Family Circle";
-        document.getElementById("modal-subheading").textContent = "Switch whose aamaal you are logging, add family members, or update leaderboard privacy.";
-        familySection.classList.remove("hidden");
-      }
+      await loadMembersAndProfiles(famId);
+      document.getElementById("privacy-target-name").textContent = activeProfile.name;
       highlightPrivacyOption(activeProfile.privacy);
-      settingsModal.classList.remove("hidden");
-    }
-
-    document.getElementById("open-settings-btn").addEventListener("click", () => openSettingsModal(false));
-    document.getElementById("profile-switcher-pill").addEventListener("click", () => openSettingsModal(false));
-    document.getElementById("manage-family-btn").addEventListener("click", () => openSettingsModal(false));
+      alert(`${name} added! You can now switch between yourselves anytime from the top dropdown.`);
+    });
 
     document.getElementById("save-settings-btn").addEventListener("click", async () => {
       if (activeProfile && selectedPrivacy !== activeProfile.privacy) {
@@ -722,8 +1566,8 @@
         activeProfile.privacy = selectedPrivacy;
       }
       isFirstLogin = false;
-      updateHeaderUI();
-      renderFamilyListInModal();
+      await loadMembersAndProfiles(activeProfile.id);
+      renderStatsScreen();
       settingsModal.classList.add("hidden");
     });
 
