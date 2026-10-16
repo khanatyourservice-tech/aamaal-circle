@@ -117,9 +117,7 @@
       font-size: 18px;
       color: var(--teal-dark);
     }
-    .member-dropdown-wrapper {
-      position: relative;
-    }
+    .member-dropdown-wrapper { position: relative; }
     .member-dropdown-btn {
       background: #ffffff;
       border: 1px solid #cbd5e1;
@@ -193,7 +191,7 @@
       border-color: var(--teal-dark);
     }
 
-    /* DAILY SCREEN: ARABIC & HERO CARD (IMAGE 1 STYLE) */
+    /* DAILY SCREEN */
     .aamaal-heading-title {
       text-align: center;
       font-size: 18px;
@@ -245,11 +243,7 @@
       cursor: pointer;
       min-width: 220px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
-      transition: transform 0.12s ease;
     }
-    .mark-recited-btn:active { transform: scale(0.97); }
-    
-    /* COMPLETED STATE CONTROLS */
     .completed-badge {
       display: inline-block;
       background: rgba(190, 242, 100, 0.16);
@@ -301,55 +295,52 @@
       cursor: pointer;
     }
 
-    /* 7-DAY CALENDAR STRIP */
+    /* CLICKABLE 7-DAY CALENDAR STRIP (BACKDATED LOGGING) */
+    .week-strip-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     .week-strip {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 6px;
       margin-bottom: 22px;
-      align-items: center;
     }
     .day-cell {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 10px 4px;
+      padding: 10px 2px;
       border-radius: 16px;
-      border: 1.5px solid transparent;
+      border: 1.5px solid #e2e8f0;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .day-cell.selected-day {
+      border-color: #0d9488;
+      background: #f0fdf4;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
     }
     .day-cell.is-today {
-      border-color: #cbd5e1;
-      background: #ffffff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      border-color: #0f766e;
     }
-    .day-name {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      font-weight: 500;
-    }
-    .day-cell.is-today .day-name {
-      color: var(--text-main);
+    .day-name { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 2px; }
+    .day-num { font-size: 14px; color: var(--text-main); font-weight: 800; margin-bottom: 6px; }
+    .day-status-badge {
+      font-size: 10px;
       font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 999px;
     }
-    .day-num {
-      font-size: 15px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-    .day-cell.is-today .day-num {
-      color: var(--text-main);
-      font-weight: 800;
-    }
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-    }
-    .dot-done { background-color: #16a34a; }
-    .dot-missed { background-color: #ef4444; }
+    .badge-done { background: #dcfce7; color: #166534; }
+    .badge-missed { background: #fee2e2; color: #991b1b; }
 
     /* TWO PERSONAL STAT CARDS */
     .personal-stats-grid {
@@ -364,26 +355,11 @@
       border-radius: 22px;
       padding: 16px 14px;
     }
-    .mint-stat-label {
-      font-size: 12px;
-      color: #475569;
-      font-weight: 600;
-      margin-bottom: 10px;
-      line-height: 1.3;
-    }
-    .mint-stat-value {
-      font-size: 28px;
-      font-weight: 800;
-      color: #1e293b;
-      margin-bottom: 6px;
-    }
-    .mint-stat-sub {
-      font-size: 12px;
-      color: #64748b;
-      font-weight: 500;
-    }
+    .mint-stat-label { font-size: 12px; color: #475569; font-weight: 600; margin-bottom: 10px; }
+    .mint-stat-value { font-size: 28px; font-weight: 800; color: #1e293b; margin-bottom: 6px; }
+    .mint-stat-sub { font-size: 12px; color: #64748b; font-weight: 500; }
 
-    /* BOTTOM NAVIGATION PILL TO STATS SCREEN */
+    /* BOTTOM BUTTON */
     .worldwide-pill-btn {
       width: 100%;
       background: #ffffff;
@@ -404,39 +380,13 @@
       text-align: center;
       flex: 1;
     }
-    .double-arrow {
-      font-size: 16px;
-      color: #64748b;
-      font-weight: 700;
-      padding: 0 4px;
-    }
+    .double-arrow { font-size: 16px; color: #64748b; font-weight: 700; padding: 0 4px; }
 
-    /* 2. GROUP STATISTICS SCREEN (IMAGE 2 STYLE) */
-    .stats-top-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-    .back-btn {
-      background: none;
-      border: none;
-      font-size: 24px;
-      color: #0f172a;
-      cursor: pointer;
-      padding: 4px 8px;
-    }
-    .stats-header-title {
-      flex: 1;
-      text-align: center;
-      font-size: 16px;
-      font-weight: 600;
-      color: #1e293b;
-      line-height: 1.35;
-      padding-right: 32px;
-    }
+    /* GROUP STATISTICS SCREEN */
+    .stats-top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .back-btn { background: none; border: none; font-size: 24px; color: #0f172a; cursor: pointer; padding: 4px 8px; }
+    .stats-header-title { flex: 1; text-align: center; font-size: 16px; font-weight: 600; color: #1e293b; line-height: 1.35; padding-right: 32px; }
 
-    /* LIFETIME HERO CARD WITH DOME ART */
     .lifetime-hero-card {
       position: relative;
       overflow: hidden;
@@ -448,302 +398,74 @@
       box-shadow: 0 12px 28px rgba(6, 44, 40, 0.18);
     }
     .lifetime-dome-svg {
-      position: absolute;
-      right: -10px;
-      bottom: -15px;
-      width: 190px;
-      height: 190px;
-      opacity: 0.32;
-      pointer-events: none;
+      position: absolute; right: -10px; bottom: -15px; width: 190px; height: 190px; opacity: 0.32; pointer-events: none;
     }
-    .lifetime-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #e2e8f0;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 2;
-    }
-    .lifetime-number {
-      font-size: 40px;
-      font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 8px;
-      letter-spacing: -1px;
-      position: relative;
-      z-index: 2;
-    }
-    .lifetime-sub {
-      font-size: 13px;
-      color: #cbd5e1;
-      position: relative;
-      z-index: 2;
-    }
+    .lifetime-title { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 10px; position: relative; z-index: 2; }
+    .lifetime-number { font-size: 40px; font-weight: 800; color: #ffffff; margin-bottom: 8px; letter-spacing: -1px; position: relative; z-index: 2; }
+    .lifetime-sub { font-size: 13px; color: #cbd5e1; position: relative; z-index: 2; }
 
-    /* MEMBER COUNT WHITE CARDS */
-    .member-stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-    .white-stat-card {
-      background: #ffffff;
-      border-radius: 22px;
-      padding: 18px 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-    }
-    .white-stat-label {
-      font-size: 12.5px;
-      color: #94a3b8;
-      margin-bottom: 8px;
-      line-height: 1.35;
-      font-weight: 500;
-    }
-    .white-stat-val {
-      font-size: 24px;
-      font-weight: 800;
-      color: #1e293b;
-    }
+    .member-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    .white-stat-card { background: #ffffff; border-radius: 22px; padding: 18px 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+    .white-stat-label { font-size: 12.5px; color: #94a3b8; margin-bottom: 8px; font-weight: 500; }
+    .white-stat-val { font-size: 24px; font-weight: 800; color: #1e293b; }
 
-    .section-heading {
-      font-size: 16px;
-      font-weight: 600;
-      color: #334155;
-      margin-bottom: 12px;
-    }
+    .section-heading { font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 12px; }
 
-    /* LEADERBOARD CARD */
+    /* LEADERBOARD (NEUTRAL CRESCENT BADGE) */
     .white-list-card {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 8px 18px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.04);
-      margin-bottom: 24px;
+      background: #ffffff; border-radius: 24px; padding: 8px 18px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); margin-bottom: 24px;
     }
-    .leader-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0;
-      border-bottom: 1px solid #f1f5f9;
-    }
+    .leader-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f1f5f9; }
     .leader-row:last-child { border-bottom: none; }
-    .leader-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .leader-left { display: flex; align-items: center; gap: 12px; }
     .rank-circle {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #f1f5f9;
-      color: #64748b;
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; color: #64748b; font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
     }
     .crescent-badge {
-      width: 26px;
-      height: 20px;
-      border-radius: 4px;
-      background: #065f46;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
+      width: 26px; height: 20px; border-radius: 4px; background: #0f766e; color: #ffffff;
+      display: flex; align-items: center; justify-content: center; font-size: 12px;
     }
-    .leader-name {
-      font-size: 14.5px;
-      font-weight: 600;
-      color: #334155;
-    }
-    .leader-score {
-      font-size: 15px;
-      font-weight: 700;
-      color: #1e293b;
-    }
+    .leader-name { font-size: 14.5px; font-weight: 600; color: #334155; }
+    .leader-score { font-size: 15px; font-weight: 700; color: #1e293b; }
 
-    /* DAILY PERFORMANCE CARD */
     .daily-perf-card {
-      background: #ffffff;
-      border-radius: 22px;
-      padding: 18px 20px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.04);
-      margin-bottom: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      background: #ffffff; border-radius: 22px; padding: 18px 20px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); margin-bottom: 24px; display: flex; flex-direction: column; gap: 12px;
     }
-    .perf-row {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-    .perf-num {
-      min-width: 85px;
-      font-size: 16px;
-      font-weight: 800;
-      color: #1e293b;
-    }
-    .perf-label {
-      font-size: 14px;
-      color: #94a3b8;
-      font-weight: 500;
-    }
+    .perf-row { display: flex; align-items: center; gap: 18px; }
+    .perf-num { min-width: 85px; font-size: 16px; font-weight: 800; color: #1e293b; }
+    .perf-label { font-size: 14px; color: #94a3b8; font-weight: 500; }
 
-    /* WEEKLY BAR CHART CARD */
-    .weekly-chart-card {
-      background: #ffffff;
-      border-radius: 22px;
-      padding: 20px 16px 16px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.04);
-    }
-    .bars-wrap {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
-      height: 120px;
-      align-items: flex-end;
-      padding-top: 20px;
-    }
-    .bar-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100%;
-      justify-content: flex-end;
-    }
-    .bar-val {
-      font-size: 10px;
-      color: #64748b;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .bar-fill {
-      width: 100%;
-      max-width: 26px;
-      background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%);
-      border-radius: 8px 8px 4px 4px;
-      min-height: 6px;
-      transition: height 0.3s ease;
-    }
-    .bar-day {
-      font-size: 11px;
-      color: #64748b;
-      margin-top: 8px;
-      font-weight: 600;
-    }
+    .weekly-chart-card { background: #ffffff; border-radius: 22px; padding: 20px 16px 16px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); }
+    .bars-wrap { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; height: 120px; align-items: flex-end; padding-top: 20px; }
+    .bar-col { display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+    .bar-val { font-size: 10px; color: #64748b; font-weight: 700; margin-bottom: 4px; }
+    .bar-fill { width: 100%; max-width: 26px; background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%); border-radius: 8px 8px 4px 4px; min-height: 6px; }
+    .bar-day { font-size: 11px; color: #64748b; margin-top: 8px; font-weight: 600; }
 
     /* SETTINGS MODAL */
     .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(4, 31, 28, 0.72);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 100;
-      padding: 16px;
+      position: fixed; inset: 0; background: rgba(4, 31, 28, 0.72); backdrop-filter: blur(4px);
+      display: flex; align-items: flex-end; justify-content: center; z-index: 100; padding: 16px;
     }
     .modal-sheet {
-      background: #ffffff;
-      width: 100%;
-      max-width: 440px;
-      border-radius: 28px;
-      padding: 24px 20px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      background: #ffffff; width: 100%; max-width: 440px; border-radius: 28px; padding: 24px 20px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.25);
     }
-    .modal-title {
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--teal-dark);
-      margin-bottom: 6px;
-    }
-    .modal-sub {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 18px;
-      line-height: 1.45;
-    }
-    .privacy-option {
-      border: 2px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 14px;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-    .privacy-option.selected {
-      border-color: #0d9488;
-      background: #f0fdf4;
-    }
-    .privacy-option-title {
-      font-weight: 700;
-      font-size: 15px;
-      color: var(--teal-dark);
-      margin-bottom: 3px;
-      display: flex;
-      justify-content: space-between;
-    }
-    .privacy-option-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-    .input-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .text-input {
-      flex: 1;
-      padding: 11px 14px;
-      border-radius: 12px;
-      border: 1.5px solid #cbd5e1;
-      font-family: inherit;
-      font-size: 14px;
-    }
-    .small-btn {
-      background: var(--teal-dark);
-      color: #ffffff;
-      border: none;
-      padding: 0 16px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-    }
+    .modal-title { font-size: 20px; font-weight: 800; color: var(--teal-dark); margin-bottom: 6px; }
+    .modal-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.45; }
+    .privacy-option { border: 2px solid #e2e8f0; border-radius: 16px; padding: 14px; margin-bottom: 10px; cursor: pointer; }
+    .privacy-option.selected { border-color: #0d9488; background: #f0fdf4; }
+    .privacy-option-title { font-weight: 700; font-size: 15px; color: var(--teal-dark); margin-bottom: 3px; display: flex; justify-content: space-between; }
+    .privacy-option-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+    .input-row { display: flex; gap: 8px; margin-top: 8px; }
+    .text-input { flex: 1; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #cbd5e1; font-family: inherit; font-size: 14px; }
+    .small-btn { background: var(--teal-dark); color: #ffffff; border: none; padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; }
     .divider { height: 1px; background: #e2e8f0; margin: 18px 0; }
     .action-btn {
-      background: linear-gradient(90deg, #d9f99d 0%, #bbf7d0 100%);
-      color: #062c28;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 15px;
-      font-family: inherit;
-      cursor: pointer;
-      width: 100%;
+      background: linear-gradient(90deg, #d9f99d 0%, #bbf7d0 100%); color: #062c28; border: none; padding: 14px 24px; border-radius: 999px; font-weight: 700; font-size: 15px; font-family: inherit; cursor: pointer; width: 100%;
     }
     .signout-btn {
-      width: 100%;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid #fecaca;
-      background: #fef2f2;
-      color: #b91c1c;
-      font-weight: 700;
-      font-size: 13px;
-      margin-top: 12px;
-      cursor: pointer;
+      width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #fecaca; background: #fef2f2; color: #b91c1c; font-weight: 700; font-size: 13px; margin-top: 12px; cursor: pointer;
     }
   </style>
 </head>
@@ -805,9 +527,8 @@
   <!-- 2. MAIN APP CONTAINER -->
   <div id="app-container" class="hidden">
     
-    <!--DAILY AAMAAL VIEW (IMAGE 1)-->
+    <!--DAILY AAMAAL VIEW-->
     <div id="daily-view">
-      <!-- Top Bar: Settings on Left, Simple Name Switcher in Center, Admin on Right -->
       <div class="top-bar">
         <button class="icon-btn" id="open-settings-btn" title="Settings">⚙️</button>
 
@@ -816,7 +537,6 @@
             <span>👤 <span id="active-member-name">Loading...</span></span>
             <span style="font-size:11px;">▼</span>
           </button>
-          <!-- Lightweight Name-Only Dropdown -->
           <div id="quick-member-menu" class="quick-dropdown-menu hidden"></div>
         </div>
 
@@ -824,52 +544,53 @@
         <div id="admin-spacer" style="width:42px;"></div>
       </div>
 
-      <!-- Aamaal Tabs -->
       <div class="aamaal-tabs" id="aamaal-tabs-container"></div>
 
-      <!-- Current Aamaal Title & Arabic Text -->
       <div class="aamaal-heading-title" id="current-aamaal-title">Durood Shareef</div>
       <div class="arabic-banner" id="current-aamaal-arabic">اللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ</div>
 
-      <!-- Dark Rounded Target Card -->
+      <!-- Dark Rounded Target Card (Updates based on Selected Date in Strip) -->
       <div class="daily-target-card">
         <div class="salam-arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
         <div class="target-question" id="target-question-text">
-          Have you recited your daily target of 313 times Durood Shareef today?
+          Have you recited your daily target of 313 times Durood Shareef?
         </div>
 
-        <!-- Default Unmarked Button -->
+        <!-- Unmarked State for Selected Date -->
         <div id="not-recited-box">
           <button class="mark-recited-btn" id="mark-recited-btn">Mark as Recited</button>
         </div>
 
-        <!-- Completed State (With Add Extra / Edit & Undo) -->
+        <!-- Completed State for Selected Date -->
         <div id="recited-box" class="hidden">
           <div class="completed-badge">
-            ✓ Recited Today: <span id="today-logged-num">313</span>
+            ✓ Logged for <span id="selected-date-label">Today</span>: <span id="today-logged-num">313</span>
           </div>
           <div class="completed-actions">
-            <button class="secondary-pill-btn" id="toggle-extra-btn">+ Add Extra / Edit Count</button>
-            <button class="secondary-pill-btn" id="undo-today-btn" style="color:#fca5a5;border-color:rgba(252,165,165,0.4);">Undo</button>
+            <button class="secondary-pill-btn" id="toggle-extra-btn">+ Edit Count</button>
+            <button class="secondary-pill-btn" id="undo-today-btn" style="color:#fca5a5;border-color:rgba(252,165,165,0.4);">Remove Log</button>
           </div>
 
-          <!-- Expandable Box to Add More or Type Custom Number (e.g. 500) -->
           <div id="extra-count-panel" class="extra-count-box hidden">
-            <div style="font-size:12px;color:#cbd5e1;margin-bottom:8px;">Quick add to today's count, or type your total:</div>
+            <div style="font-size:12px;color:#cbd5e1;margin-bottom:8px;">Quick add or enter exact total for this date:</div>
             <div class="quick-add-chips">
               <button class="chip-btn" data-add="100">+100</button>
               <button class="chip-btn" data-add="313">+313</button>
               <button class="chip-btn" data-add="500">+500</button>
             </div>
             <div class="input-row">
-              <input type="number" id="custom-count-input" class="text-input" placeholder="Or enter exact total (e.g. 500)" style="background:#ffffff;color:#0f172a;">
+              <input type="number" id="custom-count-input" class="text-input" placeholder="Enter total (e.g. 500)" style="background:#ffffff;color:#0f172a;">
               <button class="small-btn" id="save-custom-count-btn" style="background:#bef264;color:#062c28;">Save</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 7-Day Calendar Strip (Midnight IST) -->
+      <!-- CLICKABLE 7-DAY CALENDAR STRIP (Allows Backdated Updates!) -->
+      <div class="week-strip-title">
+        <span>Select Date to View or Update:</span>
+        <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;font-weight:700;">Jump to Today</span>
+      </div>
       <div class="week-strip" id="week-strip-container"></div>
 
       <!-- Two Personal Stat Cards -->
@@ -886,7 +607,6 @@
         </div>
       </div>
 
-      <!-- Bottom Button to Group Statistics Screen -->
       <button class="worldwide-pill-btn" id="open-stats-btn">
         <span class="double-arrow">«</span>
         <span class="worldwide-pill-text">
@@ -896,7 +616,7 @@
       </button>
     </div>
 
-    <!--GROUP STATISTICS VIEW (IMAGE 2)-->
+    <!--GROUP STATISTICS VIEW-->
     <div id="stats-view" class="hidden">
       <div class="stats-top-header">
         <button class="back-btn" id="back-to-daily-btn">←</button>
@@ -905,12 +625,10 @@
         </div>
       </div>
 
-      <!-- Lifetime Hero Card -->
       <div class="lifetime-hero-card">
         <div class="lifetime-title">Total <span id="lifetime-aamaal-name">Durood Shareef</span> (Lifetime)</div>
         <div class="lifetime-number" id="group-lifetime-total">0</div>
         <div class="lifetime-sub">Recited by the entire community so far</div>
-        <!-- Decorative Dome Silhouette -->
         <svg class="lifetime-dome-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M100 20 L100 45" stroke="#a7f3d0" stroke-width="4" stroke-linecap="round"/>
           <circle cx="100" cy="16" r="5" stroke="#a7f3d0" stroke-width="3"/>
@@ -919,7 +637,6 @@
         </svg>
       </div>
 
-      <!-- New Reciters & Total Reciters -->
       <div class="member-stats-grid">
         <div class="white-stat-card">
           <div class="white-stat-label">New Reciters (Last 10 Days)</div>
@@ -931,11 +648,9 @@
         </div>
       </div>
 
-      <!-- Top Reciters This Week Leaderboard -->
       <div class="section-heading">Top <span id="leader-aamaal-name">Durood Shareef</span> Reciters This Week</div>
       <div class="white-list-card" id="leaderboard-container"></div>
 
-      <!-- Daily Performance Card -->
       <div class="section-heading">Daily Performance</div>
       <div class="daily-perf-card">
         <div class="perf-row">
@@ -948,7 +663,6 @@
         </div>
       </div>
 
-      <!-- Weekly Performance Bar Chart -->
       <div class="section-heading">Weekly Performance</div>
       <div class="weekly-chart-card">
         <div class="bars-wrap" id="weekly-bars-container"></div>
@@ -957,7 +671,7 @@
 
   </div>
 
-  <!-- 3. SETTINGS MODAL (ONLY ROUTED VIA TOP-LEFT GEAR BUTTON) -->
+  <!-- 3. SETTINGS MODAL -->
   <div id="settings-modal" class="modal-backdrop hidden">
     <div class="modal-sheet">
       <div class="modal-title" id="modal-heading">Settings & Family Setup</div>
@@ -1005,7 +719,7 @@
       getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { 
-      getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, query, where, getDocs 
+      getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, query, getDocs 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -1023,7 +737,6 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // State
     let currentUser = null;
     let myProfiles = [];
     let allMembers = [];
@@ -1033,8 +746,10 @@
     let allLogsForAamaal = [];
     let selectedPrivacy = "public";
     let isFirstLogin = false;
+    
+    // Tracks which date the user is currently viewing/logging on the daily screen
+    let selectedDateIST = getISTDateString();
 
-    // --- IST DATE HELPERS (Resets strictly at Midnight India Standard Time) ---
     function getISTDateString(dateObj = new Date()) {
       return new Intl.DateTimeFormat('en-CA', {
         timeZone: 'Asia/Kolkata',
@@ -1067,35 +782,13 @@
       return num.toLocaleString('en-IN');
     }
 
-    // 1. Seed Default 3 Aamaal
     async function ensureDefaultAamaal() {
       const snap = await getDocs(collection(db, "aamaal"));
       if (snap.empty) {
         const defaults = [
-          {
-            id: "durood_313",
-            name: "Durood Shareef",
-            arabic: "اللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ",
-            target: 313,
-            order: 1,
-            active: true
-          },
-          {
-            id: "surah_mulk",
-            name: "Surah Mulk",
-            arabic: "تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ",
-            target: 1,
-            order: 2,
-            active: true
-          },
-          {
-            id: "istighfar_100",
-            name: "100 Istighfar",
-            arabic: "أَسْتَغْفِرُ اللَّهَ رَبِّي مِنْ كُلِّ ذَنْبٍ وَأَتُوبُ إِلَيْهِ",
-            target: 100,
-            order: 3,
-            active: true
-          }
+          { id: "durood_313", name: "Durood Shareef", arabic: "اللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ", target: 313, order: 1, active: true },
+          { id: "surah_mulk", name: "Surah Mulk", arabic: "تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ", target: 1, order: 2, active: true },
+          { id: "istighfar_100", name: "100 Istighfar", arabic: "أَسْتَغْفِرُ اللَّهَ رَبِّي مِنْ كُلِّ ذَنْبٍ وَأَتُوبُ إِلَيْهِ", target: 100, order: 3, active: true }
         ];
         for (const item of defaults) {
           await setDoc(doc(db, "aamaal", item.id), item);
@@ -1103,7 +796,6 @@
       }
     }
 
-    // 2. Auth Listener
     onAuthStateChanged(auth, async (user) => {
       const splash = document.getElementById("splash-screen");
       const appBox = document.getElementById("app-container");
@@ -1132,9 +824,9 @@
       }
     });
 
-    // 3. Boot App Data
     async function bootApp(user) {
       await ensureDefaultAamaal();
+      selectedDateIST = getISTDateString();
 
       const mainRef = doc(db, "members", user.uid);
       const mainSnap = await getDoc(mainRef);
@@ -1216,7 +908,6 @@
       updateTopBarUI();
     }
 
-    // 4. Top Bar & Lightweight Member Dropdown (Only Myself + Family Names)
     function updateTopBarUI() {
       document.getElementById("active-member-name").textContent = activeProfile.name;
       document.getElementById("privacy-target-name").textContent = activeProfile.name;
@@ -1231,10 +922,7 @@
       myProfiles.forEach(prof => {
         const item = document.createElement("div");
         item.className = "quick-dropdown-item" + (prof.id === activeProfile.id ? " active" : "");
-        item.innerHTML = `
-          <span>${prof.name}</span>
-          <span>${prof.id === activeProfile.id ? "✓" : ""}</span>
-        `;
+        item.innerHTML = `<span>${prof.name}</span><span>${prof.id === activeProfile.id ? "✓" : ""}</span>`;
         item.addEventListener("click", async () => {
           activeProfile = prof;
           selectedPrivacy = prof.privacy || "public";
@@ -1247,21 +935,17 @@
       });
     }
 
-    // Toggle lightweight dropdown
     const quickMemberBtn = document.getElementById("quick-member-btn");
     const quickMemberMenu = document.getElementById("quick-member-menu");
     quickMemberBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       quickMemberMenu.classList.toggle("hidden");
     });
-    document.addEventListener("click", () => {
-      quickMemberMenu.classList.add("hidden");
-    });
+    document.addEventListener("click", () => { quickMemberMenu.classList.add("hidden"); });
 
-    // 5. Load Logs & Render Daily + Stats Views
     async function loadLogsAndRender() {
       if (!activeAamaal) return;
-      const q = query(collection(db, "logs"), where("aamaalId", "==", activeAamaal.id));
+      const q = query(collection(db, "logs"));
       const snap = await getDocs(q);
       allLogsForAamaal = [];
       snap.forEach(d => allLogsForAamaal.push(d.data()));
@@ -1276,53 +960,64 @@
       const last7Days = getLast7ISTDays();
       const weekDateKeys = new Set(last7Days.map(d => d.dateKey));
 
-      // Header & Labels
       document.getElementById("current-aamaal-title").textContent = activeAamaal.name;
       document.getElementById("current-aamaal-arabic").textContent = activeAamaal.arabic;
       document.getElementById("target-question-text").textContent =
-        `Have you recited your daily target of ${activeAamaal.target} times ${activeAamaal.name} today?`;
+        `Have you recited your daily target of ${activeAamaal.target} times ${activeAamaal.name}?`;
       document.getElementById("stat-card-aamaal-1").textContent = activeAamaal.name;
       document.getElementById("stat-card-aamaal-2").textContent = activeAamaal.name;
       document.getElementById("bottom-btn-aamaal").textContent = activeAamaal.name;
 
-      // Filter current member's logs
-      const myLogs = allLogsForAamaal.filter(l => l.memberId === activeProfile.id);
-      const todayLog = myLogs.find(l => l.dateKey === todayIST);
+      const myLogs = allLogsForAamaal.filter(l => l.memberId === activeProfile.id && l.aamaalId === activeAamaal.id);
+      const selectedLog = myLogs.find(l => l.dateKey === selectedDateIST);
 
-      // Toggle Mark as Recited vs Completed Box
       const notRecitedBox = document.getElementById("not-recited-box");
       const recitedBox = document.getElementById("recited-box");
       const extraPanel = document.getElementById("extra-count-panel");
 
-      if (todayLog) {
+      document.getElementById("selected-date-label").textContent = (selectedDateIST === todayIST) ? "Today" : selectedDateIST;
+
+      if (selectedLog) {
         notRecitedBox.classList.add("hidden");
         recitedBox.classList.remove("hidden");
-        document.getElementById("today-logged-num").textContent = todayLog.count.toLocaleString('en-IN');
-        document.getElementById("custom-count-input").value = todayLog.count;
+        document.getElementById("today-logged-num").textContent = selectedLog.count.toLocaleString('en-IN');
+        document.getElementById("custom-count-input").value = selectedLog.count;
       } else {
         notRecitedBox.classList.remove("hidden");
         recitedBox.classList.add("hidden");
         extraPanel.classList.add("hidden");
       }
 
-      // Render 7-Day Strip
+      // Render Clickable 7-Day Calendar Strip
       const stripContainer = document.getElementById("week-strip-container");
       stripContainer.innerHTML = "";
-      const myDoneDates = new Set(myLogs.map(l => l.dateKey));
+      const myDoneMap = {};
+      myLogs.forEach(l => { myDoneMap[l.dateKey] = l.count; });
 
       last7Days.forEach(d => {
-        const done = myDoneDates.has(d.dateKey);
+        const count = myDoneMap[d.dateKey];
+        const isSelected = (d.dateKey === selectedDateIST);
         const cell = document.createElement("div");
-        cell.className = "day-cell" + (d.isToday ? " is-today" : "");
+        cell.className = "day-cell" + (isSelected ? " selected-day" : "") + (d.isToday ? " is-today" : "");
+        
+        let badgeHtml = `<div class="day-status-badge badge-missed">Missed</div>`;
+        if (count > 0) {
+          badgeHtml = `<div class="day-status-badge badge-done">${count}</div>`;
+        }
+
         cell.innerHTML = `
           <div class="day-name">${d.shortDay}</div>
           <div class="day-num">${d.dayNum}</div>
-          <div class="status-dot ${done ? 'dot-done' : 'dot-missed'}"></div>
+          ${badgeHtml}
         `;
+        cell.addEventListener("click", () => {
+          selectedDateIST = d.dateKey;
+          renderDailyScreen();
+        });
         stripContainer.appendChild(cell);
       });
 
-      // Calculate Personal Weekly & Today Totals
+      const todayLog = myLogs.find(l => l.dateKey === todayIST);
       const myTodayCount = todayLog ? Number(todayLog.count) : 0;
       const myWeekCount = myLogs
         .filter(l => weekDateKeys.has(l.dateKey))
@@ -1332,17 +1027,20 @@
       document.getElementById("my-week-total").textContent = myWeekCount.toLocaleString('en-IN');
     }
 
-    // 6. Mark as Recited, Add Extra / Edit Count, and Undo
+    document.getElementById("reset-to-today-link").addEventListener("click", () => {
+      selectedDateIST = getISTDateString();
+      renderDailyScreen();
+    });
+
     document.getElementById("mark-recited-btn").addEventListener("click", async () => {
       if (!activeAamaal || !activeProfile) return;
-      const todayIST = getISTDateString();
-      const logId = `${todayIST}_${activeAamaal.id}_${activeProfile.id}`;
+      const logId = `${selectedDateIST}_${activeAamaal.id}_${activeProfile.id}`;
       await setDoc(doc(db, "logs", logId), {
         id: logId,
         aamaalId: activeAamaal.id,
         memberId: activeProfile.id,
         parentUid: currentUser.uid,
-        dateKey: todayIST,
+        dateKey: selectedDateIST,
         count: Number(activeAamaal.target),
         updatedAt: Date.now()
       });
@@ -1353,46 +1051,54 @@
       document.getElementById("extra-count-panel").classList.toggle("hidden");
     });
 
-    // Quick +100, +313, +500 chips
     document.querySelectorAll(".chip-btn").forEach(chip => {
       chip.addEventListener("click", async () => {
         const addVal = Number(chip.dataset.add);
-        const todayIST = getISTDateString();
-        const logId = `${todayIST}_${activeAamaal.id}_${activeProfile.id}`;
+        const logId = `${selectedDateIST}_${activeAamaal.id}_${activeProfile.id}`;
         const existing = allLogsForAamaal.find(l => l.id === logId);
-        const newTotal = (existing ? Number(existing.count) : Number(activeAamaal.target)) + addVal;
+        const newTotal = (existing ? Number(existing.count) : 0) + addVal;
 
-        await updateDoc(doc(db, "logs", logId), {
+        await setDoc(doc(db, "logs", logId), {
+          id: logId,
+          aamaalId: activeAamaal.id,
+          memberId: activeProfile.id,
+          parentUid: currentUser.uid,
+          dateKey: selectedDateIST,
           count: newTotal,
           updatedAt: Date.now()
-        });
+        }, { merge: true });
         await loadLogsAndRender();
       });
     });
 
-    // Save exact custom total (e.g. 500)
     document.getElementById("save-custom-count-btn").addEventListener("click", async () => {
       const val = Number(document.getElementById("custom-count-input").value);
-      if (!val || val <= 0) return alert("Please enter a valid positive number.");
-      const todayIST = getISTDateString();
-      const logId = `${todayIST}_${activeAamaal.id}_${activeProfile.id}`;
-      await updateDoc(doc(db, "logs", logId), {
-        count: val,
-        updatedAt: Date.now()
-      });
+      if (val < 0) return alert("Please enter a valid number.");
+      const logId = `${selectedDateIST}_${activeAamaal.id}_${activeProfile.id}`;
+      
+      if (val === 0) {
+        await deleteDoc(doc(db, "logs", logId));
+      } else {
+        await setDoc(doc(db, "logs", logId), {
+          id: logId,
+          aamaalId: activeAamaal.id,
+          memberId: activeProfile.id,
+          parentUid: currentUser.uid,
+          dateKey: selectedDateIST,
+          count: val,
+          updatedAt: Date.now()
+        }, { merge: true });
+      }
       document.getElementById("extra-count-panel").classList.add("hidden");
       await loadLogsAndRender();
     });
 
-    // Undo Today Only
     document.getElementById("undo-today-btn").addEventListener("click", async () => {
-      const todayIST = getISTDateString();
-      const logId = `${todayIST}_${activeAamaal.id}_${activeProfile.id}`;
+      const logId = `${selectedDateIST}_${activeAamaal.id}_${activeProfile.id}`;
       await deleteDoc(doc(db, "logs", logId));
       await loadLogsAndRender();
     });
 
-    // 7. Render Group Statistics Screen (Image 2)
     function renderStatsScreen() {
       if (!activeAamaal || !activeProfile) return;
       const todayIST = getISTDateString();
@@ -1403,22 +1109,21 @@
       document.getElementById("lifetime-aamaal-name").textContent = activeAamaal.name;
       document.getElementById("leader-aamaal-name").textContent = activeAamaal.name;
 
-      // 1. Lifetime Total
-      const lifetimeTotal = allLogsForAamaal.reduce((sum, l) => sum + Number(l.count || 0), 0);
+      const aamaalLogs = allLogsForAamaal.filter(l => l.aamaalId === activeAamaal.id);
+
+      const lifetimeTotal = aamaalLogs.reduce((sum, l) => sum + Number(l.count || 0), 0);
       document.getElementById("group-lifetime-total").textContent = formatCompactNumber(lifetimeTotal);
 
-      // 2. Total Members & New Members (Last 10 Days)
       const tenDaysAgo = Date.now() - (10 * 86400000);
       const newMembersCount = allMembers.filter(m => (m.createdAt || 0) >= tenDaysAgo).length;
       document.getElementById("stats-new-members").textContent = `+${newMembersCount}`;
       document.getElementById("stats-total-members").textContent = allMembers.length.toLocaleString('en-IN');
 
-      // 3. Top Reciters This Week Leaderboard (Respecting Privacy)
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
 
       const weeklyByMember = {};
-      allLogsForAamaal
+      aamaalLogs
         .filter(l => weekDateKeys.has(l.dateKey))
         .forEach(l => {
           weeklyByMember[l.memberId] = (weeklyByMember[l.memberId] || 0) + Number(l.count || 0);
@@ -1427,13 +1132,9 @@
       const leaderboardRows = [];
       Object.keys(weeklyByMember).forEach(memberId => {
         const m = memberMap[memberId];
-        if (!m) return;
-        if (m.privacy === "anonymous") return; // Anonymous only added to group totals
+        if (!m || m.privacy === "anonymous") return;
         const displayName = m.privacy === "private" ? "Hidden Member" : m.name;
-        leaderboardRows.push({
-          name: displayName,
-          score: weeklyByMember[memberId]
-        });
+        leaderboardRows.push({ name: displayName, score: weeklyByMember[memberId] });
       });
 
       leaderboardRows.sort((a, b) => b.score - a.score);
@@ -1459,22 +1160,20 @@
         });
       }
 
-      // 4. Daily Performance Card
-      const groupTodayTotal = allLogsForAamaal
+      const groupTodayTotal = aamaalLogs
         .filter(l => l.dateKey === todayIST)
         .reduce((sum, l) => sum + Number(l.count || 0), 0);
 
-      const myTodayLog = allLogsForAamaal.find(l => l.dateKey === todayIST && l.memberId === activeProfile.id);
+      const myTodayLog = aamaalLogs.find(l => l.dateKey === todayIST && l.memberId === activeProfile.id);
       const myTodayTotal = myTodayLog ? Number(myTodayLog.count) : 0;
 
       document.getElementById("group-today-total").textContent = groupTodayTotal.toLocaleString('en-IN');
       document.getElementById("my-contrib-today").textContent = myTodayTotal.toLocaleString('en-IN');
 
-      // 5. Weekly Performance Bar Chart
       const barsContainer = document.getElementById("weekly-bars-container");
       barsContainer.innerHTML = "";
       const dailyTotals = last7Days.map(d => {
-        const sum = allLogsForAamaal
+        const sum = aamaalLogs
           .filter(l => l.dateKey === d.dateKey)
           .reduce((acc, l) => acc + Number(l.count || 0), 0);
         return { ...d, total: sum };
@@ -1494,7 +1193,6 @@
       });
     }
 
-    // 8. Switch Between Daily Screen & Group Statistics Screen
     document.getElementById("open-stats-btn").addEventListener("click", () => {
       renderStatsScreen();
       document.getElementById("daily-view").classList.add("hidden");
@@ -1508,7 +1206,6 @@
       window.scrollTo(0, 0);
     });
 
-    // 9. Settings Modal (Only Routed via Top-Left Gear Button)
     const settingsModal = document.getElementById("settings-modal");
     const privacyOptions = document.querySelectorAll(".privacy-option");
 
@@ -1555,14 +1252,12 @@
       await loadMembersAndProfiles(famId);
       document.getElementById("privacy-target-name").textContent = activeProfile.name;
       highlightPrivacyOption(activeProfile.privacy);
-      alert(`${name} added! You can now switch between yourselves anytime from the top dropdown.`);
+      alert(`${name} added!`);
     });
 
     document.getElementById("save-settings-btn").addEventListener("click", async () => {
       if (activeProfile && selectedPrivacy !== activeProfile.privacy) {
-        await updateDoc(doc(db, "members", activeProfile.id), {
-          privacy: selectedPrivacy
-        });
+        await updateDoc(doc(db, "members", activeProfile.id), { privacy: selectedPrivacy });
         activeProfile.privacy = selectedPrivacy;
       }
       isFirstLogin = false;
