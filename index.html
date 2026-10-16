@@ -433,7 +433,7 @@
     }
     .double-arrow { font-size: 16px; color: #64748b; font-weight: 700; padding: 0 4px; }
 
-    /* 2. GROUP STATISTICS SCREEN */
+    /* GROUP STATISTICS SCREEN */
     .stats-top-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
     .back-btn {
       width: 40px; height: 40px; border-radius: 12px; background: #ffffff; border: 1px solid #e2e8f0;
@@ -533,7 +533,7 @@
     .bar-fill { width: 100%; max-width: 24px; background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%); border-radius: 6px 6px 3px 3px; min-height: 6px; }
     .bar-day { font-size: 10.5px; color: #64748b; margin-top: 6px; font-weight: 600; }
 
-    /* 3. ADMIN PANEL SCREEN */
+    /* ADMIN PANEL SCREEN */
     .admin-card {
       background: #ffffff;
       border-radius: 22px;
@@ -629,7 +629,18 @@
     .modal-sheet {
       background: #ffffff; width: 100%; max-width: 440px; border-radius: 28px; padding: 24px 20px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.25);
     }
-    .modal-title { font-size: 20px; font-weight: 800; color: var(--teal-dark); margin-bottom: 6px; }
+    .modal-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .modal-title { font-size: 20px; font-weight: 800; color: var(--teal-dark); }
+    .close-modal-btn {
+      background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%;
+      font-size: 16px; font-weight: 700; color: #475569; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
     .modal-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.45; }
     .privacy-option { border: 2px solid #e2e8f0; border-radius: 16px; padding: 14px; margin-bottom: 10px; cursor: pointer; }
     .privacy-option.selected { border-color: #0d9488; background: #f0fdf4; }
@@ -784,8 +795,8 @@
 
       <button class="worldwide-pill-btn" id="open-stats-btn">
         <span class="double-arrow">«</span>
-        <span class="worldwide-pill-text">
-          View Islaah Circle Summary for <span id="bottom-btn-aamaal">Durood Shareef</span>
+        <span class="worldwide-pill-text" id="bottom-summary-text">
+          View the total number of Durood recited
         </span>
         <span class="double-arrow">»</span>
       </button>
@@ -795,8 +806,8 @@
     <div id="stats-view" class="hidden">
       <div class="stats-top-header">
         <button class="back-btn" id="back-to-daily-btn">←</button>
-        <div class="stats-header-title">
-          Islaah Circle Summary • <span id="stats-header-aamaal">Durood Shareef</span>
+        <div class="stats-header-title" id="stats-top-title-text">
+          View the total number of Durood recited
         </div>
       </div>
 
@@ -858,6 +869,12 @@
         <div class="stats-header-title">👑 Circle Admin Panel</div>
       </div>
 
+      <!-- Database Wipe / Fresh Test Button -->
+      <div class="admin-card" style="background:#fef2f2;border-color:#fecaca;text-align:center;padding:14px;">
+        <div style="font-size:13px;font-weight:700;color:#991b1b;margin-bottom:8px;">Fresh Group Testing?</div>
+        <button class="mini-btn danger" id="wipe-database-btn" style="padding:8px 16px;font-size:12.5px;">🧹 Clear All Logs (Fresh Database)</button>
+      </div>
+
       <div class="section-heading"><span>✅ Today's Completions (IST)</span></div>
       <div class="admin-card" id="admin-today-completions"></div>
 
@@ -906,10 +923,13 @@
 
   </div>
 
-  <!-- 3. SETTINGS MODAL -->
+  <!-- 3. SETTINGS MODAL (WITH CLOSE/BACK BUTTON) -->
   <div id="settings-modal" class="modal-backdrop hidden">
     <div class="modal-sheet">
-      <div class="modal-title" id="modal-heading">Settings & Family Setup</div>
+      <div class="modal-header-row">
+        <div class="modal-title" id="modal-heading">Settings & Family Setup</div>
+        <button class="close-modal-btn" id="close-settings-btn" title="Close">✕</button>
+      </div>
       <div class="modal-sub" id="modal-subheading">
         Add family members who report through you, or adjust leaderboard privacy for the currently selected person.
       </div>
@@ -1012,7 +1032,6 @@
       return keys;
     }
 
-    // Generates full 30-day list (or 7-day list) in chronological order (oldest -> Today)
     function getISTDaysList(numDays = 30) {
       const days = [];
       const now = new Date();
@@ -1234,10 +1253,14 @@
       document.getElementById("selected-date-label").textContent = friendlyDateText;
 
       document.getElementById("target-question-text").textContent =
-        `Have you recited your target of ${activeAamaal.target} times ${activeAamaal.name} on ${friendlyDateText}?`;
+        `Have you recited your daily target of ${activeAamaal.target} times ${activeAamaal.name} on ${friendlyDateText}?`;
       document.getElementById("stat-card-aamaal-1").textContent = activeAamaal.name;
       document.getElementById("stat-card-aamaal-2").textContent = activeAamaal.name;
-      document.getElementById("bottom-btn-aamaal").textContent = activeAamaal.name;
+
+      // Update button text to: "View the total number of [Aamaal Name] recited"
+      const dynamicSummaryText = `View the total number of ${activeAamaal.name} recited`;
+      document.getElementById("bottom-summary-text").textContent = dynamicSummaryText;
+      document.getElementById("stats-top-title-text").textContent = dynamicSummaryText;
 
       const myLogs = allLogsForAamaal.filter(l => l.memberId === activeProfile.id && l.aamaalId === activeAamaal.id);
       const selectedLog = myLogs.find(l => l.dateKey === selectedDateIST);
@@ -1257,7 +1280,6 @@
         extraPanel.classList.add("hidden");
       }
 
-      // Render Slidable 30-Day Strip
       const stripContainer = document.getElementById("week-strip-container");
       const previousScrollLeft = stripContainer.scrollLeft;
       stripContainer.innerHTML = "";
@@ -1384,7 +1406,6 @@
       const last7Days = getISTDaysList(7);
       const weekDateKeys = new Set(last7Days.map(d => d.dateKey));
 
-      document.getElementById("stats-header-aamaal").textContent = activeAamaal.name;
       document.getElementById("lifetime-aamaal-name").textContent = activeAamaal.name;
       document.getElementById("leader-aamaal-name").textContent = activeAamaal.name;
 
@@ -1539,6 +1560,7 @@
         reportTbody.appendChild(tr);
       });
 
+      // Manage Aamaal (Edit, Pause/Resume, & Delete)
       const aamaalAdminList = document.getElementById("admin-aamaal-list");
       aamaalAdminList.innerHTML = "";
       allAamaalRaw.forEach(a => {
@@ -1558,6 +1580,7 @@
             <button class="mini-btn ${isPaused ? 'teal' : 'danger'} toggle-a-btn">
               ${isPaused ? '▶ Resume' : '⏸ Pause'}
             </button>
+            <button class="mini-btn danger delete-a-btn">🗑️ Delete</button>
           </div>
         `;
         div.querySelector(".edit-a-btn").addEventListener("click", () => {
@@ -1570,6 +1593,12 @@
         });
         div.querySelector(".toggle-a-btn").addEventListener("click", async () => {
           await updateDoc(doc(db, "aamaal", a.id), { active: isPaused });
+          await loadAamaalTabs();
+          await loadLogsAndRender(false);
+        });
+        div.querySelector(".delete-a-btn").addEventListener("click", async () => {
+          if (!confirm(`Are you sure you want to delete "${a.name}"?`)) return;
+          await deleteDoc(doc(db, "aamaal", a.id));
           await loadAamaalTabs();
           await loadLogsAndRender(false);
         });
@@ -1619,6 +1648,17 @@
         memBox.appendChild(row);
       });
     }
+
+    // Database Wipe Button for Fresh Group Testing
+    document.getElementById("wipe-database-btn").addEventListener("click", async () => {
+      if (!confirm("⚠️ This will delete ALL recitation logs for everyone in the circle so you can start fresh. Are you sure?")) return;
+      const snap = await getDocs(collection(db, "logs"));
+      for (const d of snap.docs) {
+        await deleteDoc(doc(db, "logs", d.id));
+      }
+      alert("Database wiped clean! Ready for fresh group testing.");
+      await loadLogsAndRender(true);
+    });
 
     function resetAamaalForm() {
       document.getElementById("aamaal-form-title").textContent = "+ Add New Aamaal";
@@ -1687,6 +1727,7 @@
       window.scrollTo(0, 0);
     });
 
+    // Settings Modal (With Close & Back buttons)
     const settingsModal = document.getElementById("settings-modal");
     const privacyOptions = document.querySelectorAll(".privacy-option");
 
@@ -1712,6 +1753,7 @@
     }
 
     document.getElementById("open-settings-btn").addEventListener("click", () => openSettingsModal());
+    document.getElementById("close-settings-btn").addEventListener("click", () => settingsModal.classList.add("hidden"));
 
     document.getElementById("add-family-btn").addEventListener("click", async () => {
       const input = document.getElementById("new-family-name");
