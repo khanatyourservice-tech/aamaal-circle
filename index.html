@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-soft: #f5f7f6;
+      --bg-soft: #f4f7f6;
       --teal-dark: #072c28;
       --teal-mid: #0b433d;
       --teal-deep: #041917;
@@ -92,7 +92,7 @@
       max-width: 460px;
       margin: 0 auto;
       min-height: 100vh;
-      padding: 14px 16px 36px;
+      padding: 14px 14px 36px;
     }
 
     /* TOP BAR & QUICK MEMBER DROPDOWN */
@@ -183,7 +183,6 @@
       color: var(--text-muted);
       border: 1px solid #e2e8f0;
       cursor: pointer;
-      transition: all 0.15s ease;
     }
     .aamaal-tab.active {
       background: var(--teal-dark);
@@ -197,51 +196,62 @@
       font-size: 18px;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .arabic-banner {
       font-family: 'Amiri', serif;
-      font-size: 30px;
-      line-height: 1.5;
+      font-size: 29px;
+      line-height: 1.45;
       text-align: center;
       color: #111827;
-      margin: 4px 0 14px;
+      margin: 2px 0 12px;
       direction: rtl;
     }
     .daily-target-card {
       background: radial-gradient(circle at 20% 20%, #11423d 0%, #062320 65%, #031412 100%);
       color: #ffffff;
       border-radius: 26px;
-      padding: 26px 22px;
+      padding: 22px 18px;
       text-align: center;
       box-shadow: 0 14px 30px rgba(6, 35, 32, 0.2);
-      margin-bottom: 22px;
+      margin-bottom: 18px;
+    }
+    .selected-date-pill {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.12);
+      color: #a7f3d0;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      letter-spacing: 0.4px;
     }
     .salam-arabic {
       font-family: 'Amiri', serif;
-      font-size: 22px;
+      font-size: 21px;
       color: #ffffff;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
       direction: rtl;
     }
     .target-question {
-      font-size: 16px;
+      font-size: 15px;
       color: #cbd5e1;
-      line-height: 1.5;
-      margin-bottom: 22px;
+      line-height: 1.45;
+      margin-bottom: 18px;
       font-weight: 500;
     }
     .mark-recited-btn {
       background: linear-gradient(90deg, #e2f9b8 0%, #c8f5e0 100%);
       color: #0b2e29;
       border: none;
-      padding: 15px 32px;
+      padding: 14px 28px;
       border-radius: 999px;
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 700;
       font-family: inherit;
       cursor: pointer;
-      min-width: 220px;
+      min-width: 210px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
     }
     .completed-badge {
@@ -249,15 +259,15 @@
       background: rgba(190, 242, 100, 0.16);
       border: 1px solid rgba(190, 242, 100, 0.5);
       color: #d9f99d;
-      padding: 10px 20px;
+      padding: 9px 18px;
       border-radius: 999px;
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 700;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .completed-actions {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       justify-content: center;
       flex-wrap: wrap;
     }
@@ -265,9 +275,9 @@
       background: rgba(255, 255, 255, 0.12);
       color: #ffffff;
       border: 1px solid rgba(255, 255, 255, 0.24);
-      padding: 9px 16px;
+      padding: 8px 14px;
       border-radius: 999px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
@@ -295,69 +305,101 @@
       cursor: pointer;
     }
 
-    /* CLICKABLE 7-DAY CALENDAR STRIP */
-    .week-strip-title {
-      font-size: 13px;
+    /* COMPACT CLICKABLE 7-DAY STRIP (FITS ALL 7 DAYS ON ANY PHONE SCREEN) */
+    .week-strip-header {
+      font-size: 12px;
       font-weight: 700;
       color: var(--text-muted);
       margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0 2px;
     }
     .week-strip {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-      margin-bottom: 22px;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 5px;
+      width: 100%;
+      margin-bottom: 20px;
     }
     .day-cell {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 10px 2px;
-      border-radius: 16px;
+      justify-content: space-between;
+      padding: 8px 2px;
+      border-radius: 14px;
       border: 1.5px solid #e2e8f0;
       background: #ffffff;
       cursor: pointer;
+      min-width: 0;
       transition: all 0.15s ease;
+    }
+    .day-cell.is-today {
+      border-color: #94a3b8;
+      background: #f8fafc;
     }
     .day-cell.selected-day {
       border-color: #0d9488;
-      background: #f0fdf4;
-      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+      background: #ecfdf5;
+      box-shadow: 0 4px 10px rgba(13, 148, 136, 0.16);
+      transform: translateY(-2px);
     }
-    .day-cell.is-today {
-      border-color: #0f766e;
-    }
-    .day-name { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 2px; }
-    .day-num { font-size: 14px; color: var(--text-main); font-weight: 800; margin-bottom: 6px; }
-    .day-status-badge {
-      font-size: 10px;
+    .day-name {
+      font-size: 10.5px;
+      color: var(--text-muted);
       font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 999px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
     }
-    .badge-done { background: #dcfce7; color: #166534; }
-    .badge-missed { background: #fee2e2; color: #991b1b; }
+    .day-cell.selected-day .day-name { color: #0f766e; }
+    .day-num {
+      font-size: 14px;
+      color: var(--text-main);
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-bottom: 4px;
+    }
+    .dot-done {
+      background-color: #16a34a;
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
+    }
+    .dot-missed {
+      background-color: #ef4444;
+    }
+    .day-mini-count {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #475569;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .day-cell.selected-day .day-mini-count { color: #065f46; }
 
     /* TWO PERSONAL STAT CARDS */
     .personal-stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
     .mint-stat-card {
       background: linear-gradient(145deg, #d8ede8 0%, #e3f3ef 100%);
       border: 1.5px solid var(--mint-border);
       border-radius: 22px;
-      padding: 16px 14px;
+      padding: 15px 14px;
     }
-    .mint-stat-label { font-size: 12px; color: #475569; font-weight: 600; margin-bottom: 10px; }
-    .mint-stat-value { font-size: 28px; font-weight: 800; color: #1e293b; margin-bottom: 6px; }
-    .mint-stat-sub { font-size: 12px; color: #64748b; font-weight: 500; }
+    .mint-stat-label { font-size: 12px; color: #475569; font-weight: 600; margin-bottom: 8px; }
+    .mint-stat-value { font-size: 26px; font-weight: 800; color: #1e293b; margin-bottom: 4px; }
+    .mint-stat-sub { font-size: 11.5px; color: #64748b; font-weight: 500; }
 
     /* BOTTOM BUTTON */
     .worldwide-pill-btn {
@@ -365,7 +407,7 @@
       background: #ffffff;
       border: 1.5px solid #bbf7d0;
       border-radius: 999px;
-      padding: 14px 20px;
+      padding: 13px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -373,7 +415,7 @@
       box-shadow: 0 4px 14px rgba(0,0,0,0.04);
     }
     .worldwide-pill-text {
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 600;
       color: #475569;
       line-height: 1.35;
@@ -382,65 +424,139 @@
     }
     .double-arrow { font-size: 16px; color: #64748b; font-weight: 700; padding: 0 4px; }
 
-    /* GROUP STATISTICS SCREEN */
-    .stats-top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
-    .back-btn { background: none; border: none; font-size: 24px; color: #0f172a; cursor: pointer; padding: 4px 8px; }
-    .stats-header-title { flex: 1; text-align: center; font-size: 16px; font-weight: 600; color: #1e293b; line-height: 1.35; padding-right: 32px; }
+    /* 2. REDESIGNED GROUP STATISTICS SCREEN (INDIAN FLAG + MODERN SUMMARY) */
+    .stats-top-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .back-btn {
+      width: 40px; height: 40px; border-radius: 12px; background: #ffffff; border: 1px solid #e2e8f0;
+      font-size: 20px; color: #0f172a; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .stats-header-title { flex: 1; text-align: center; font-size: 15px; font-weight: 700; color: #1e293b; line-height: 1.3; padding-right: 40px; }
 
     .lifetime-hero-card {
       position: relative;
       overflow: hidden;
-      background: linear-gradient(120deg, #041413 0%, #093532 55%, #135d56 100%);
+      background: linear-gradient(125deg, #05221f 0%, #0a423c 55%, #115e56 100%);
       color: #ffffff;
       border-radius: 26px;
-      padding: 26px 22px;
-      margin-bottom: 16px;
+      padding: 24px 20px;
+      margin-bottom: 14px;
       box-shadow: 0 12px 28px rgba(6, 44, 40, 0.18);
     }
     .lifetime-dome-svg {
-      position: absolute; right: -10px; bottom: -15px; width: 190px; height: 190px; opacity: 0.32; pointer-events: none;
+      position: absolute; right: -10px; bottom: -15px; width: 180px; height: 180px; opacity: 0.25; pointer-events: none;
     }
-    .lifetime-title { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 10px; position: relative; z-index: 2; }
-    .lifetime-number { font-size: 40px; font-weight: 800; color: #ffffff; margin-bottom: 8px; letter-spacing: -1px; position: relative; z-index: 2; }
-    .lifetime-sub { font-size: 13px; color: #cbd5e1; position: relative; z-index: 2; }
+    .lifetime-pill {
+      display: inline-block;
+      background: rgba(190, 242, 100, 0.18);
+      color: #bef264;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .lifetime-number { font-size: 38px; font-weight: 800; color: #ffffff; margin-bottom: 6px; letter-spacing: -1px; position: relative; z-index: 2; }
+    .lifetime-sub { font-size: 12.5px; color: #cbd5e1; position: relative; z-index: 2; }
 
-    .member-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-    .white-stat-card { background: #ffffff; border-radius: 22px; padding: 18px 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
-    .white-stat-label { font-size: 12.5px; color: #94a3b8; margin-bottom: 8px; font-weight: 500; }
-    .white-stat-val { font-size: 24px; font-weight: 800; color: #1e293b; }
+    /* 3-COLUMN SUMMARY STRIP */
+    .summary-3col-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .mini-summary-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px 10px;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+      border: 1px solid #eef2f6;
+    }
+    .mini-summary-val { font-size: 19px; font-weight: 800; color: #0f766e; margin-bottom: 4px; }
+    .mini-summary-lbl { font-size: 11px; color: #64748b; font-weight: 600; line-height: 1.25; }
 
-    .section-heading { font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 12px; }
+    .section-heading {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
+    /* LEADERBOARD WITH INDIAN FLAG & PROGRESS BAR */
     .white-list-card {
-      background: #ffffff; border-radius: 24px; padding: 8px 18px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); margin-bottom: 24px;
+      background: #ffffff; border-radius: 22px; padding: 6px 16px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); margin-bottom: 22px;
     }
-    .leader-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f1f5f9; }
+    .leader-row {
+      padding: 13px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
     .leader-row:last-child { border-bottom: none; }
-    .leader-left { display: flex; align-items: center; gap: 12px; }
+    .leader-top-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .leader-left { display: flex; align-items: center; gap: 10px; }
     .rank-circle {
-      width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; color: #64748b; font-size: 12px; font-weight: 700;
+      width: 26px; height: 26px; border-radius: 50%; background: #f1f5f9; color: #475569; font-size: 12px; font-weight: 800;
       display: flex; align-items: center; justify-content: center;
     }
-    .crescent-badge {
-      width: 26px; height: 20px; border-radius: 4px; background: #0f766e; color: #ffffff;
-      display: flex; align-items: center; justify-content: center; font-size: 12px;
+    .rank-1 { background: #fef3c7; color: #b45309; }
+    .rank-2 { background: #e2e8f0; color: #334155; }
+    .rank-3 { background: #ffedd5; color: #9a3412; }
+    .india-flag-icon {
+      width: 24px;
+      height: 16px;
+      border-radius: 3px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      flex-shrink: 0;
     }
-    .leader-name { font-size: 14.5px; font-weight: 600; color: #334155; }
-    .leader-score { font-size: 15px; font-weight: 700; color: #1e293b; }
-
-    .daily-perf-card {
-      background: #ffffff; border-radius: 22px; padding: 18px 20px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); margin-bottom: 24px; display: flex; flex-direction: column; gap: 12px;
+    .leader-name { font-size: 14px; font-weight: 700; color: #1e293b; }
+    .leader-score { font-size: 14.5px; font-weight: 800; color: #0f766e; }
+    .leader-bar-track {
+      width: 100%;
+      height: 5px;
+      background: #f1f5f9;
+      border-radius: 999px;
+      overflow: hidden;
     }
-    .perf-row { display: flex; align-items: center; gap: 18px; }
-    .perf-num { min-width: 85px; font-size: 16px; font-weight: 800; color: #1e293b; }
-    .perf-label { font-size: 14px; color: #94a3b8; font-weight: 500; }
+    .leader-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #14b8a6 0%, #84cc16 100%);
+      border-radius: 999px;
+    }
 
-    .weekly-chart-card { background: #ffffff; border-radius: 22px; padding: 20px 16px 16px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); }
-    .bars-wrap { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; height: 120px; align-items: flex-end; padding-top: 20px; }
+    /* TODAY'S CONTRIBUTION SPLIT CARD */
+    .daily-perf-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .perf-box {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 16px 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+      border-left: 4px solid #0d9488;
+    }
+    .perf-box.mine { border-left-color: #84cc16; }
+    .perf-num { font-size: 22px; font-weight: 800; color: #1e293b; margin-bottom: 4px; }
+    .perf-label { font-size: 12px; color: #64748b; font-weight: 600; }
+
+    .weekly-chart-card { background: #ffffff; border-radius: 22px; padding: 18px 14px 14px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); }
+    .bars-wrap { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; height: 115px; align-items: flex-end; padding-top: 18px; }
     .bar-col { display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
-    .bar-val { font-size: 10px; color: #64748b; font-weight: 700; margin-bottom: 4px; }
-    .bar-fill { width: 100%; max-width: 26px; background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%); border-radius: 8px 8px 4px 4px; min-height: 6px; }
-    .bar-day { font-size: 11px; color: #64748b; margin-top: 8px; font-weight: 600; }
+    .bar-val { font-size: 9.5px; color: #64748b; font-weight: 700; margin-bottom: 4px; }
+    .bar-fill { width: 100%; max-width: 24px; background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%); border-radius: 6px 6px 3px 3px; min-height: 6px; }
+    .bar-day { font-size: 10.5px; color: #64748b; margin-top: 6px; font-weight: 600; }
 
     /* SETTINGS MODAL */
     .modal-backdrop {
@@ -457,7 +573,7 @@
     .privacy-option-title { font-weight: 700; font-size: 15px; color: var(--teal-dark); margin-bottom: 3px; display: flex; justify-content: space-between; }
     .privacy-option-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
     .input-row { display: flex; gap: 8px; margin-top: 8px; }
-    .text-input { flex: 1; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #cbd5e1; font-family: inherit; font-size: 14px; }
+    .text-input { flex: 1; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #cbd5e1; font-family: inherit; font-size: 14px; min-width: 0; }
     .small-btn { background: var(--teal-dark); color: #ffffff; border: none; padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; }
     .divider { height: 1px; background: #e2e8f0; margin: 18px 0; }
     .action-btn {
@@ -526,7 +642,7 @@
   <!-- 2. MAIN APP CONTAINER -->
   <div id="app-container" class="hidden">
     
-    <!--DAILY AAMAAL VIEW-->
+    <!-- DAILY AAMAAL VIEW -->
     <div id="daily-view">
       <div class="top-bar">
         <button class="icon-btn" id="open-settings-btn" title="Settings">⚙️</button>
@@ -550,6 +666,7 @@
 
       <!-- Dark Rounded Target Card -->
       <div class="daily-target-card">
+        <div class="selected-date-pill" id="active-date-banner">📅 Logging for: Today</div>
         <div class="salam-arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
         <div class="target-question" id="target-question-text">
           Have you recited your daily target of 313 times Durood Shareef?
@@ -561,15 +678,15 @@
 
         <div id="recited-box" class="hidden">
           <div class="completed-badge">
-            ✓ Logged for <span id="selected-date-label">Today</span>: <span id="today-logged-num">313</span>
+            ✓ Completed (<span id="selected-date-label">Today</span>): <span id="today-logged-num">313</span>
           </div>
           <div class="completed-actions">
-            <button class="secondary-pill-btn" id="toggle-extra-btn">+ Edit Count</button>
-            <button class="secondary-pill-btn" id="undo-today-btn" style="color:#fca5a5;border-color:rgba(252,165,165,0.4);">Remove Log</button>
+            <button class="secondary-pill-btn" id="toggle-extra-btn">+ Add / Edit Count</button>
+            <button class="secondary-pill-btn" id="undo-today-btn" style="color:#fca5a5;border-color:rgba(252,165,165,0.4);">Undo</button>
           </div>
 
           <div id="extra-count-panel" class="extra-count-box hidden">
-            <div style="font-size:12px;color:#cbd5e1;margin-bottom:8px;">Quick add or enter exact total for this date:</div>
+            <div style="font-size:12px;color:#cbd5e1;margin-bottom:8px;">Tap to add more, or type exact total for this day:</div>
             <div class="quick-add-chips">
               <button class="chip-btn" data-add="100">+100</button>
               <button class="chip-btn" data-add="313">+313</button>
@@ -583,10 +700,10 @@
         </div>
       </div>
 
-      <!-- CLICKABLE 7-DAY CALENDAR STRIP -->
-      <div class="week-strip-title">
-        <span>Select Date to View or Update:</span>
-        <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;font-weight:700;">Jump to Today</span>
+      <!-- COMPACT 7-DAY STRIP (All 7 Days Fit on Screen + Backdated Editing) -->
+      <div class="week-strip-header">
+        <span>Tap any day to log or edit past count:</span>
+        <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;">Jump to Today</span>
       </div>
       <div class="week-strip" id="week-strip-container"></div>
 
@@ -607,25 +724,27 @@
       <button class="worldwide-pill-btn" id="open-stats-btn">
         <span class="double-arrow">«</span>
         <span class="worldwide-pill-text">
-          View the total number of <span id="bottom-btn-aamaal">Durood Shareef</span><br>recited by our circle
+          View Islaah Circle Summary for <span id="bottom-btn-aamaal">Durood Shareef</span>
         </span>
         <span class="double-arrow">»</span>
       </button>
     </div>
 
-    <!--GROUP STATISTICS VIEW-->
+    <!-- REDESIGNED GROUP STATISTICS VIEW -->
     <div id="stats-view" class="hidden">
       <div class="stats-top-header">
         <button class="back-btn" id="back-to-daily-btn">←</button>
         <div class="stats-header-title">
-          View the total number of <span id="stats-header-aamaal">Durood</span><br>recited by our circle
+          Islaah Circle Summary • <span id="stats-header-aamaal">Durood Shareef</span>
         </div>
       </div>
 
+      <!-- Lifetime Hero Card -->
       <div class="lifetime-hero-card">
-        <div class="lifetime-title">Total <span id="lifetime-aamaal-name">Durood Shareef</span> (Lifetime)</div>
+        <div class="lifetime-pill">🇮🇳 Islaah Foundation Circle</div>
+        <div style="font-size:13px;color:#e2e8f0;margin-bottom:4px;">Cumulative <span id="lifetime-aamaal-name">Durood Shareef</span></div>
         <div class="lifetime-number" id="group-lifetime-total">0</div>
-        <div class="lifetime-sub">Recited by the entire community so far</div>
+        <div class="lifetime-sub">Combined recitations by all circle & family members</div>
         <svg class="lifetime-dome-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M100 20 L100 45" stroke="#a7f3d0" stroke-width="4" stroke-linecap="round"/>
           <circle cx="100" cy="16" r="5" stroke="#a7f3d0" stroke-width="3"/>
@@ -634,33 +753,43 @@
         </svg>
       </div>
 
-      <div class="member-stats-grid">
-        <div class="white-stat-card">
-          <div class="white-stat-label">New Reciters (Last 10 Days)</div>
-          <div class="white-stat-val" id="stats-new-members">+0</div>
+      <!-- 3-Column Quick Summary Strip -->
+      <div class="summary-3col-grid">
+        <div class="mini-summary-card">
+          <div class="mini-summary-val" id="stats-week-group-total">0</div>
+          <div class="mini-summary-lbl">This Week's Circle Total</div>
         </div>
-        <div class="white-stat-card">
-          <div class="white-stat-label">Total Reciters</div>
-          <div class="white-stat-val" id="stats-total-members">0</div>
+        <div class="mini-summary-card">
+          <div class="mini-summary-val" id="stats-total-members">0</div>
+          <div class="mini-summary-lbl">Active Circle Members</div>
+        </div>
+        <div class="mini-summary-card">
+          <div class="mini-summary-val" id="stats-new-members">+0</div>
+          <div class="mini-summary-lbl">Joined Last 10 Days</div>
         </div>
       </div>
 
-      <div class="section-heading">Top <span id="leader-aamaal-name">Durood Shareef</span> Reciters This Week</div>
+      <!-- Leaderboard with Indian Flag -->
+      <div class="section-heading">
+        <span>🏆 Top <span id="leader-aamaal-name">Durood Shareef</span> Reciters (This Week)</span>
+      </div>
       <div class="white-list-card" id="leaderboard-container"></div>
 
-      <div class="section-heading">Daily Performance</div>
-      <div class="daily-perf-card">
-        <div class="perf-row">
+      <!-- Today's Split Performance -->
+      <div class="section-heading"><span>⚡ Today's Activity (IST)</span></div>
+      <div class="daily-perf-grid">
+        <div class="perf-box">
           <div class="perf-num" id="group-today-total">0</div>
-          <div class="perf-label">Recited today (all readers)</div>
+          <div class="perf-label">Circle Total Today</div>
         </div>
-        <div class="perf-row">
+        <div class="perf-box mine">
           <div class="perf-num" id="my-contrib-today">0</div>
-          <div class="perf-label">Your contribution today</div>
+          <div class="perf-label">Your Count Today</div>
         </div>
       </div>
 
-      <div class="section-heading">Weekly Performance</div>
+      <!-- Weekly Chart -->
+      <div class="section-heading"><span>📊 Last 7 Days Trend</span></div>
       <div class="weekly-chart-card">
         <div class="bars-wrap" id="weekly-bars-container"></div>
       </div>
@@ -734,6 +863,17 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
+    // Crisp Indian Tricolour Flag SVG for Leaderboard
+    const INDIA_FLAG_SVG = `
+      <svg class="india-flag-icon" viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg">
+        <rect width="36" height="8" y="0" fill="#FF9933"/>
+        <rect width="36" height="8" y="8" fill="#FFFFFF"/>
+        <rect width="36" height="8" y="16" fill="#138808"/>
+        <circle cx="18" cy="12" r="3.2" fill="none" stroke="#000080" stroke-width="1"/>
+        <circle cx="18" cy="12" r="0.8" fill="#000080"/>
+      </svg>
+    `;
+
     let currentUser = null;
     let myProfiles = [];
     let allMembers = [];
@@ -743,8 +883,6 @@
     let allLogsForAamaal = [];
     let selectedPrivacy = "public";
     let isFirstLogin = false;
-    
-    // Always defaults to today initially
     let selectedDateIST = getISTDateString();
 
     function getISTDateString(dateObj = new Date()) {
@@ -764,10 +902,12 @@
         const dateKey = getISTDateString(d);
         const weekday = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', weekday: 'short' }).format(d);
         const dayNum = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', day: 'numeric' }).format(d);
+        const prettyLabel = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', weekday: 'short', day: 'numeric', month: 'short' }).format(d);
         days.push({
           dateKey,
           shortDay: weekday.slice(0, 2),
           dayNum,
+          prettyLabel,
           isToday: i === 0
         });
       }
@@ -776,6 +916,7 @@
 
     function formatCompactNumber(num) {
       if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (num >= 10000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
       return num.toLocaleString('en-IN');
     }
 
@@ -803,7 +944,7 @@
         currentUser = user;
         status.textContent = "Loading Aamaal Circle...";
         loginBtn.classList.add("hidden");
-        selectedDateIST = getISTDateString(); // Reset to today on login
+        selectedDateIST = getISTDateString();
         await bootApp(user);
       } else {
         currentUser = null;
@@ -879,7 +1020,7 @@
         btn.textContent = item.name;
         btn.addEventListener("click", async () => {
           activeAamaal = item;
-          selectedDateIST = getISTDateString(); // Reset to today when switching aamaal tab
+          selectedDateIST = getISTDateString();
           renderAamaalTabs();
           await loadLogsAndRender();
         });
@@ -924,7 +1065,7 @@
         item.addEventListener("click", async () => {
           activeProfile = prof;
           selectedPrivacy = prof.privacy || "public";
-          selectedDateIST = getISTDateString(); // Reset to today on profile switch
+          selectedDateIST = getISTDateString();
           menu.classList.add("hidden");
           updateTopBarUI();
           renderDailyScreen();
@@ -958,11 +1099,17 @@
       const todayIST = getISTDateString();
       const last7Days = getLast7ISTDays();
       const weekDateKeys = new Set(last7Days.map(d => d.dateKey));
+      const selectedDayObj = last7Days.find(d => d.dateKey === selectedDateIST) || last7Days[6];
 
       document.getElementById("current-aamaal-title").textContent = activeAamaal.name;
       document.getElementById("current-aamaal-arabic").textContent = activeAamaal.arabic;
+      
+      const friendlyDateText = selectedDayObj.isToday ? "Today" : selectedDayObj.prettyLabel;
+      document.getElementById("active-date-banner").textContent = `📅 Logging for: ${friendlyDateText}`;
+      document.getElementById("selected-date-label").textContent = friendlyDateText;
+
       document.getElementById("target-question-text").textContent =
-        `Have you recited your daily target of ${activeAamaal.target} times ${activeAamaal.name}?`;
+        `Have you recited your target of ${activeAamaal.target} times ${activeAamaal.name} on ${friendlyDateText}?`;
       document.getElementById("stat-card-aamaal-1").textContent = activeAamaal.name;
       document.getElementById("stat-card-aamaal-2").textContent = activeAamaal.name;
       document.getElementById("bottom-btn-aamaal").textContent = activeAamaal.name;
@@ -973,8 +1120,6 @@
       const notRecitedBox = document.getElementById("not-recited-box");
       const recitedBox = document.getElementById("recited-box");
       const extraPanel = document.getElementById("extra-count-panel");
-
-      document.getElementById("selected-date-label").textContent = (selectedDateIST === todayIST) ? "Today" : selectedDateIST;
 
       if (selectedLog) {
         notRecitedBox.classList.add("hidden");
@@ -987,27 +1132,24 @@
         extraPanel.classList.add("hidden");
       }
 
-      // Render Clickable 7-Day Calendar Strip & Auto-Scroll to Today
+      // Render Compact 7-Day Strip (Fits all 7 days cleanly)
       const stripContainer = document.getElementById("week-strip-container");
       stripContainer.innerHTML = "";
       const myDoneMap = {};
       myLogs.forEach(l => { myDoneMap[l.dateKey] = l.count; });
 
       last7Days.forEach(d => {
-        const count = myDoneMap[d.dateKey];
+        const count = myDoneMap[d.dateKey] || 0;
+        const done = count > 0;
         const isSelected = (d.dateKey === selectedDateIST);
         const cell = document.createElement("div");
         cell.className = "day-cell" + (isSelected ? " selected-day" : "") + (d.isToday ? " is-today" : "");
-        
-        let badgeHtml = `<div class="day-status-badge badge-missed">Missed</div>`;
-        if (count > 0) {
-          badgeHtml = `<div class="day-status-badge badge-done">${count}</div>`;
-        }
 
         cell.innerHTML = `
-          <div class="day-name">${d.shortDay}</div>
+          <div class="day-name">${d.isToday ? 'Today' : d.shortDay}</div>
           <div class="day-num">${d.dayNum}</div>
-          ${badgeHtml}
+          <div class="status-dot ${done ? 'dot-done' : 'dot-missed'}"></div>
+          <div class="day-mini-count">${done ? formatCompactNumber(count) : '–'}</div>
         `;
         cell.addEventListener("click", () => {
           selectedDateIST = d.dateKey;
@@ -1111,7 +1253,12 @@
       const aamaalLogs = allLogsForAamaal.filter(l => l.aamaalId === activeAamaal.id);
 
       const lifetimeTotal = aamaalLogs.reduce((sum, l) => sum + Number(l.count || 0), 0);
-      document.getElementById("group-lifetime-total").textContent = formatCompactNumber(lifetimeTotal);
+      document.getElementById("group-lifetime-total").textContent = lifetimeTotal.toLocaleString('en-IN');
+
+      const weekGroupTotal = aamaalLogs
+        .filter(l => weekDateKeys.has(l.dateKey))
+        .reduce((sum, l) => sum + Number(l.count || 0), 0);
+      document.getElementById("stats-week-group-total").textContent = formatCompactNumber(weekGroupTotal);
 
       const tenDaysAgo = Date.now() - (10 * 86400000);
       const newMembersCount = allMembers.filter(m => (m.createdAt || 0) >= tenDaysAgo).length;
@@ -1138,6 +1285,7 @@
 
       leaderboardRows.sort((a, b) => b.score - a.score);
       const top5 = leaderboardRows.slice(0, 5);
+      const maxLeaderScore = top5.length > 0 ? Math.max(...top5.map(r => r.score), 1) : 1;
 
       const leaderBox = document.getElementById("leaderboard-container");
       leaderBox.innerHTML = "";
@@ -1145,15 +1293,22 @@
         leaderBox.innerHTML = `<div style="padding:18px 4px;text-align:center;color:#94a3b8;font-size:13px;">No public/private recitations logged this week yet.</div>`;
       } else {
         top5.forEach((item, idx) => {
+          const pct = Math.max(Math.round((item.score / maxLeaderScore) * 100), 8);
+          const rankClass = idx === 0 ? "rank-1" : idx === 1 ? "rank-2" : idx === 2 ? "rank-3" : "";
           const row = document.createElement("div");
           row.className = "leader-row";
           row.innerHTML = `
-            <div class="leader-left">
-              <div class="rank-circle">${idx + 1}</div>
-              <div class="crescent-badge">☪</div>
-              <div class="leader-name">${item.name}</div>
+            <div class="leader-top-line">
+              <div class="leader-left">
+                <div class="rank-circle ${rankClass}">${idx + 1}</div>
+                ${INDIA_FLAG_SVG}
+                <div class="leader-name">${item.name}</div>
+              </div>
+              <div class="leader-score">${item.score.toLocaleString('en-IN')}</div>
             </div>
-            <div class="leader-score">${item.score.toLocaleString('en-IN')}</div>
+            <div class="leader-bar-track">
+              <div class="leader-bar-fill" style="width:${pct}%;"></div>
+            </div>
           `;
           leaderBox.appendChild(row);
         });
@@ -1186,7 +1341,7 @@
         col.innerHTML = `
           <div class="bar-val">${d.total > 0 ? formatCompactNumber(d.total) : ''}</div>
           <div class="bar-fill" style="height:${heightPct}%;"></div>
-          <div class="bar-day">${d.shortDay}</div>
+          <div class="bar-day">${d.isToday ? 'Today' : d.shortDay}</div>
         `;
         barsContainer.appendChild(col);
       });
@@ -1223,13 +1378,13 @@
       });
     });
 
-    function openSettingsModal(firstLoginMode = false) {
+    function openSettingsModal() {
       document.getElementById("privacy-target-name").textContent = activeProfile.name;
       highlightPrivacyOption(activeProfile.privacy || "public");
       settingsModal.classList.remove("hidden");
     }
 
-    document.getElementById("open-settings-btn").addEventListener("click", () => openSettingsModal(false));
+    document.getElementById("open-settings-btn").addEventListener("click", () => openSettingsModal());
 
     document.getElementById("add-family-btn").addEventListener("click", async () => {
       const input = document.getElementById("new-family-name");
