@@ -295,7 +295,7 @@
       cursor: pointer;
     }
 
-    /* CLICKABLE 7-DAY CALENDAR STRIP (BACKDATED LOGGING) */
+    /* CLICKABLE 7-DAY CALENDAR STRIP */
     .week-strip-title {
       font-size: 13px;
       font-weight: 700;
@@ -411,7 +411,6 @@
 
     .section-heading { font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 12px; }
 
-    /* LEADERBOARD (NEUTRAL CRESCENT BADGE) */
     .white-list-card {
       background: #ffffff; border-radius: 24px; padding: 8px 18px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); margin-bottom: 24px;
     }
@@ -549,19 +548,17 @@
       <div class="aamaal-heading-title" id="current-aamaal-title">Durood Shareef</div>
       <div class="arabic-banner" id="current-aamaal-arabic">اللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ</div>
 
-      <!-- Dark Rounded Target Card (Updates based on Selected Date in Strip) -->
+      <!-- Dark Rounded Target Card -->
       <div class="daily-target-card">
         <div class="salam-arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
         <div class="target-question" id="target-question-text">
           Have you recited your daily target of 313 times Durood Shareef?
         </div>
 
-        <!-- Unmarked State for Selected Date -->
         <div id="not-recited-box">
           <button class="mark-recited-btn" id="mark-recited-btn">Mark as Recited</button>
         </div>
 
-        <!-- Completed State for Selected Date -->
         <div id="recited-box" class="hidden">
           <div class="completed-badge">
             ✓ Logged for <span id="selected-date-label">Today</span>: <span id="today-logged-num">313</span>
@@ -586,7 +583,7 @@
         </div>
       </div>
 
-      <!-- CLICKABLE 7-DAY CALENDAR STRIP (Allows Backdated Updates!) -->
+      <!-- CLICKABLE 7-DAY CALENDAR STRIP -->
       <div class="week-strip-title">
         <span>Select Date to View or Update:</span>
         <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;font-weight:700;">Jump to Today</span>
@@ -747,7 +744,7 @@
     let selectedPrivacy = "public";
     let isFirstLogin = false;
     
-    // Tracks which date the user is currently viewing/logging on the daily screen
+    // Always defaults to today initially
     let selectedDateIST = getISTDateString();
 
     function getISTDateString(dateObj = new Date()) {
@@ -806,6 +803,7 @@
         currentUser = user;
         status.textContent = "Loading Aamaal Circle...";
         loginBtn.classList.add("hidden");
+        selectedDateIST = getISTDateString(); // Reset to today on login
         await bootApp(user);
       } else {
         currentUser = null;
@@ -826,7 +824,6 @@
 
     async function bootApp(user) {
       await ensureDefaultAamaal();
-      selectedDateIST = getISTDateString();
 
       const mainRef = doc(db, "members", user.uid);
       const mainSnap = await getDoc(mainRef);
@@ -882,6 +879,7 @@
         btn.textContent = item.name;
         btn.addEventListener("click", async () => {
           activeAamaal = item;
+          selectedDateIST = getISTDateString(); // Reset to today when switching aamaal tab
           renderAamaalTabs();
           await loadLogsAndRender();
         });
@@ -926,6 +924,7 @@
         item.addEventListener("click", async () => {
           activeProfile = prof;
           selectedPrivacy = prof.privacy || "public";
+          selectedDateIST = getISTDateString(); // Reset to today on profile switch
           menu.classList.add("hidden");
           updateTopBarUI();
           renderDailyScreen();
@@ -988,7 +987,7 @@
         extraPanel.classList.add("hidden");
       }
 
-      // Render Clickable 7-Day Calendar Strip
+      // Render Clickable 7-Day Calendar Strip & Auto-Scroll to Today
       const stripContainer = document.getElementById("week-strip-container");
       stripContainer.innerHTML = "";
       const myDoneMap = {};
