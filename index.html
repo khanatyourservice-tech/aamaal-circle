@@ -305,7 +305,7 @@
       cursor: pointer;
     }
 
-    /* COMPACT CLICKABLE 7-DAY STRIP (FITS ALL 7 DAYS ON ANY PHONE SCREEN) */
+    /* COMPACT CLICKABLE 7-DAY STRIP */
     .week-strip-header {
       font-size: 12px;
       font-weight: 700;
@@ -370,9 +370,7 @@
       background-color: #16a34a;
       box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
     }
-    .dot-missed {
-      background-color: #ef4444;
-    }
+    .dot-missed { background-color: #ef4444; }
     .day-mini-count {
       font-size: 9.5px;
       font-weight: 700;
@@ -424,7 +422,7 @@
     }
     .double-arrow { font-size: 16px; color: #64748b; font-weight: 700; padding: 0 4px; }
 
-    /* 2. REDESIGNED GROUP STATISTICS SCREEN (INDIAN FLAG + MODERN SUMMARY) */
+    /* 2. GROUP STATISTICS SCREEN */
     .stats-top-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
     .back-btn {
       width: 40px; height: 40px; border-radius: 12px; background: #ffffff; border: 1px solid #e2e8f0;
@@ -460,7 +458,6 @@
     .lifetime-number { font-size: 38px; font-weight: 800; color: #ffffff; margin-bottom: 6px; letter-spacing: -1px; position: relative; z-index: 2; }
     .lifetime-sub { font-size: 12.5px; color: #cbd5e1; position: relative; z-index: 2; }
 
-    /* 3-COLUMN SUMMARY STRIP */
     .summary-3col-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -488,21 +485,12 @@
       justify-content: space-between;
     }
 
-    /* LEADERBOARD WITH INDIAN FLAG & PROGRESS BAR */
     .white-list-card {
       background: #ffffff; border-radius: 22px; padding: 6px 16px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); margin-bottom: 22px;
     }
-    .leader-row {
-      padding: 13px 0;
-      border-bottom: 1px solid #f1f5f9;
-    }
+    .leader-row { padding: 13px 0; border-bottom: 1px solid #f1f5f9; }
     .leader-row:last-child { border-bottom: none; }
-    .leader-top-line {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
+    .leader-top-line { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
     .leader-left { display: flex; align-items: center; gap: 10px; }
     .rank-circle {
       width: 26px; height: 26px; border-radius: 50%; background: #f1f5f9; color: #475569; font-size: 12px; font-weight: 800;
@@ -512,40 +500,16 @@
     .rank-2 { background: #e2e8f0; color: #334155; }
     .rank-3 { background: #ffedd5; color: #9a3412; }
     .india-flag-icon {
-      width: 24px;
-      height: 16px;
-      border-radius: 3px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-      flex-shrink: 0;
+      width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.15); flex-shrink: 0;
     }
     .leader-name { font-size: 14px; font-weight: 700; color: #1e293b; }
     .leader-score { font-size: 14.5px; font-weight: 800; color: #0f766e; }
-    .leader-bar-track {
-      width: 100%;
-      height: 5px;
-      background: #f1f5f9;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .leader-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #14b8a6 0%, #84cc16 100%);
-      border-radius: 999px;
-    }
+    .leader-bar-track { width: 100%; height: 5px; background: #f1f5f9; border-radius: 999px; overflow: hidden; }
+    .leader-bar-fill { height: 100%; background: linear-gradient(90deg, #14b8a6 0%, #84cc16 100%); border-radius: 999px; }
 
-    /* TODAY'S CONTRIBUTION SPLIT CARD */
-    .daily-perf-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 22px;
-    }
+    .daily-perf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
     .perf-box {
-      background: #ffffff;
-      border-radius: 20px;
-      padding: 16px 14px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
-      border-left: 4px solid #0d9488;
+      background: #ffffff; border-radius: 20px; padding: 16px 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.03); border-left: 4px solid #0d9488;
     }
     .perf-box.mine { border-left-color: #84cc16; }
     .perf-num { font-size: 22px; font-weight: 800; color: #1e293b; margin-bottom: 4px; }
@@ -557,6 +521,94 @@
     .bar-val { font-size: 9.5px; color: #64748b; font-weight: 700; margin-bottom: 4px; }
     .bar-fill { width: 100%; max-width: 24px; background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%); border-radius: 6px 6px 3px 3px; min-height: 6px; }
     .bar-day { font-size: 10.5px; color: #64748b; margin-top: 6px; font-weight: 600; }
+
+    /* 3. ADMIN PANEL SCREEN (STEP 7) */
+    .admin-card {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 18px 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+      margin-bottom: 20px;
+      border: 1px solid #eef2f6;
+    }
+    .admin-sub-row {
+      padding: 12px 0;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .admin-sub-row:last-child { border-bottom: none; }
+    .admin-row-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .pill-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #ecfdf5;
+      color: #0f766e;
+    }
+    .pill-tag.paused { background: #fef2f2; color: #b91c1c; }
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    .report-table th {
+      text-align: left;
+      color: #64748b;
+      font-weight: 700;
+      padding: 8px 4px;
+      border-bottom: 1.5px solid #e2e8f0;
+    }
+    .report-table td {
+      padding: 10px 4px;
+      border-bottom: 1px solid #f1f5f9;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .admin-btn-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .mini-btn {
+      padding: 6px 11px;
+      border-radius: 9px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+    }
+    .mini-btn.danger {
+      border-color: #fecaca;
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+    .mini-btn.teal {
+      border-color: #99f6e4;
+      background: #f0fdfa;
+      color: #0f766e;
+    }
+    .form-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .form-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #475569;
+      margin-bottom: -4px;
+    }
 
     /* SETTINGS MODAL */
     .modal-backdrop {
@@ -573,7 +625,7 @@
     .privacy-option-title { font-weight: 700; font-size: 15px; color: var(--teal-dark); margin-bottom: 3px; display: flex; justify-content: space-between; }
     .privacy-option-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
     .input-row { display: flex; gap: 8px; margin-top: 8px; }
-    .text-input { flex: 1; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #cbd5e1; font-family: inherit; font-size: 14px; min-width: 0; }
+    .text-input { flex: 1; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #cbd5e1; font-family: inherit; font-size: 14px; min-width: 0; width: 100%; }
     .small-btn { background: var(--teal-dark); color: #ffffff; border: none; padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; }
     .divider { height: 1px; background: #e2e8f0; margin: 18px 0; }
     .action-btn {
@@ -642,7 +694,7 @@
   <!-- 2. MAIN APP CONTAINER -->
   <div id="app-container" class="hidden">
     
-    <!-- DAILY AAMAAL VIEW -->
+    <!-- VIEW A: DAILY AAMAAL SCREEN -->
     <div id="daily-view">
       <div class="top-bar">
         <button class="icon-btn" id="open-settings-btn" title="Settings">⚙️</button>
@@ -655,7 +707,7 @@
           <div id="quick-member-menu" class="quick-dropdown-menu hidden"></div>
         </div>
 
-        <button id="admin-badge" class="icon-btn hidden" title="Admin Panel">👑</button>
+        <button id="admin-badge" class="icon-btn hidden" title="Open Admin Panel">👑</button>
         <div id="admin-spacer" style="width:42px;"></div>
       </div>
 
@@ -664,7 +716,6 @@
       <div class="aamaal-heading-title" id="current-aamaal-title">Durood Shareef</div>
       <div class="arabic-banner" id="current-aamaal-arabic">اللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ</div>
 
-      <!-- Dark Rounded Target Card -->
       <div class="daily-target-card">
         <div class="selected-date-pill" id="active-date-banner">📅 Logging for: Today</div>
         <div class="salam-arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
@@ -700,14 +751,12 @@
         </div>
       </div>
 
-      <!-- COMPACT 7-DAY STRIP (All 7 Days Fit on Screen + Backdated Editing) -->
       <div class="week-strip-header">
         <span>Tap any day to log or edit past count:</span>
         <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;">Jump to Today</span>
       </div>
       <div class="week-strip" id="week-strip-container"></div>
 
-      <!-- Two Personal Stat Cards -->
       <div class="personal-stats-grid">
         <div class="mint-stat-card">
           <div class="mint-stat-label">Recited by you this week</div>
@@ -730,7 +779,7 @@
       </button>
     </div>
 
-    <!-- REDESIGNED GROUP STATISTICS VIEW -->
+    <!-- VIEW B: GROUP STATISTICS SCREEN -->
     <div id="stats-view" class="hidden">
       <div class="stats-top-header">
         <button class="back-btn" id="back-to-daily-btn">←</button>
@@ -739,7 +788,6 @@
         </div>
       </div>
 
-      <!-- Lifetime Hero Card -->
       <div class="lifetime-hero-card">
         <div class="lifetime-pill">🇮🇳 Islaah Foundation Circle</div>
         <div style="font-size:13px;color:#e2e8f0;margin-bottom:4px;">Cumulative <span id="lifetime-aamaal-name">Durood Shareef</span></div>
@@ -753,7 +801,6 @@
         </svg>
       </div>
 
-      <!-- 3-Column Quick Summary Strip -->
       <div class="summary-3col-grid">
         <div class="mini-summary-card">
           <div class="mini-summary-val" id="stats-week-group-total">0</div>
@@ -769,13 +816,11 @@
         </div>
       </div>
 
-      <!-- Leaderboard with Indian Flag -->
       <div class="section-heading">
         <span>🏆 Top <span id="leader-aamaal-name">Durood Shareef</span> Reciters (This Week)</span>
       </div>
       <div class="white-list-card" id="leaderboard-container"></div>
 
-      <!-- Today's Split Performance -->
       <div class="section-heading"><span>⚡ Today's Activity (IST)</span></div>
       <div class="daily-perf-grid">
         <div class="perf-box">
@@ -788,11 +833,67 @@
         </div>
       </div>
 
-      <!-- Weekly Chart -->
       <div class="section-heading"><span>📊 Last 7 Days Trend</span></div>
       <div class="weekly-chart-card">
         <div class="bars-wrap" id="weekly-bars-container"></div>
       </div>
+    </div>
+
+    <!-- VIEW C: ADMIN PANEL SCREEN (STEP 7) -->
+    <div id="admin-view" class="hidden">
+      <div class="stats-top-header">
+        <button class="back-btn" id="back-from-admin-btn">←</button>
+        <div class="stats-header-title">👑 Circle Admin Panel</div>
+      </div>
+
+      <!-- 1. Today's Completions Per Aamaal -->
+      <div class="section-heading"><span>✅ Today's Completions (IST)</span></div>
+      <div class="admin-card" id="admin-today-completions"></div>
+
+      <!-- 2. Weekly & Monthly Reports -->
+      <div class="section-heading"><span>📈 Weekly & Monthly Reports</span></div>
+      <div class="admin-card">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Aamaal</th>
+              <th>7-Day Total</th>
+              <th>30-Day Total</th>
+            </tr>
+          </thead>
+          <tbody id="admin-report-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- 3. Manage Aamaal (Add / Edit / Pause) -->
+      <div class="section-heading"><span>📿 Manage Daily Aamaal</span></div>
+      <div class="admin-card">
+        <div id="admin-aamaal-list"></div>
+        <div class="divider"></div>
+        <div style="font-size:14px;font-weight:800;color:var(--teal-dark);margin-bottom:4px;" id="aamaal-form-title">
+          + Add New Aamaal
+        </div>
+        <input type="hidden" id="edit-aamaal-id" value="">
+        <div class="form-stack">
+          <label class="form-label">Aamaal Name (English)</label>
+          <input type="text" id="aamaal-name-input" class="text-input" placeholder="e.g., 100 Astaghfirullah">
+
+          <label class="form-label">Arabic Text</label>
+          <input type="text" id="aamaal-arabic-input" class="text-input" placeholder="e.g., أَسْتَغْفِرُ اللَّهَ" dir="rtl">
+
+          <label class="form-label">Daily Target Count</label>
+          <input type="number" id="aamaal-target-input" class="text-input" placeholder="e.g., 100">
+
+          <div style="display:flex;gap:8px;margin-top:4px;">
+            <button class="action-btn" id="save-aamaal-btn" style="padding:12px;">Save Aamaal</button>
+            <button class="mini-btn hidden" id="cancel-edit-aamaal-btn" style="padding:0 16px;">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Member Management (Respecting Privacy) -->
+      <div class="section-heading"><span>👥 Circle & Family Members</span></div>
+      <div class="admin-card" id="admin-members-list"></div>
     </div>
 
   </div>
@@ -863,7 +964,6 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // Crisp Indian Tricolour Flag SVG for Leaderboard
     const INDIA_FLAG_SVG = `
       <svg class="india-flag-icon" viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg">
         <rect width="36" height="8" y="0" fill="#FF9933"/>
@@ -878,6 +978,7 @@
     let myProfiles = [];
     let allMembers = [];
     let activeProfile = null;
+    let allAamaalRaw = [];
     let aamaalList = [];
     let activeAamaal = null;
     let allLogsForAamaal = [];
@@ -892,6 +993,15 @@
         month: '2-digit',
         day: '2-digit'
       }).format(dateObj);
+    }
+
+    function getLastNDaysKeys(n) {
+      const keys = new Set();
+      const now = new Date();
+      for (let i = 0; i < n; i++) {
+        keys.add(getISTDateString(new Date(now.getTime() - i * 86400000)));
+      }
+      return keys;
     }
 
     function getLast7ISTDays() {
@@ -993,20 +1103,23 @@
       document.getElementById("app-container").classList.remove("hidden");
 
       if (isFirstLogin) {
-        openSettingsModal(true);
+        openSettingsModal();
       }
     }
 
     async function loadAamaalTabs() {
       const snap = await getDocs(collection(db, "aamaal"));
+      allAamaalRaw = [];
       aamaalList = [];
       snap.forEach(d => {
         const data = d.data();
+        allAamaalRaw.push(data);
         if (data.active !== false) aamaalList.push(data);
       });
+      allAamaalRaw.sort((a, b) => (a.order || 1) - (b.order || 1));
       aamaalList.sort((a, b) => (a.order || 1) - (b.order || 1));
       if (!activeAamaal || !aamaalList.find(a => a.id === activeAamaal.id)) {
-        activeAamaal = aamaalList[0];
+        activeAamaal = aamaalList[0] || allAamaalRaw[0];
       }
       renderAamaalTabs();
     }
@@ -1092,6 +1205,7 @@
 
       renderDailyScreen();
       renderStatsScreen();
+      renderAdminScreen();
     }
 
     function renderDailyScreen() {
@@ -1132,7 +1246,6 @@
         extraPanel.classList.add("hidden");
       }
 
-      // Render Compact 7-Day Strip (Fits all 7 days cleanly)
       const stripContainer = document.getElementById("week-strip-container");
       stripContainer.innerHTML = "";
       const myDoneMap = {};
@@ -1347,19 +1460,216 @@
       });
     }
 
+    // --- STEP 7: RENDER ADMIN PANEL (RESPECTING PRIVACY) ---
+    function getPrivacySafeMemberName(member) {
+      if (!member) return "Unknown";
+      if (member.privacy === "anonymous") return "Anonymous Member";
+      if (member.privacy === "private") return "Hidden Member";
+      return member.name;
+    }
+
+    function renderAdminScreen() {
+      const todayIST = getISTDateString();
+      const keys7 = getLastNDaysKeys(7);
+      const keys30 = getLastNDaysKeys(30);
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
+
+      // 1. Today's Completions per Aamaal
+      const todayBox = document.getElementById("admin-today-completions");
+      todayBox.innerHTML = "";
+      allAamaalRaw.forEach(a => {
+        const todayLogs = allLogsForAamaal.filter(l => l.aamaalId === a.id && l.dateKey === todayIST);
+        const totalToday = todayLogs.reduce((s, l) => s + Number(l.count || 0), 0);
+        const reciterNames = todayLogs.map(l => {
+          const m = memberMap[l.memberId];
+          const safeName = getPrivacySafeMemberName(m);
+          return `${safeName} (${l.count})`;
+        });
+
+        const row = document.createElement("div");
+        row.className = "admin-sub-row";
+        row.innerHTML = `
+          <div class="admin-row-top">
+            <span style="font-weight:700;font-size:14px;">${a.name}</span>
+            <span class="pill-tag">${todayLogs.length} done • ${totalToday.toLocaleString('en-IN')} recited</span>
+          </div>
+          <div style="font-size:12px;color:#64748b;">
+            ${reciterNames.length > 0 ? reciterNames.join(", ") : "No completions logged yet today."}
+          </div>
+        `;
+        todayBox.appendChild(row);
+      });
+
+      // 2. Weekly (7d) & Monthly (30d) Reports
+      const reportTbody = document.getElementById("admin-report-tbody");
+      reportTbody.innerHTML = "";
+      allAamaalRaw.forEach(a => {
+        const logsForA = allLogsForAamaal.filter(l => l.aamaalId === a.id);
+        const sum7 = logsForA.filter(l => keys7.has(l.dateKey)).reduce((s, l) => s + Number(l.count || 0), 0);
+        const sum30 = logsForA.filter(l => keys30.has(l.dateKey)).reduce((s, l) => s + Number(l.count || 0), 0);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${a.name}</td>
+          <td>${sum7.toLocaleString('en-IN')}</td>
+          <td>${sum30.toLocaleString('en-IN')}</td>
+        `;
+        reportTbody.appendChild(tr);
+      });
+
+      // 3. Manage Aamaal List
+      const aamaalAdminList = document.getElementById("admin-aamaal-list");
+      aamaalAdminList.innerHTML = "";
+      allAamaalRaw.forEach(a => {
+        const isPaused = a.active === false;
+        const div = document.createElement("div");
+        div.className = "admin-sub-row";
+        div.innerHTML = `
+          <div class="admin-row-top">
+            <div>
+              <div style="font-weight:700;font-size:14px;">${a.name} (Target: ${a.target})</div>
+              <div style="font-family:'Amiri',serif;font-size:16px;color:#475569;">${a.arabic}</div>
+            </div>
+            <span class="pill-tag ${isPaused ? 'paused' : ''}">${isPaused ? 'Paused' : 'Active'}</span>
+          </div>
+          <div class="admin-btn-group">
+            <button class="mini-btn edit-a-btn">✏️ Edit</button>
+            <button class="mini-btn ${isPaused ? 'teal' : 'danger'} toggle-a-btn">
+              ${isPaused ? '▶ Resume' : '⏸ Pause'}
+            </button>
+          </div>
+        `;
+        div.querySelector(".edit-a-btn").addEventListener("click", () => {
+          document.getElementById("aamaal-form-title").textContent = `✏️ Edit: ${a.name}`;
+          document.getElementById("edit-aamaal-id").value = a.id;
+          document.getElementById("aamaal-name-input").value = a.name;
+          document.getElementById("aamaal-arabic-input").value = a.arabic;
+          document.getElementById("aamaal-target-input").value = a.target;
+          document.getElementById("cancel-edit-aamaal-btn").classList.remove("hidden");
+        });
+        div.querySelector(".toggle-a-btn").addEventListener("click", async () => {
+          await updateDoc(doc(db, "aamaal", a.id), { active: isPaused });
+          await loadAamaalTabs();
+          await loadLogsAndRender();
+        });
+        aamaalAdminList.appendChild(div);
+      });
+
+      // 4. Member Management (Privacy-Respecting)
+      const memBox = document.getElementById("admin-members-list");
+      memBox.innerHTML = "";
+      allMembers.forEach(m => {
+        const safeName = getPrivacySafeMemberName(m);
+        const isAdminRole = m.role === "admin";
+        const row = document.createElement("div");
+        row.className = "admin-sub-row";
+        row.innerHTML = `
+          <div class="admin-row-top">
+            <div>
+              <div style="font-weight:700;font-size:14px;">
+                ${safeName} ${isAdminRole ? '👑' : ''}
+              </div>
+              <div style="font-size:11.5px;color:#64748b;">
+                Type: ${m.isPrimary ? 'Core Member' : 'Family Member'} • Privacy: <strong style="text-transform:capitalize;">${m.privacy}</strong>
+              </div>
+            </div>
+            <div class="admin-btn-group">
+              ${m.isPrimary && m.id !== currentUser.uid ? `<button class="mini-btn teal role-btn">${isAdminRole ? 'Remove Admin' : 'Make Admin'}</button>` : ''}
+              ${!m.isPrimary ? `<button class="mini-btn danger del-mem-btn">Remove</button>` : ''}
+            </div>
+          </div>
+        `;
+        const roleBtn = row.querySelector(".role-btn");
+        if (roleBtn) {
+          roleBtn.addEventListener("click", async () => {
+            await updateDoc(doc(db, "members", m.id), { role: isAdminRole ? "member" : "admin" });
+            await loadMembersAndProfiles(activeProfile.id);
+            renderAdminScreen();
+          });
+        }
+        const delBtn = row.querySelector(".del-mem-btn");
+        if (delBtn) {
+          delBtn.addEventListener("click", async () => {
+            if (!confirm("Remove this family member profile?")) return;
+            await deleteDoc(doc(db, "members", m.id));
+            await loadMembersAndProfiles(currentUser.uid);
+            renderAdminScreen();
+          });
+        }
+        memBox.appendChild(row);
+      });
+    }
+
+    // Save / Add Aamaal Handler
+    function resetAamaalForm() {
+      document.getElementById("aamaal-form-title").textContent = "+ Add New Aamaal";
+      document.getElementById("edit-aamaal-id").value = "";
+      document.getElementById("aamaal-name-input").value = "";
+      document.getElementById("aamaal-arabic-input").value = "";
+      document.getElementById("aamaal-target-input").value = "";
+      document.getElementById("cancel-edit-aamaal-btn").classList.add("hidden");
+    }
+
+    document.getElementById("cancel-edit-aamaal-btn").addEventListener("click", resetAamaalForm);
+
+    document.getElementById("save-aamaal-btn").addEventListener("click", async () => {
+      const editId = document.getElementById("edit-aamaal-id").value.trim();
+      const name = document.getElementById("aamaal-name-input").value.trim();
+      const arabic = document.getElementById("aamaal-arabic-input").value.trim();
+      const target = Number(document.getElementById("aamaal-target-input").value);
+
+      if (!name || !arabic || !target || target <= 0) {
+        return alert("Please enter the Aamaal name, Arabic text, and a valid daily target number.");
+      }
+
+      const id = editId || ("aamaal_" + Date.now());
+      const existing = allAamaalRaw.find(a => a.id === id);
+      await setDoc(doc(db, "aamaal", id), {
+        id,
+        name,
+        arabic,
+        target,
+        order: existing ? existing.order : (allAamaalRaw.length + 1),
+        active: existing ? existing.active : true
+      }, { merge: true });
+
+      resetAamaalForm();
+      await loadAamaalTabs();
+      await loadLogsAndRender();
+      alert("Aamaal saved!");
+    });
+
+    // Screen Navigation (Daily <-> Stats <-> Admin)
     document.getElementById("open-stats-btn").addEventListener("click", () => {
       renderStatsScreen();
       document.getElementById("daily-view").classList.add("hidden");
+      document.getElementById("admin-view").classList.add("hidden");
       document.getElementById("stats-view").classList.remove("hidden");
       window.scrollTo(0, 0);
     });
 
     document.getElementById("back-to-daily-btn").addEventListener("click", () => {
       document.getElementById("stats-view").classList.add("hidden");
+      document.getElementById("admin-view").classList.add("hidden");
       document.getElementById("daily-view").classList.remove("hidden");
       window.scrollTo(0, 0);
     });
 
+    document.getElementById("admin-badge").addEventListener("click", () => {
+      renderAdminScreen();
+      document.getElementById("daily-view").classList.add("hidden");
+      document.getElementById("stats-view").classList.add("hidden");
+      document.getElementById("admin-view").classList.remove("hidden");
+      window.scrollTo(0, 0);
+    });
+
+    document.getElementById("back-from-admin-btn").addEventListener("click", () => {
+      document.getElementById("admin-view").classList.add("hidden");
+      document.getElementById("daily-view").classList.remove("hidden");
+      window.scrollTo(0, 0);
+    });
+
+    // Settings Modal
     const settingsModal = document.getElementById("settings-modal");
     const privacyOptions = document.querySelectorAll(".privacy-option");
 
@@ -1417,6 +1727,7 @@
       isFirstLogin = false;
       await loadMembersAndProfiles(activeProfile.id);
       renderStatsScreen();
+      renderAdminScreen();
       settingsModal.classList.add("hidden");
     });
 
