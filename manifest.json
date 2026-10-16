@@ -1,0 +1,15 @@
+{
+  "name": "Islaah Foundation's Aamaal Circle",
+  "short_name": "Aamaal Circle",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#072c28",
+  "theme_color": "#072c28",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3059/3059518.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
