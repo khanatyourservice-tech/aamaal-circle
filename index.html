@@ -4,12 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Islaah Foundation's Aamaal Circle</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-soft: #f4f6f5;
+      --teal-dark: #062c28;
+      --teal-mid: #0a403a;
+      --teal-deep: #041f1c;
+      --accent-green: #bef264;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --card-radius: 24px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: linear-gradient(160deg, #062c28 0%, #0a403a 55%, #041f1c 100%);
+      background-color: var(--bg-soft);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .hidden { display: none !important; }
+
+    /* SPLASH & LOGIN SCREEN */
+    #splash-screen {
+      background: linear-gradient(160deg, var(--teal-dark) 0%, var(--teal-mid) 55%, var(--teal-deep) 100%);
       color: #ffffff;
       min-height: 100vh;
       display: flex;
@@ -17,98 +36,701 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 24px;
+      padding: 28px 24px;
     }
     .welcome-label {
       font-size: 13px;
       letter-spacing: 4px;
       text-transform: uppercase;
       color: #a7f3d0;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       font-weight: 600;
     }
     .logo-wrap {
-      width: 190px;
-      height: 190px;
-      margin-bottom: 28px;
+      width: 185px;
+      height: 185px;
+      margin-bottom: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .brand-title {
-      font-size: 26px;
+      font-size: 25px;
       font-weight: 800;
       line-height: 1.25;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       letter-spacing: -0.5px;
     }
     .brand-subtitle {
       font-size: 14px;
-      letter-spacing: 3px;
+      letter-spacing: 3.5px;
       text-transform: uppercase;
-      color: #bef264;
-      font-weight: 600;
-      margin-bottom: 36px;
+      color: var(--accent-green);
+      font-weight: 700;
+      margin-bottom: 42px;
     }
-    .status-pill {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(190, 242, 100, 0.35);
-      padding: 10px 20px;
+    .google-btn {
+      background: linear-gradient(90deg, #d9f99d 0%, #a7f3d0 100%);
+      color: #062c28;
+      border: none;
+      padding: 16px 28px;
       border-radius: 999px;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s ease;
+    }
+    .google-btn:active { transform: scale(0.97); }
+    .splash-loader {
+      font-size: 14px;
+      color: #a7f3d0;
+      margin-top: 12px;
+    }
+
+    /* MAIN APP CONTAINER */
+    #app-container {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 16px 16px 40px;
+    }
+
+    /* TOP HEADER & PROFILE SWITCHER */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      font-size: 18px;
+    }
+    .active-profile-pill {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 8px 14px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-size: 13px;
-      color: #ecfccb;
+      font-weight: 700;
+      color: var(--teal-dark);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .privacy-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #ecfccb;
+      color: #365314;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    /* STEP 4 VERIFICATION CARD */
+    .hero-card {
+      background: linear-gradient(145deg, #073530 0%, #041d1a 100%);
+      color: #ffffff;
+      border-radius: var(--card-radius);
+      padding: 26px 20px;
+      text-align: center;
+      box-shadow: 0 12px 28px rgba(6, 44, 40, 0.18);
+      margin-bottom: 20px;
+    }
+    .hero-card h2 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: var(--accent-green);
+    }
+    .hero-card p {
+      font-size: 14px;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .action-btn {
+      background: linear-gradient(90deg, #d9f99d 0%, #bbf7d0 100%);
+      color: #062c28;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+      font-family: inherit;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* MODALS (PRIVACY & SETTINGS/FAMILY) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 31, 28, 0.72);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+    .modal-sheet {
+      background: #ffffff;
+      width: 100%;
+      max-width: 440px;
+      border-radius: 28px;
+      padding: 24px 20px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+    .modal-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--teal-dark);
+      margin-bottom: 6px;
+    }
+    .modal-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      line-height: 1.45;
+    }
+    .privacy-option {
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+    .privacy-option.selected {
+      border-color: #0d9488;
+      background: #f0fdf4;
+    }
+    .privacy-option-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--teal-dark);
+      margin-bottom: 3px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .privacy-option-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .family-list {
+      margin: 12px 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .family-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      background: #f8fafc;
+      cursor: pointer;
+    }
+    .family-item.active {
+      border-color: #0d9488;
+      background: #ecfdf5;
+    }
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .text-input {
+      flex: 1;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    .small-btn {
+      background: var(--teal-dark);
+      color: #ffffff;
+      border: none;
+      padding: 0 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .divider {
+      height: 1px;
+      background: #e2e8f0;
+      margin: 18px 0;
+    }
+    .signout-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #fecaca;
+      background: #fef2f2;
+      color: #b91c1c;
+      font-weight: 700;
+      font-size: 13px;
+      margin-top: 12px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <div class="welcome-label">Welcome To</div>
+  <!-- 1. SPLASH & GOOGLE SIGN-IN SCREEN -->
+  <div id="splash-screen">
+    <div class="welcome-label">Welcome To</div>
 
-  <!-- Original Mosque & Tasbih Vector Icon -->
-  <div class="logo-wrap">
-    <svg viewBox="0 0 220 200" width="190" height="190" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="circleGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#14b8a6"/>
-          <stop offset="100%" stop-color="#84cc16"/>
-        </linearGradient>
-        <linearGradient id="mosqueGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#ffffff"/>
-          <stop offset="100%" stop-color="#d9f99d"/>
-        </linearGradient>
-      </defs>
-      <!-- Tasbih Beads Loop on the Right -->
-      <circle cx="135" cy="40" r="6" stroke="#bef264" stroke-width="3"/>
-      <circle cx="152" cy="44" r="6" stroke="#bef264" stroke-width="3"/>
-      <circle cx="166" cy="54" r="6" stroke="#bef264" stroke-width="3"/>
-      <circle cx="174" cy="70" r="6" stroke="#bef264" stroke-width="3"/>
-      <circle cx="172" cy="88" r="6" stroke="#bef264" stroke-width="3"/>
-      <circle cx="163" cy="104" r="6" stroke="#bef264" stroke-width="3"/>
-      <circle cx="155" cy="120" r="6" stroke="#bef264" stroke-width="3"/>
-      <circle cx="150" cy="138" r="6" stroke="#bef264" stroke-width="3"/>
-      <circle cx="138" cy="152" r="6" stroke="#bef264" stroke-width="3"/>
-      <circle cx="121" cy="158" r="6" stroke="#bef264" stroke-width="3"/>
-      <!-- Tasbih Tassel -->
-      <path d="M180 70 C192 75, 195 90, 195 105" stroke="#bef264" stroke-width="3" stroke-linecap="round"/>
-      <rect x="189" y="105" width="12" height="16" rx="3" stroke="#bef264" stroke-width="3"/>
-      <!-- Main Emblem Circle -->
-      <circle cx="90" cy="100" r="68" fill="url(#circleGrad)" stroke="#ecfccb" stroke-width="2" stroke-dasharray="4 4"/>
-      <!-- Mosque Silhouette -->
-      <rect x="52" y="75" width="12" height="75" rx="2" fill="url(#mosqueGrad)"/>
-      <polygon points="58,60 50,75 66,75" fill="url(#mosqueGrad)"/>
-      <rect x="116" y="75" width="12" height="75" rx="2" fill="url(#mosqueGrad)"/>
-      <polygon points="122,60 114,75 130,75" fill="url(#mosqueGrad)"/>
-      <path d="M68 115 C68 88, 112 88, 112 115 Z" fill="url(#mosqueGrad)"/>
-      <circle cx="90" cy="84" r="4" fill="#ecfccb"/>
-      <rect x="68" y="115" width="44" height="35" fill="url(#mosqueGrad)"/>
-      <path d="M82 150 L82 132 C82 124, 98 124, 98 132 L98 150 Z" fill="#062c28"/>
-    </svg>
+    <div class="logo-wrap">
+      <svg viewBox="0 0 220 200" width="185" height="185" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="circleGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#14b8a6"/>
+            <stop offset="100%" stop-color="#84cc16"/>
+          </linearGradient>
+          <linearGradient id="mosqueGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#d9f99d"/>
+          </linearGradient>
+        </defs>
+        <circle cx="135" cy="40" r="6" stroke="#bef264" stroke-width="3"/>
+        <circle cx="152" cy="44" r="6" stroke="#bef264" stroke-width="3"/>
+        <circle cx="166" cy="54" r="6" stroke="#bef264" stroke-width="3"/>
+        <circle cx="174" cy="70" r="6" stroke="#bef264" stroke-width="3"/>
+        <circle cx="172" cy="88" r="6" stroke="#bef264" stroke-width="3"/>
+        <circle cx="163" cy="104" r="6" stroke="#bef264" stroke-width="3"/>
+        <circle cx="155" cy="120" r="6" stroke="#bef264" stroke-width="3"/>
+        <circle cx="150" cy="138" r="6" stroke="#bef264" stroke-width="3"/>
+        <circle cx="138" cy="152" r="6" stroke="#bef264" stroke-width="3"/>
+        <circle cx="121" cy="158" r="6" stroke="#bef264" stroke-width="3"/>
+        <path d="M180 70 C192 75, 195 90, 195 105" stroke="#bef264" stroke-width="3" stroke-linecap="round"/>
+        <rect x="189" y="105" width="12" height="16" rx="3" stroke="#bef264" stroke-width="3"/>
+        <circle cx="90" cy="100" r="68" fill="url(#circleGrad)" stroke="#ecfccb" stroke-width="2" stroke-dasharray="4 4"/>
+        <rect x="52" y="75" width="12" height="75" rx="2" fill="url(#mosqueGrad)"/>
+        <polygon points="58,60 50,75 66,75" fill="url(#mosqueGrad)"/>
+        <rect x="116" y="75" width="12" height="75" rx="2" fill="url(#mosqueGrad)"/>
+        <polygon points="122,60 114,75 130,75" fill="url(#mosqueGrad)"/>
+        <path d="M68 115 C68 88, 112 88, 112 115 Z" fill="url(#mosqueGrad)"/>
+        <circle cx="90" cy="84" r="4" fill="#ecfccb"/>
+        <rect x="68" y="115" width="44" height="35" fill="url(#mosqueGrad)"/>
+        <path d="M82 150 L82 132 C82 124, 98 124, 98 132 L98 150 Z" fill="#062c28"/>
+      </svg>
+    </div>
+
+    <h1 class="brand-title">ISLAAH FOUNDATION'S</h1>
+    <div class="brand-subtitle">Aamaal Circle</div>
+
+    <button id="login-btn" class="google-btn hidden">
+      <svg width="20" height="20" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      Continue with Google
+    </button>
+    <div id="splash-status" class="splash-loader">Connecting to Aamaal Circle...</div>
   </div>
 
-  <h1 class="brand-title">ISLAAH FOUNDATION'S</h1>
-  <div class="brand-subtitle">Aamaal Circle</div>
+  <!-- 2. MAIN APP SCREEN (LOGGED IN) -->
+  <div id="app-container" class="hidden">
+    <div class="top-bar">
+      <button class="icon-btn" id="open-settings-btn" title="Settings & Family">⚙️</button>
+      
+      <div class="active-profile-pill" id="profile-switcher-pill">
+        <span>👤 <span id="active-member-name">Loading...</span></span>
+        <span class="privacy-badge" id="active-member-privacy">Public</span>
+        <span>▾</span>
+      </div>
 
-  <div class="status-pill">✅ Step 1 Complete: Live on Phone!</div>
+      <div id="admin-badge" class="icon-btn hidden" title="Admin">👑</div>
+    </div>
 
+    <!-- Step 4 Status Card (Will become Daily Aamaal Screen in Step 5) -->
+    <div class="hero-card">
+      <h2>Assalamu Alaikum!</h2>
+      <p>
+        You are signed in and logging aamaal for:<br>
+        <strong id="card-member-name" style="color:#ffffff;font-size:17px;">...</strong>
+      </p>
+      <button class="action-btn" id="manage-family-btn">
+        👨‍👩‍👧‍👦 Switch / Add Family Member & Privacy
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. FIRST-TIME PRIVACY & SETTINGS MODAL -->
+  <div id="settings-modal" class="modal-backdrop hidden">
+    <div class="modal-sheet">
+      <div class="modal-title" id="modal-heading">Privacy & Family Circle</div>
+      <div class="modal-sub" id="modal-subheading">
+        Choose whose aamaal you are logging right now, or update their leaderboard privacy.
+      </div>
+
+      <!-- Family Switcher Section -->
+      <div id="family-section">
+        <label style="font-size:12px;font-weight:700;color:#475569;text-transform:uppercase;">Logging Aamaal For:</label>
+        <div class="family-list" id="family-list-container"></div>
+
+        <label style="font-size:12px;font-weight:700;color:#475569;">Add a Family Member (reports through you):</label>
+        <div class="input-row">
+          <input type="text" id="new-family-name" class="text-input" placeholder="e.g., Mother, Father, Brother">
+          <button class="small-btn" id="add-family-btn">+ Add</button>
+        </div>
+        <div class="divider"></div>
+      </div>
+
+      <!-- Privacy Selector -->
+      <label style="font-size:12px;font-weight:700;color:#475569;text-transform:uppercase;display:block;margin-bottom:10px;">
+        Privacy Setting for <span id="privacy-target-name" style="color:#0d9488;">...</span>:
+      </label>
+
+      <div class="privacy-option" data-privacy="public">
+        <div class="privacy-option-title">
+          <span>🌍 Public</span>
+          <span class="check-mark"></span>
+        </div>
+        <div class="privacy-option-desc">Your name and recitation counts appear on the group leaderboard.</div>
+      </div>
+
+      <div class="privacy-option" data-privacy="private">
+        <div class="privacy-option-title">
+          <span>🔒 Private</span>
+          <span class="check-mark"></span>
+        </div>
+        <div class="privacy-option-desc">Counted on the leaderboard, but your name is shown as "Hidden Member".</div>
+      </div>
+
+      <div class="privacy-option" data-privacy="anonymous">
+        <div class="privacy-option-title">
+          <span>🕵️ Anonymous</span>
+          <span class="check-mark"></span>
+        </div>
+        <div class="privacy-option-desc">Not shown on the leaderboard at all. Only added to the group's total recitations.</div>
+      </div>
+
+      <button class="action-btn" id="save-settings-btn" style="margin-top:10px;">Save & Continue</button>
+      <button class="signout-btn" id="signout-btn">Sign Out of Google Account</button>
+    </div>
+  </div>
+
+  <!-- FIREBASE & APP LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { 
+      getAuth, 
+      GoogleAuthProvider, 
+      signInWithPopup, 
+      signOut, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      getDoc, 
+      setDoc, 
+      updateDoc, 
+      collection, 
+      query, 
+      where, 
+      getDocs, 
+      serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAfXgyw7gzR1DREKsFI3PMeh69IbwzFSnQ",
+      authDomain: "islaah-aamaal-circle-5b74e.firebaseapp.com",
+      projectId: "islaah-aamaal-circle-5b74e",
+      storageBucket: "islaah-aamaal-circle-5b74e.firebasestorage.app",
+      messagingSenderId: "1092263722397",
+      appId: "1:1092263722397:web:b2a9718d04e085eb03c374",
+      measurementId: "G-F6CKQXDEK4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    // App State
+    let currentUser = null;
+    let myProfiles = []; // Main user + added family members
+    let activeProfile = null;
+    let selectedPrivacy = "public";
+    let isFirstLogin = false;
+
+    // UI Elements
+    const splashScreen = document.getElementById("splash-screen");
+    const appContainer = document.getElementById("app-container");
+    const loginBtn = document.getElementById("login-btn");
+    const splashStatus = document.getElementById("splash-status");
+    const settingsModal = document.getElementById("settings-modal");
+    const familySection = document.getElementById("family-section");
+    const familyListContainer = document.getElementById("family-list-container");
+
+    // 1. Seed initial 3 Aamaal if database is empty
+    async function ensureDefaultAamaal() {
+      const aamaalSnap = await getDocs(collection(db, "aamaal"));
+      if (aamaalSnap.empty) {
+        const defaults = [
+          {
+            id: "durood_313",
+            name: "Durood Shareef",
+            arabic: "اللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ",
+            target: 313,
+            order: 1,
+            active: true
+          },
+          {
+            id: "surah_mulk",
+            name: "Surah Mulk",
+            arabic: "تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ",
+            target: 1,
+            order: 2,
+            active: true
+          },
+          {
+            id: "istighfar_100",
+            name: "100 Istighfar",
+            arabic: "أَسْتَغْفِرُ اللَّهَ رَبِّي مِنْ كُلِّ ذَنْبٍ وَأَتُوبُ إِلَيْهِ",
+            target: 100,
+            order: 3,
+            active: true
+          }
+        ];
+        for (const item of defaults) {
+          await setDoc(doc(db, "aamaal", item.id), item);
+        }
+      }
+    }
+
+    // 2. Listen for Auth State
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        splashStatus.textContent = "Loading your profile...";
+        loginBtn.classList.add("hidden");
+        await initializeMemberProfiles(user);
+      } else {
+        currentUser = null;
+        splashScreen.classList.remove("hidden");
+        appContainer.classList.add("hidden");
+        loginBtn.classList.remove("hidden");
+        splashStatus.textContent = "Sign in with Google to join the circle";
+      }
+    });
+
+    // 3. Google Login Button
+    loginBtn.addEventListener("click", async () => {
+      try {
+        splashStatus.textContent = "Opening Google Sign-In...";
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        alert("Sign-in error: " + err.message);
+        splashStatus.textContent = "Tap Continue with Google to try again";
+      }
+    });
+
+    // 4. Load or Create Member Profile
+    async function initializeMemberProfiles(user) {
+      await ensureDefaultAamaal();
+
+      const mainDocRef = doc(db, "members", user.uid);
+      const mainDocSnap = await getDoc(mainDocRef);
+
+      if (!mainDocSnap.exists()) {
+        // Check if this is the very first member in the database -> make Admin
+        const allMembersSnap = await getDocs(collection(db, "members"));
+        const isFirstMemberEver = allMembersSnap.empty;
+
+        const newProfile = {
+          id: user.uid,
+          parentUid: user.uid,
+          isPrimary: true,
+          name: user.displayName || "Circle Member",
+          email: user.email || "",
+          privacy: "public",
+          role: isFirstMemberEver ? "admin" : "member",
+          createdAt: Date.now()
+        };
+        await setDoc(mainDocRef, newProfile);
+        isFirstLogin = true;
+      }
+
+      await refreshProfilesList(user.uid);
+
+      splashScreen.classList.add("hidden");
+      appContainer.classList.remove("hidden");
+
+      if (isFirstLogin) {
+        openSettingsModal(true);
+      }
+    }
+
+    // 5. Fetch Primary + Family Profiles
+    async function refreshProfilesList( savedActiveId ) {
+      const q = query(collection(db, "members"), where("parentUid", "==", currentUser.uid));
+      const snap = await getDocs(q);
+      myProfiles = [];
+      snap.forEach((d) => myProfiles.push(d.data()));
+
+      // Sort so primary user is always first
+      myProfiles.sort((a, b) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0));
+
+      const found = myProfiles.find(p => p.id === savedActiveId);
+      activeProfile = found || myProfiles[0];
+      selectedPrivacy = activeProfile.privacy || "public";
+
+      updateHeaderUI();
+      renderFamilyListInModal();
+    }
+
+    function updateHeaderUI() {
+      if (!activeProfile) return;
+      document.getElementById("active-member-name").textContent = activeProfile.name;
+      document.getElementById("active-member-privacy").textContent = activeProfile.privacy;
+      document.getElementById("card-member-name").textContent = activeProfile.name;
+      document.getElementById("privacy-target-name").textContent = activeProfile.name;
+
+      const primaryProfile = myProfiles.find(p => p.isPrimary);
+      const adminBadge = document.getElementById("admin-badge");
+      if (primaryProfile && primaryProfile.role === "admin") {
+        adminBadge.classList.remove("hidden");
+      } else {
+        adminBadge.classList.add("hidden");
+      }
+      highlightPrivacyOption(activeProfile.privacy);
+    }
+
+    // 6. Render Family Switcher inside Modal
+    function renderFamilyListInModal() {
+      familyListContainer.innerHTML = "";
+      myProfiles.forEach((prof) => {
+        const div = document.createElement("div");
+        div.className = "family-item" + (prof.id === activeProfile.id ? " active" : "");
+        div.innerHTML = `
+          <div>
+            <div style="font-weight:700;font-size:14px;color:#062c28;">
+              ${prof.name} ${prof.isPrimary ? "(You)" : ""}
+            </div>
+            <div style="font-size:11px;color:#64748b;text-transform:capitalize;">
+              Privacy: ${prof.privacy}
+            </div>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:#0d9488;">
+            ${prof.id === activeProfile.id ? "✓ Active" : "Switch"}
+          </div>
+        `;
+        div.addEventListener("click", () => {
+          activeProfile = prof;
+          selectedPrivacy = prof.privacy;
+          updateHeaderUI();
+          renderFamilyListInModal();
+        });
+        familyListContainer.appendChild(div);
+      });
+    }
+
+    // 7. Add Family Member
+    document.getElementById("add-family-btn").addEventListener("click", async () => {
+      const input = document.getElementById("new-family-name");
+      const name = input.value.trim();
+      if (!name) return alert("Please enter a family member's name.");
+
+      const famId = currentUser.uid + "_fam_" + Date.now();
+      const famProfile = {
+        id: famId,
+        parentUid: currentUser.uid,
+        isPrimary: false,
+        name: name,
+        email: "",
+        privacy: "public",
+        role: "family",
+        createdAt: Date.now()
+      };
+      await setDoc(doc(db, "members", famId), famProfile);
+      input.value = "";
+      await refreshProfilesList(famId);
+    });
+
+    // 8. Privacy Selection UI
+    const privacyOptions = document.querySelectorAll(".privacy-option");
+    function highlightPrivacyOption(priv) {
+      privacyOptions.forEach((opt) => {
+        const isMatch = opt.dataset.privacy === priv;
+        opt.classList.toggle("selected", isMatch);
+        opt.querySelector(".check-mark").textContent = isMatch ? "✓" : "";
+      });
+    }
+
+    privacyOptions.forEach((opt) => {
+      opt.addEventListener("click", () => {
+        selectedPrivacy = opt.dataset.privacy;
+        highlightPrivacyOption(selectedPrivacy);
+      });
+    });
+
+    // 9. Open & Save Modal
+    function openSettingsModal(firstLoginMode = false) {
+      if (firstLoginMode) {
+        document.getElementById("modal-heading").textContent = "Welcome! Choose Your Privacy";
+        document.getElementById("modal-subheading").textContent = "How should your name appear on the circle's leaderboard? You can change this anytime in Settings.";
+        familySection.classList.add("hidden");
+      } else {
+        document.getElementById("modal-heading").textContent = "Privacy & Family Circle";
+        document.getElementById("modal-subheading").textContent = "Switch whose aamaal you are logging, add family members, or update leaderboard privacy.";
+        familySection.classList.remove("hidden");
+      }
+      highlightPrivacyOption(activeProfile.privacy);
+      settingsModal.classList.remove("hidden");
+    }
+
+    document.getElementById("open-settings-btn").addEventListener("click", () => openSettingsModal(false));
+    document.getElementById("profile-switcher-pill").addEventListener("click", () => openSettingsModal(false));
+    document.getElementById("manage-family-btn").addEventListener("click", () => openSettingsModal(false));
+
+    document.getElementById("save-settings-btn").addEventListener("click", async () => {
+      if (activeProfile && selectedPrivacy !== activeProfile.privacy) {
+        await updateDoc(doc(db, "members", activeProfile.id), {
+          privacy: selectedPrivacy
+        });
+        activeProfile.privacy = selectedPrivacy;
+      }
+      isFirstLogin = false;
+      updateHeaderUI();
+      renderFamilyListInModal();
+      settingsModal.classList.add("hidden");
+    });
+
+    document.getElementById("signout-btn").addEventListener("click", async () => {
+      await signOut(auth);
+      settingsModal.classList.add("hidden");
+    });
+  </script>
 </body>
 </html>
