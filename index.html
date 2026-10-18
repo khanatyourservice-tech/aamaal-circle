@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="manifest" href="manifest.json">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Islaah Foundation's Aamaal Circle</title>
+  <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -142,7 +142,7 @@
       border: 1px solid #e2e8f0;
       border-radius: 18px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.14);
-      min-width: 210px;
+      min-width: 220px;
       z-index: 60;
       padding: 6px;
       overflow: hidden;
@@ -543,6 +543,23 @@
       margin-bottom: 20px;
       border: 1px solid #eef2f6;
     }
+    .admin-filter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .select-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--teal-dark);
+      background: #f8fafc;
+    }
     .admin-sub-row {
       padding: 12px 0;
       border-bottom: 1px solid #f1f5f9;
@@ -870,16 +887,46 @@
         <div class="stats-header-title">👑 Circle Admin Panel</div>
       </div>
 
-      <!-- Database Wipe / Fresh Test Button -->
-      <div class="admin-card" style="background:#fef2f2;border-color:#fecaca;text-align:center;padding:14px;">
-        <div style="font-size:13px;font-weight:700;color:#991b1b;margin-bottom:8px;">Fresh Group Testing?</div>
-        <button class="mini-btn danger" id="wipe-database-btn" style="padding:8px 16px;font-size:12.5px;">🧹 Clear All Logs (Fresh Database)</button>
+      <!-- Export to Excel & Fresh Database Controls -->
+      <div class="admin-card" style="background:#f0fdf4;border-color:#bbf7d0;padding:16px;">
+        <div style="font-size:13px;font-weight:800;color:#166534;margin-bottom:10px;text-align:center;">
+          📊 Reports & Database Tools
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+          <button class="mini-btn teal" id="export-excel-btn" style="padding:10px 14px;font-size:12.5px;flex:1;">
+            📥 Export All to Excel (CSV)
+          </button>
+          <button class="mini-btn danger" id="wipe-database-btn" style="padding:10px 14px;font-size:12.5px;">
+            🧹 Clear All Logs
+          </button>
+        </div>
       </div>
 
-      <div class="section-heading"><span>✅ Today's Completions (IST)</span></div>
-      <div class="admin-card" id="admin-today-completions"></div>
+      <!-- 1. Person-Wise Daily Count Inspector + Edit/Delete + WhatsApp Report -->
+      <div class="section-heading">
+        <span>📋 Person-Wise Daily Count & Edit</span>
+      </div>
+      <div class="admin-card">
+        <div class="admin-filter-grid">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Date (IST):</label>
+            <select id="admin-date-select" class="select-input"></select>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Aamaal:</label>
+            <select id="admin-aamaal-select" class="select-input"></select>
+          </div>
+        </div>
 
-      <div class="section-heading"><span>📈 Weekly & Monthly Reports</span></div>
+        <button class="action-btn" id="copy-whatsapp-btn" style="padding:11px 16px;font-size:13px;margin-bottom:14px;">
+          📲 Copy Selected Date Report for WhatsApp
+        </button>
+
+        <div id="admin-person-wise-list"></div>
+      </div>
+
+      <!-- 2. Weekly & Monthly Summary Table -->
+      <div class="section-heading"><span>📈 Weekly & Monthly Totals</span></div>
       <div class="admin-card">
         <table class="report-table">
           <thead>
@@ -893,6 +940,7 @@
         </table>
       </div>
 
+      <!-- 3. Manage Daily Aamaal -->
       <div class="section-heading"><span>📿 Manage Daily Aamaal</span></div>
       <div class="admin-card">
         <div id="admin-aamaal-list"></div>
@@ -918,13 +966,14 @@
         </div>
       </div>
 
+      <!-- 4. Circle & Family Members -->
       <div class="section-heading"><span>👥 Circle & Family Members</span></div>
       <div class="admin-card" id="admin-members-list"></div>
     </div>
 
   </div>
 
-  <!-- 3. SETTINGS MODAL (WITH CLOSE/BACK BUTTON) -->
+  <!-- 3. SETTINGS MODAL -->
   <div id="settings-modal" class="modal-backdrop hidden">
     <div class="modal-sheet">
       <div class="modal-header-row">
@@ -936,9 +985,11 @@
       </div>
 
       <div id="family-add-section">
-        <label style="font-size:12px;font-weight:700;color:#475569;">Add a Family Member (to show in top dropdown):</label>
+        <label style="font-size:12px;font-weight:700;color:#475569;">
+          Add a Family Member (Your first name will be attached automatically, e.g. "Ubaid's Mom"):
+        </label>
         <div class="input-row">
-          <input type="text" id="new-family-name" class="text-input" placeholder="e.g., Mother, Father, Brother">
+          <input type="text" id="new-family-name" class="text-input" placeholder="e.g., Mom, Wife, Dad, Brother">
           <button class="small-btn" id="add-family-btn">+ Add</button>
         </div>
         <div class="divider"></div>
@@ -1015,6 +1066,10 @@
     let isFirstLogin = false;
     let selectedDateIST = getISTDateString();
 
+    // Admin Inspector Filters
+    let adminFilterDate = getISTDateString();
+    let adminFilterAamaalId = "";
+
     function getISTDateString(dateObj = new Date()) {
       return new Intl.DateTimeFormat('en-CA', {
         timeZone: 'Asia/Kolkata',
@@ -1061,6 +1116,27 @@
       return num.toLocaleString('en-IN');
     }
 
+    // Helper: Makes sure family members like "Mom" or "Wife" clearly show whose family member they are
+    function getClearMemberName(member, memberMap) {
+      if (!member) return "Unknown Member";
+      if (member.isPrimary) return member.name;
+      const parent = memberMap[member.parentUid];
+      if (!parent) return member.name;
+      const parentFirst = (parent.name || "Member").split(" ")[0];
+      // If the name already includes the parent's first name (e.g. "Ubaid's Mom"), return as-is
+      if (member.name.toLowerCase().includes(parentFirst.toLowerCase())) {
+        return member.name;
+      }
+      return `${parentFirst}'s ${member.name}`;
+    }
+
+    function getLeaderboardDisplayName(member, memberMap) {
+      if (!member) return "Unknown";
+      if (member.privacy === "anonymous") return "Anonymous Member";
+      if (member.privacy === "private") return "Hidden Member";
+      return getClearMemberName(member, memberMap);
+    }
+
     async function ensureDefaultAamaal() {
       const snap = await getDocs(collection(db, "aamaal"));
       if (snap.empty) {
@@ -1086,6 +1162,7 @@
         status.textContent = "Loading Aamaal Circle...";
         loginBtn.classList.add("hidden");
         selectedDateIST = getISTDateString();
+        adminFilterDate = getISTDateString();
         await bootApp(user);
       } else {
         currentUser = null;
@@ -1128,6 +1205,7 @@
 
       await loadAamaalTabs();
       await loadMembersAndProfiles(user.uid);
+      populateAdminDropdowns();
       await loadLogsAndRender(true);
 
       document.getElementById("splash-screen").classList.add("hidden");
@@ -1151,6 +1229,9 @@
       aamaalList.sort((a, b) => (a.order || 1) - (b.order || 1));
       if (!activeAamaal || !aamaalList.find(a => a.id === activeAamaal.id)) {
         activeAamaal = aamaalList[0] || allAamaalRaw[0];
+      }
+      if (!adminFilterAamaalId && activeAamaal) {
+        adminFilterAamaalId = activeAamaal.id;
       }
       renderAamaalTabs();
     }
@@ -1192,8 +1273,12 @@
     }
 
     function updateTopBarUI() {
-      document.getElementById("active-member-name").textContent = activeProfile.name;
-      document.getElementById("privacy-target-name").textContent = activeProfile.name;
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
+
+      const clearActiveName = getClearMemberName(activeProfile, memberMap);
+      document.getElementById("active-member-name").textContent = clearActiveName;
+      document.getElementById("privacy-target-name").textContent = clearActiveName;
 
       const primary = myProfiles.find(p => p.isPrimary);
       const isAdmin = primary && primary.role === "admin";
@@ -1205,7 +1290,8 @@
       myProfiles.forEach(prof => {
         const item = document.createElement("div");
         item.className = "quick-dropdown-item" + (prof.id === activeProfile.id ? " active" : "");
-        item.innerHTML = `<span>${prof.name}</span><span>${prof.id === activeProfile.id ? "✓" : ""}</span>`;
+        const displayName = getClearMemberName(prof, memberMap);
+        item.innerHTML = `<span>${displayName}</span><span>${prof.id === activeProfile.id ? "✓" : ""}</span>`;
         item.addEventListener("click", async () => {
           activeProfile = prof;
           selectedPrivacy = prof.privacy || "public";
@@ -1226,6 +1312,40 @@
       quickMemberMenu.classList.toggle("hidden");
     });
     document.addEventListener("click", () => { quickMemberMenu.classList.add("hidden"); });
+
+    function populateAdminDropdowns() {
+      const dateSel = document.getElementById("admin-date-select");
+      const aamaalSel = document.getElementById("admin-aamaal-select");
+
+      const days30 = getISTDaysList(30).reverse(); // Newest (Today) first
+      dateSel.innerHTML = "";
+      days30.forEach(d => {
+        const opt = document.createElement("option");
+        opt.value = d.dateKey;
+        opt.textContent = d.isToday ? `Today (${d.prettyLabel})` : `${d.prettyLabel} (${d.dateKey})`;
+        if (d.dateKey === adminFilterDate) opt.selected = true;
+        dateSel.appendChild(opt);
+      });
+
+      aamaalSel.innerHTML = "";
+      allAamaalRaw.forEach(a => {
+        const opt = document.createElement("option");
+        opt.value = a.id;
+        opt.textContent = a.name;
+        if (a.id === adminFilterAamaalId) opt.selected = true;
+        aamaalSel.appendChild(opt);
+      });
+    }
+
+    document.getElementById("admin-date-select").addEventListener("change", (e) => {
+      adminFilterDate = e.target.value;
+      renderAdminScreen();
+    });
+
+    document.getElementById("admin-aamaal-select").addEventListener("change", (e) => {
+      adminFilterAamaalId = e.target.value;
+      renderAdminScreen();
+    });
 
     async function loadLogsAndRender(scrollStripToSelected = false) {
       if (!activeAamaal) return;
@@ -1258,7 +1378,6 @@
       document.getElementById("stat-card-aamaal-1").textContent = activeAamaal.name;
       document.getElementById("stat-card-aamaal-2").textContent = activeAamaal.name;
 
-      // Update button text to: "View the total number of [Aamaal Name] recited"
       const dynamicSummaryText = `View the total number of ${activeAamaal.name} recited`;
       document.getElementById("bottom-summary-text").textContent = dynamicSummaryText;
       document.getElementById("stats-top-title-text").textContent = dynamicSummaryText;
@@ -1439,7 +1558,7 @@
       Object.keys(weeklyByMember).forEach(memberId => {
         const m = memberMap[memberId];
         if (!m || m.privacy === "anonymous") return;
-        const displayName = m.privacy === "private" ? "Hidden Member" : m.name;
+        const displayName = getLeaderboardDisplayName(m, memberMap);
         leaderboardRows.push({ name: displayName, score: weeklyByMember[memberId] });
       });
 
@@ -1507,45 +1626,113 @@
       });
     }
 
-    function getPrivacySafeMemberName(member) {
-      if (!member) return "Unknown";
-      if (member.privacy === "anonymous") return "Anonymous Member";
-      if (member.privacy === "private") return "Hidden Member";
-      return member.name;
-    }
-
+    // --- ADMIN SCREEN: FULL PERSON-WISE INSPECTOR, EDIT/DELETE ANY COUNT, WHATSAPP REPORT ---
     function renderAdminScreen() {
-      const todayIST = getISTDateString();
       const keys7 = getLastNDaysKeys(7);
       const keys30 = getLastNDaysKeys(30);
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
 
-      const todayBox = document.getElementById("admin-today-completions");
-      todayBox.innerHTML = "";
-      allAamaalRaw.forEach(a => {
-        const todayLogs = allLogsForAamaal.filter(l => l.aamaalId === a.id && l.dateKey === todayIST);
-        const totalToday = todayLogs.reduce((s, l) => s + Number(l.count || 0), 0);
-        const reciterNames = todayLogs.map(l => {
-          const m = memberMap[l.memberId];
-          const safeName = getPrivacySafeMemberName(m);
-          return `${safeName} (${l.count})`;
+      if (!adminFilterAamaalId && allAamaalRaw.length > 0) {
+        adminFilterAamaalId = allAamaalRaw[0].id;
+      }
+      const targetAamaal = allAamaalRaw.find(a => a.id === adminFilterAamaalId) || allAamaalRaw[0];
+
+      // 1. Person-Wise Daily List for Selected Date & Aamaal
+      const personWiseBox = document.getElementById("admin-person-wise-list");
+      personWiseBox.innerHTML = "";
+
+      if (targetAamaal) {
+        const logsForSelectedDate = allLogsForAamaal.filter(
+          l => l.aamaalId === targetAamaal.id && l.dateKey === adminFilterDate
+        );
+        const logByMember = {};
+        logsForSelectedDate.forEach(l => { logByMember[l.memberId] = l; });
+
+        const totalDateCount = logsForSelectedDate.reduce((s, l) => s + Number(l.count || 0), 0);
+
+        const summaryBanner = document.createElement("div");
+        summaryBanner.style.cssText = "background:#f8fafc;padding:10px 12px;border-radius:12px;margin-bottom:10px;font-size:12.5px;font-weight:700;color:#0f766e;display:flex;justify-content:space-between;";
+        summaryBanner.innerHTML = `
+          <span>Done: ${logsForSelectedDate.length} / ${allMembers.length} members</span>
+          <span>Total: ${totalDateCount.toLocaleString('en-IN')}</span>
+        `;
+        personWiseBox.appendChild(summaryBanner);
+
+        // Sort members: completed first, then alphabetically
+        const sortedMembers = [...allMembers].sort((a, b) => {
+          const cA = logByMember[a.id] ? logByMember[a.id].count : 0;
+          const cB = logByMember[b.id] ? logByMember[b.id].count : 0;
+          if (cB !== cA) return cB - cA;
+          return getClearMemberName(a, memberMap).localeCompare(getClearMemberName(b, memberMap));
         });
 
-        const row = document.createElement("div");
-        row.className = "admin-sub-row";
-        row.innerHTML = `
-          <div class="admin-row-top">
-            <span style="font-weight:700;font-size:14px;">${a.name}</span>
-            <span class="pill-tag">${todayLogs.length} done • ${totalToday.toLocaleString('en-IN')} recited</span>
-          </div>
-          <div style="font-size:12px;color:#64748b;">
-            ${reciterNames.length > 0 ? reciterNames.join(", ") : "No completions logged yet today."}
-          </div>
-        `;
-        todayBox.appendChild(row);
-      });
+        sortedMembers.forEach(m => {
+          const logEntry = logByMember[m.id];
+          const count = logEntry ? Number(logEntry.count) : 0;
+          const clearName = getClearMemberName(m, memberMap);
 
+          const row = document.createElement("div");
+          row.className = "admin-sub-row";
+          row.innerHTML = `
+            <div class="admin-row-top">
+              <div>
+                <div style="font-weight:700;font-size:14px;color:#1e293b;">
+                  ${count > 0 ? '✅' : '⏳'} ${clearName}
+                </div>
+                <div style="font-size:11px;color:#64748b;">
+                  Count: <strong style="color:${count > 0 ? '#0f766e' : '#ef4444'};font-size:13px;">${count.toLocaleString('en-IN')}</strong>
+                  • Privacy: ${m.privacy}
+                </div>
+              </div>
+              <div class="admin-btn-group">
+                <button class="mini-btn teal admin-edit-log-btn">✏️ ${count > 0 ? 'Edit' : 'Log'}</button>
+                ${count > 0 ? `<button class="mini-btn danger admin-del-log-btn">🗑️</button>` : ''}
+              </div>
+            </div>
+          `;
+
+          // Admin Edit / Log someone else's count
+          row.querySelector(".admin-edit-log-btn").addEventListener("click", async () => {
+            const defaultVal = count > 0 ? count : targetAamaal.target;
+            const input = prompt(`Enter ${targetAamaal.name} count for ${clearName} on ${adminFilterDate}:`, defaultVal);
+            if (input === null) return;
+            const newCount = Number(input);
+            if (isNaN(newCount) || newCount < 0) return alert("Please enter a valid number.");
+
+            const logId = `${adminFilterDate}_${targetAamaal.id}_${m.id}`;
+            if (newCount === 0) {
+              await deleteDoc(doc(db, "logs", logId));
+            } else {
+              await setDoc(doc(db, "logs", logId), {
+                id: logId,
+                aamaalId: targetAamaal.id,
+                memberId: m.id,
+                parentUid: m.parentUid || m.id,
+                dateKey: adminFilterDate,
+                count: newCount,
+                updatedAt: Date.now()
+              }, { merge: true });
+            }
+            await loadLogsAndRender(false);
+          });
+
+          // Admin Delete someone else's count
+          const delLogBtn = row.querySelector(".admin-del-log-btn");
+          if (delLogBtn) {
+            delLogBtn.addEventListener("click", async () => {
+              if (!confirm(`Delete ${clearName}'s count (${count}) for ${adminFilterDate}?`)) return;
+              const logId = `${adminFilterDate}_${targetAamaal.id}_${m.id}`;
+              await deleteDoc(doc(db, "logs", logId));
+              await loadLogsAndRender(false);
+            });
+          }
+
+          personWiseBox.appendChild(row);
+        });
+      }
+
+      // 2. Weekly & Monthly Reports Table
       const reportTbody = document.getElementById("admin-report-tbody");
       reportTbody.innerHTML = "";
       allAamaalRaw.forEach(a => {
@@ -1561,7 +1748,7 @@
         reportTbody.appendChild(tr);
       });
 
-      // Manage Aamaal (Edit, Pause/Resume, & Delete)
+      // 3. Manage Aamaal List
       const aamaalAdminList = document.getElementById("admin-aamaal-list");
       aamaalAdminList.innerHTML = "";
       allAamaalRaw.forEach(a => {
@@ -1595,21 +1782,25 @@
         div.querySelector(".toggle-a-btn").addEventListener("click", async () => {
           await updateDoc(doc(db, "aamaal", a.id), { active: isPaused });
           await loadAamaalTabs();
+          populateAdminDropdowns();
           await loadLogsAndRender(false);
         });
         div.querySelector(".delete-a-btn").addEventListener("click", async () => {
           if (!confirm(`Are you sure you want to delete "${a.name}"?`)) return;
           await deleteDoc(doc(db, "aamaal", a.id));
           await loadAamaalTabs();
+          populateAdminDropdowns();
           await loadLogsAndRender(false);
         });
         aamaalAdminList.appendChild(div);
       });
 
+      // 4. Circle & Family Members List (With Rename Option)
       const memBox = document.getElementById("admin-members-list");
       memBox.innerHTML = "";
       allMembers.forEach(m => {
-        const safeName = getPrivacySafeMemberName(m);
+        const clearName = getClearMemberName(m, memberMap);
+        const parent = memberMap[m.parentUid];
         const isAdminRole = m.role === "admin";
         const row = document.createElement("div");
         row.className = "admin-sub-row";
@@ -1617,18 +1808,27 @@
           <div class="admin-row-top">
             <div>
               <div style="font-weight:700;font-size:14px;">
-                ${safeName} ${isAdminRole ? '👑' : ''}
+                ${clearName} ${isAdminRole ? '👑' : ''}
               </div>
               <div style="font-size:11.5px;color:#64748b;">
-                Type: ${m.isPrimary ? 'Core Member' : 'Family Member'} • Privacy: <strong style="text-transform:capitalize;">${m.privacy}</strong>
+                ${m.isPrimary ? 'Core Member' : `Family Member (Added by ${parent ? parent.name : 'Member'})`} • Privacy: <strong style="text-transform:capitalize;">${m.privacy}</strong>
               </div>
             </div>
             <div class="admin-btn-group">
+              <button class="mini-btn rename-mem-btn">✏️ Rename</button>
               ${m.isPrimary && m.id !== currentUser.uid ? `<button class="mini-btn teal role-btn">${isAdminRole ? 'Remove Admin' : 'Make Admin'}</button>` : ''}
               ${!m.isPrimary ? `<button class="mini-btn danger del-mem-btn">Remove</button>` : ''}
             </div>
           </div>
         `;
+        row.querySelector(".rename-mem-btn").addEventListener("click", async () => {
+          const newName = prompt("Enter updated name for this member:", clearName);
+          if (!newName || !newName.trim()) return;
+          await updateDoc(doc(db, "members", m.id), { name: newName.trim() });
+          await loadMembersAndProfiles(activeProfile.id);
+          renderStatsScreen();
+          renderAdminScreen();
+        });
         const roleBtn = row.querySelector(".role-btn");
         if (roleBtn) {
           roleBtn.addEventListener("click", async () => {
@@ -1640,7 +1840,7 @@
         const delBtn = row.querySelector(".del-mem-btn");
         if (delBtn) {
           delBtn.addEventListener("click", async () => {
-            if (!confirm("Remove this family member profile?")) return;
+            if (!confirm(`Remove "${clearName}"?`)) return;
             await deleteDoc(doc(db, "members", m.id));
             await loadMembersAndProfiles(currentUser.uid);
             renderAdminScreen();
@@ -1650,7 +1850,82 @@
       });
     }
 
-    // Database Wipe Button for Fresh Group Testing
+    // Copy WhatsApp Daily Report Button
+    document.getElementById("copy-whatsapp-btn").addEventListener("click", async () => {
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
+      const targetAamaal = allAamaalRaw.find(a => a.id === adminFilterAamaalId) || allAamaalRaw[0];
+      if (!targetAamaal) return;
+
+      const logsForDate = allLogsForAamaal.filter(
+        l => l.aamaalId === targetAamaal.id && l.dateKey === adminFilterDate
+      );
+      const logByMember = {};
+      logsForDate.forEach(l => { logByMember[l.memberId] = l; });
+
+      const totalCount = logsForDate.reduce((s, l) => s + Number(l.count || 0), 0);
+
+      let lines = [];
+      lines.push(`🌙 *Islaah Foundation's Aamaal Circle*`);
+      lines.push(`📿 *Aamaal:* ${targetAamaal.name}`);
+      lines.push(`📅 *Date:* ${adminFilterDate}`);
+      lines.push(`────────────────────`);
+
+      allMembers.forEach(m => {
+        const c = logByMember[m.id] ? Number(logByMember[m.id].count) : 0;
+        const name = getClearMemberName(m, memberMap);
+        lines.push(`${c > 0 ? '✅' : '⏳'} ${name}: *${c.toLocaleString('en-IN')}*`);
+      });
+
+      lines.push(`────────────────────`);
+      lines.push(`✨ *Total Recited:* ${totalCount.toLocaleString('en-IN')}`);
+
+      const textToCopy = lines.join("\n");
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        alert("✅ WhatsApp Report copied! You can now paste it directly in your WhatsApp group.");
+      } catch (e) {
+        prompt("Copy your WhatsApp report below:", textToCopy);
+      }
+    });
+
+    // Export All Data to Excel (CSV format)
+    document.getElementById("export-excel-btn").addEventListener("click", () => {
+      if (allLogsForAamaal.length === 0) {
+        return alert("No recitation logs found to export yet.");
+      }
+
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
+      const aamaalMap = {};
+      allAamaalRaw.forEach(a => { aamaalMap[a.id] = a.name; });
+
+      let csvRows = [];
+      csvRows.push(["Date (IST)", "Aamaal Name", "Member Name", "Member Type", "Added By (Core Member)", "Privacy Setting", "Recitation Count"].join(","));
+
+      const sortedLogs = [...allLogsForAamaal].sort((a, b) => b.dateKey.localeCompare(a.dateKey));
+
+      sortedLogs.forEach(l => {
+        const m = memberMap[l.memberId];
+        const parent = m ? memberMap[m.parentUid] : null;
+        const clearName = getClearMemberName(m, memberMap).replace(/"/g, '""');
+        const memType = (m && m.isPrimary) ? "Core Member" : "Family Member";
+        const parentName = (parent ? parent.name : "").replace(/"/g, '""');
+        const priv = m ? m.privacy : "public";
+        const aamaalName = (aamaalMap[l.aamaalId] || l.aamaalId).replace(/"/g, '""');
+        csvRows.push(`"${l.dateKey}","${aamaalName}","${clearName}","${memType}","${parentName}","${priv}",${l.count}`);
+      });
+
+      const blob = new Blob([csvRows.join("\r\n")], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `islaah_aamaal_report_${getISTDateString()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
     document.getElementById("wipe-database-btn").addEventListener("click", async () => {
       if (!confirm("⚠️ This will delete ALL recitation logs for everyone in the circle so you can start fresh. Are you sure?")) return;
       const snap = await getDocs(collection(db, "logs"));
@@ -1695,6 +1970,7 @@
 
       resetAamaalForm();
       await loadAamaalTabs();
+      populateAdminDropdowns();
       await loadLogsAndRender(false);
       alert("Aamaal saved!");
     });
@@ -1715,6 +1991,7 @@
     });
 
     document.getElementById("admin-badge").addEventListener("click", () => {
+      populateAdminDropdowns();
       renderAdminScreen();
       document.getElementById("daily-view").classList.add("hidden");
       document.getElementById("stats-view").classList.add("hidden");
@@ -1728,7 +2005,6 @@
       window.scrollTo(0, 0);
     });
 
-    // Settings Modal (With Close & Back buttons)
     const settingsModal = document.getElementById("settings-modal");
     const privacyOptions = document.querySelectorAll(".privacy-option");
 
@@ -1748,7 +2024,9 @@
     });
 
     function openSettingsModal() {
-      document.getElementById("privacy-target-name").textContent = activeProfile.name;
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
+      document.getElementById("privacy-target-name").textContent = getClearMemberName(activeProfile, memberMap);
       highlightPrivacyOption(activeProfile.privacy || "public");
       settingsModal.classList.remove("hidden");
     }
@@ -1756,17 +2034,24 @@
     document.getElementById("open-settings-btn").addEventListener("click", () => openSettingsModal());
     document.getElementById("close-settings-btn").addEventListener("click", () => settingsModal.classList.add("hidden"));
 
+    // Add Family Member -> Automatically prefixes Primary Member's First Name (e.g. "Ubaid's Mom")
     document.getElementById("add-family-btn").addEventListener("click", async () => {
       const input = document.getElementById("new-family-name");
-      const name = input.value.trim();
-      if (!name) return alert("Please enter a family member's name.");
+      const rawName = input.value.trim();
+      if (!rawName) return alert("Please enter a family member's name or relation (e.g., Mom, Wife).");
+
+      const primary = myProfiles.find(p => p.isPrimary) || { name: currentUser.displayName || "Member" };
+      const firstName = (primary.name || "Member").split(" ")[0];
+      const formattedName = rawName.toLowerCase().includes(firstName.toLowerCase())
+        ? rawName
+        : `${firstName}'s ${rawName}`;
 
       const famId = currentUser.uid + "_fam_" + Date.now();
       await setDoc(doc(db, "members", famId), {
         id: famId,
         parentUid: currentUser.uid,
         isPrimary: false,
-        name: name,
+        name: formattedName,
         email: "",
         privacy: "public",
         role: "family",
@@ -1774,9 +2059,8 @@
       });
       input.value = "";
       await loadMembersAndProfiles(famId);
-      document.getElementById("privacy-target-name").textContent = activeProfile.name;
       highlightPrivacyOption(activeProfile.privacy);
-      alert(`${name} added!`);
+      alert(`"${formattedName}" added!`);
     });
 
     document.getElementById("save-settings-btn").addEventListener("click", async () => {
