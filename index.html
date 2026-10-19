@@ -190,6 +190,16 @@
       color: #ffffff;
       border-color: var(--teal-dark);
     }
+    .aamaal-tab.report-tab {
+      background: #e0f2fe;
+      color: #0369a1;
+      border-color: #bae6fd;
+    }
+    .aamaal-tab.report-tab.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+    }
 
     /* DAILY SCREEN */
     .aamaal-heading-title {
@@ -601,6 +611,76 @@
       color: #0f766e;
     }
     .pill-tag.paused { background: #fef2f2; color: #b91c1c; }
+    .pill-tag.ahead { background: #dcfce7; color: #166534; }
+    .pill-tag.behind { background: #fffbeb; color: #b45309; }
+
+    /* MONTHLY MEMBER VS TARGET BREAKDOWN CARD */
+    .monthly-aamaal-box {
+      border: 1.5px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 12px;
+      background: #f8fafc;
+    }
+    .monthly-aamaal-box:last-child { margin-bottom: 0; }
+    .monthly-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin: 10px 0;
+    }
+    .monthly-metric-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+    .monthly-metric-val {
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .monthly-metric-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    .mini-month-cal-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 10px;
+    }
+    .mini-cal-day {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      font-size: 10px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .mini-cal-day.done {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #86efac;
+    }
+    .mini-cal-day.missed {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+    .mini-cal-day.future {
+      background: #f1f5f9;
+      color: #94a3b8;
+      cursor: default;
+    }
+
     .report-table {
       width: 100%;
       border-collapse: collapse;
@@ -774,76 +854,96 @@
         <div id="admin-spacer" style="width:42px;"></div>
       </div>
 
+      <!-- AAMAAL TABS + NEW "📊 MY MONTHLY REPORT" TAB -->
       <div class="aamaal-tabs" id="aamaal-tabs-container"></div>
 
-      <div class="aamaal-heading-title" id="current-aamaal-title">Durood Shareef</div>
-      <div class="arabic-banner" id="current-aamaal-arabic">اللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ</div>
+      <!-- DYNAMIC CONTENT AREA: EITHER DAILY AAMAAL OR USER MONTHLY REPORT -->
+      <div id="daily-aamaal-content-area">
+        <div class="aamaal-heading-title" id="current-aamaal-title">Durood Shareef</div>
+        <div class="arabic-banner" id="current-aamaal-arabic">اللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ</div>
 
-      <div class="daily-target-card">
-        <div class="selected-date-pill" id="active-date-banner">📅 Logging for: Today</div>
-        <div class="salam-arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
-        <div class="target-question" id="target-question-text">
-          Have you recited your daily target of 313 times Durood Shareef?
-        </div>
-
-        <div id="not-recited-box">
-          <button class="mark-recited-btn" id="mark-recited-btn">Mark as Recited</button>
-        </div>
-
-        <div id="recited-box" class="hidden">
-          <div class="completed-badge">
-            ✓ Completed (<span id="selected-date-label">Today</span>): <span id="today-logged-num">313</span>
-          </div>
-          <div class="completed-actions">
-            <button class="secondary-pill-btn" id="toggle-extra-btn">+ Add / Edit Count</button>
-            <button class="secondary-pill-btn" id="undo-today-btn" style="color:#fca5a5;border-color:rgba(252,165,165,0.4);">Undo</button>
+        <div class="daily-target-card">
+          <div class="selected-date-pill" id="active-date-banner">📅 Logging for: Today</div>
+          <div class="salam-arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
+          <div class="target-question" id="target-question-text">
+            Have you recited your daily target of 313 times Durood Shareef?
           </div>
 
-          <div id="extra-count-panel" class="extra-count-box hidden">
-            <div style="font-size:12px;color:#cbd5e1;margin-bottom:8px;">Tap to add more, or type exact total for this day:</div>
-            <div class="quick-add-chips">
-              <button class="chip-btn" data-add="100">+100</button>
-              <button class="chip-btn" data-add="313">+313</button>
-              <button class="chip-btn" data-add="500">+500</button>
+          <div id="not-recited-box">
+            <button class="mark-recited-btn" id="mark-recited-btn">Mark as Recited</button>
+          </div>
+
+          <div id="recited-box" class="hidden">
+            <div class="completed-badge">
+              ✓ Completed (<span id="selected-date-label">Today</span>): <span id="today-logged-num">313</span>
             </div>
-            <div class="input-row">
-              <input type="number" id="custom-count-input" class="text-input" placeholder="Enter total (e.g. 500)" style="background:#ffffff;color:#0f172a;">
-              <button class="small-btn" id="save-custom-count-btn" style="background:#bef264;color:#062c28;">Save</button>
+            <div class="completed-actions">
+              <button class="secondary-pill-btn" id="toggle-extra-btn">+ Add / Edit Count</button>
+              <button class="secondary-pill-btn" id="undo-today-btn" style="color:#fca5a5;border-color:rgba(252,165,165,0.4);">Undo</button>
+            </div>
+
+            <div id="extra-count-panel" class="extra-count-box hidden">
+              <div style="font-size:12px;color:#cbd5e1;margin-bottom:8px;">Tap to add more, or type exact total for this day:</div>
+              <div class="quick-add-chips">
+                <button class="chip-btn" data-add="100">+100</button>
+                <button class="chip-btn" data-add="313">+313</button>
+                <button class="chip-btn" data-add="500">+500</button>
+              </div>
+              <div class="input-row">
+                <input type="number" id="custom-count-input" class="text-input" placeholder="Enter total (e.g. 500)" style="background:#ffffff;color:#0f172a;">
+                <button class="small-btn" id="save-custom-count-btn" style="background:#bef264;color:#062c28;">Save</button>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- 30-DAY SLIDING STRIP + ANY-DATE CALENDAR PICKER -->
+        <div class="week-strip-header">
+          <span>◀ Slide 30d or pick any date:</span>
+          <div class="date-picker-mini-wrap">
+            <input type="date" id="daily-any-date-picker" class="daily-date-picker" title="Pick any date">
+            <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;">Today ▶</span>
+          </div>
+        </div>
+        <div class="month-strip" id="week-strip-container"></div>
+
+        <div class="personal-stats-grid">
+          <div class="mint-stat-card">
+            <div class="mint-stat-label">Recited by you this week</div>
+            <div class="mint-stat-value" id="my-week-total">0</div>
+            <div class="mint-stat-sub" id="stat-card-aamaal-1">Durood Shareef</div>
+          </div>
+          <div class="mint-stat-card">
+            <div class="mint-stat-label">Recited by you today</div>
+            <div class="mint-stat-value" id="my-today-total">0</div>
+            <div class="mint-stat-sub" id="stat-card-aamaal-2">Durood Shareef</div>
+          </div>
+        </div>
+
+        <button class="worldwide-pill-btn" id="open-stats-btn">
+          <span class="double-arrow">«</span>
+          <span class="worldwide-pill-text" id="bottom-summary-text">
+            View the total number of Durood recited
+          </span>
+          <span class="double-arrow">»</span>
+        </button>
       </div>
 
-      <!-- 30-DAY SLIDING STRIP + ANY-DATE CALENDAR PICKER -->
-      <div class="week-strip-header">
-        <span>◀ Slide 30d or pick any date:</span>
-        <div class="date-picker-mini-wrap">
-          <input type="date" id="daily-any-date-picker" class="daily-date-picker" title="Pick any date">
-          <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;">Today ▶</span>
-        </div>
-      </div>
-      <div class="month-strip" id="week-strip-container"></div>
+      <!-- USER MONTHLY REPORT VIEW (TAB) - WHATSAPP BUTTON REMOVED -->
+      <div id="user-monthly-report-area" class="hidden">
+        <div class="admin-card">
+          <div style="font-size:16px;font-weight:800;color:var(--teal-dark);margin-bottom:10px;">
+            📊 My Monthly Count vs. Target
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Month:</label>
+            <input type="month" id="user-monthly-month-picker" class="select-input">
+          </div>
 
-      <div class="personal-stats-grid">
-        <div class="mint-stat-card">
-          <div class="mint-stat-label">Recited by you this week</div>
-          <div class="mint-stat-value" id="my-week-total">0</div>
-          <div class="mint-stat-sub" id="stat-card-aamaal-1">Durood Shareef</div>
-        </div>
-        <div class="mint-stat-card">
-          <div class="mint-stat-label">Recited by you today</div>
-          <div class="mint-stat-value" id="my-today-total">0</div>
-          <div class="mint-stat-sub" id="stat-card-aamaal-2">Durood Shareef</div>
+          <div id="user-monthly-breakdown-container"></div>
         </div>
       </div>
 
-      <button class="worldwide-pill-btn" id="open-stats-btn">
-        <span class="double-arrow">«</span>
-        <span class="worldwide-pill-text" id="bottom-summary-text">
-          View the total number of Durood recited
-        </span>
-        <span class="double-arrow">»</span>
-      </button>
     </div>
 
     <!-- VIEW B: GROUP STATISTICS SCREEN -->
@@ -932,7 +1032,7 @@
       <div class="section-heading">
         <span>📋 Person-Wise Daily Count & Edit</span>
       </div>
-      <div class="admin-card">
+      <div class="admin-card" id="admin-daily-inspector-card">
         <div class="admin-filter-grid">
           <div>
             <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Pick Any Date (IST):</label>
@@ -951,8 +1051,36 @@
         <div id="admin-person-wise-list"></div>
       </div>
 
-      <!-- 2. Weekly & Monthly Summary Table -->
-      <div class="section-heading"><span>📈 Weekly & Monthly Totals</span></div>
+      <!-- 2. INDIVIDUAL MEMBER MONTHLY COUNT VS TARGET -->
+      <div class="section-heading">
+        <span>🎯 Member Monthly Count vs. Target</span>
+      </div>
+      <div class="admin-card">
+        <div class="admin-filter-grid">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Member:</label>
+            <select id="admin-monthly-member-select" class="select-input"></select>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Month:</label>
+            <input type="month" id="admin-monthly-month-picker" class="select-input">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+          <button class="action-btn" id="copy-monthly-whatsapp-btn" style="padding:10px 14px;font-size:12.5px;flex:1;">
+            📲 Copy Monthly Report (WhatsApp)
+          </button>
+          <button class="mini-btn teal" id="export-member-month-csv-btn" style="padding:10px 14px;font-size:12px;">
+            📥 Export Month CSV
+          </button>
+        </div>
+
+        <div id="admin-member-monthly-breakdown"></div>
+      </div>
+
+      <!-- 3. Weekly & Monthly Summary Table -->
+      <div class="section-heading"><span>📈 Circle Weekly & Monthly Totals</span></div>
       <div class="admin-card">
         <table class="report-table">
           <thead>
@@ -966,7 +1094,7 @@
         </table>
       </div>
 
-      <!-- 3. Manage Daily Aamaal -->
+      <!-- 4. Manage Daily Aamaal -->
       <div class="section-heading"><span>📿 Manage Daily Aamaal</span></div>
       <div class="admin-card">
         <div id="admin-aamaal-list"></div>
@@ -992,7 +1120,7 @@
         </div>
       </div>
 
-      <!-- 4. Circle & Family Members (With Rename + Reset Specific User's Data) -->
+      <!-- 5. Circle & Family Members -->
       <div class="section-heading"><span>👥 Circle & Family Members</span></div>
       <div class="admin-card" id="admin-members-list"></div>
     </div>
@@ -1092,9 +1220,11 @@
     let isFirstLogin = false;
     let selectedDateIST = getISTDateString();
 
-    // Admin Inspector Filters
     let adminFilterDate = getISTDateString();
     let adminFilterAamaalId = "";
+    let adminMonthlyMemberId = "";
+    let adminMonthlyMonth = getISTDateString().slice(0, 7);
+    let userMonthlyReportMonth = getISTDateString().slice(0, 7);
 
     function getISTDateString(dateObj = new Date()) {
       return new Intl.DateTimeFormat('en-CA', {
@@ -1116,6 +1246,40 @@
         month: 'short',
         year: 'numeric'
       }).format(dt);
+    }
+
+    function formatMonthYearPretty(monthStr) {
+      if (!monthStr) return "";
+      const [y, m] = monthStr.split("-").map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, 15, 12, 0, 0));
+      return new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        month: 'long',
+        year: 'numeric'
+      }).format(dt);
+    }
+
+    function getMonthDetails(monthStr) {
+      const [year, month] = monthStr.split("-").map(Number);
+      const totalDaysInMonth = new Date(year, month, 0).getDate();
+      const todayIST = getISTDateString();
+      const currentMonthIST = todayIST.slice(0, 7);
+      const todayDayNum = Number(todayIST.slice(8, 10));
+
+      let elapsedDays = totalDaysInMonth;
+      if (monthStr === currentMonthIST) {
+        elapsedDays = todayDayNum;
+      } else if (monthStr > currentMonthIST) {
+        elapsedDays = 0;
+      }
+
+      return {
+        year,
+        month,
+        totalDaysInMonth,
+        elapsedDays,
+        isCurrentMonth: monthStr === currentMonthIST
+      };
     }
 
     function getLastNDaysKeys(n) {
@@ -1155,7 +1319,6 @@
       return num.toLocaleString('en-IN');
     }
 
-    // Smart extractor: If a user is named "Muhammad Afzal", returns "Afzal" instead of "Muhammad"
     function getPreferredGivenName(fullName = "") {
       const parts = fullName.trim().split(/\s+/);
       if (parts.length === 0) return "Member";
@@ -1166,13 +1329,11 @@
       return parts[0];
     }
 
-    // Respects manual renames & apostrophes ("Afzal's Mom") while clarifying bare relations ("Mom", "Wife")
     function getClearMemberName(member, memberMap) {
       if (!member) return "Unknown Member";
       if (member.isPrimary) return member.name;
 
       const raw = (member.name || "").trim();
-      // If Admin or User manually renamed it, or already included "'s" or "’s", NEVER override it!
       if (member.customNameLocked || raw.includes("'s") || raw.includes("’s")) {
         return raw;
       }
@@ -1184,12 +1345,11 @@
       const parentParts = (parent.name || "").toLowerCase().split(/\s+/);
       const rawLower = raw.toLowerCase();
 
-      // If any part of the parent's name is already in the family member's name, keep as-is
       if (parentParts.some(p => p.length > 2 && rawLower.includes(p))) {
         return raw;
       }
 
-      return `${preferredParentName}'s ${raw}`;
+      return `${preferredParentName}'s${raw}`;
     }
 
     function getLeaderboardDisplayName(member, memberMap) {
@@ -1225,6 +1385,8 @@
         loginBtn.classList.add("hidden");
         selectedDateIST = getISTDateString();
         adminFilterDate = getISTDateString();
+        adminMonthlyMonth = getISTDateString().slice(0, 7);
+        userMonthlyReportMonth = getISTDateString().slice(0, 7);
         await bootApp(user);
       } else {
         currentUser = null;
@@ -1289,11 +1451,18 @@
       });
       allAamaalRaw.sort((a, b) => (a.order || 1) - (b.order || 1));
       aamaalList.sort((a, b) => (a.order || 1) - (b.order || 1));
+
+      aamaalList.push({
+        id: "MY_MONTHLY_REPORT",
+        name: "📊 My Monthly Report",
+        isReportTab: true
+      });
+
       if (!activeAamaal || !aamaalList.find(a => a.id === activeAamaal.id)) {
-        activeAamaal = aamaalList[0] || allAamaalRaw[0];
+        activeAamaal = aamaalList[0];
       }
-      if (!adminFilterAamaalId && activeAamaal) {
-        adminFilterAamaalId = activeAamaal.id;
+      if (!adminFilterAamaalId && allAamaalRaw.length > 0) {
+        adminFilterAamaalId = allAamaalRaw[0].id;
       }
       renderAamaalTabs();
     }
@@ -1303,7 +1472,8 @@
       container.innerHTML = "";
       aamaalList.forEach(item => {
         const btn = document.createElement("button");
-        btn.className = "aamaal-tab" + (item.id === activeAamaal.id ? " active" : "");
+        const isReport = item.isReportTab;
+        btn.className = "aamaal-tab" + (isReport ? " report-tab" : "") + (item.id === activeAamaal.id ? " active" : "");
         btn.textContent = item.name;
         btn.addEventListener("click", async () => {
           activeAamaal = item;
@@ -1330,6 +1500,10 @@
 
       activeProfile = myProfiles.find(p => p.id === preferredProfileId) || myProfiles[0];
       selectedPrivacy = activeProfile.privacy || "public";
+
+      if (!adminMonthlyMemberId || !allMembers.find(m => m.id === adminMonthlyMemberId)) {
+        adminMonthlyMemberId = activeProfile ? activeProfile.id : (allMembers[0]?.id || "");
+      }
 
       updateTopBarUI();
     }
@@ -1362,6 +1536,7 @@
           updateTopBarUI();
           renderDailyScreen(true);
           renderStatsScreen();
+          renderUserMonthlyReport();
         });
         menu.appendChild(item);
       });
@@ -1378,9 +1553,12 @@
     function populateAdminDropdowns() {
       const dateInput = document.getElementById("admin-date-picker");
       const aamaalSel = document.getElementById("admin-aamaal-select");
+      const memberSel = document.getElementById("admin-monthly-member-select");
+      const monthInput = document.getElementById("admin-monthly-month-picker");
 
+      const todayIST = getISTDateString();
       dateInput.value = adminFilterDate;
-      dateInput.max = getISTDateString();
+      dateInput.max = todayIST;
 
       aamaalSel.innerHTML = "";
       allAamaalRaw.forEach(a => {
@@ -1390,6 +1568,25 @@
         if (a.id === adminFilterAamaalId) opt.selected = true;
         aamaalSel.appendChild(opt);
       });
+
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
+
+      const sortedMembers = [...allMembers].sort((a, b) =>
+        getClearMemberName(a, memberMap).localeCompare(getClearMemberName(b, memberMap))
+      );
+
+      memberSel.innerHTML = "";
+      sortedMembers.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m.id;
+        opt.textContent = getClearMemberName(m, memberMap);
+        if (m.id === adminMonthlyMemberId) opt.selected = true;
+        memberSel.appendChild(opt);
+      });
+
+      monthInput.value = adminMonthlyMonth;
+      monthInput.max = todayIST.slice(0, 7);
     }
 
     document.getElementById("admin-date-picker").addEventListener("change", (e) => {
@@ -1404,7 +1601,25 @@
       renderAdminScreen();
     });
 
-    // Daily Screen Any-Date Picker
+    document.getElementById("admin-monthly-member-select").addEventListener("change", (e) => {
+      adminMonthlyMemberId = e.target.value;
+      renderAdminMemberMonthlyReport();
+    });
+
+    document.getElementById("admin-monthly-month-picker").addEventListener("change", (e) => {
+      if (e.target.value) {
+        adminMonthlyMonth = e.target.value;
+        renderAdminMemberMonthlyReport();
+      }
+    });
+
+    document.getElementById("user-monthly-month-picker").addEventListener("change", (e) => {
+      if (e.target.value) {
+        userMonthlyReportMonth = e.target.value;
+        renderUserMonthlyReport();
+      }
+    });
+
     document.getElementById("daily-any-date-picker").addEventListener("change", (e) => {
       if (e.target.value) {
         selectedDateIST = e.target.value;
@@ -1422,31 +1637,39 @@
       renderDailyScreen(scrollStripToSelected);
       renderStatsScreen();
       renderAdminScreen();
+      renderUserMonthlyReport();
     }
 
     function renderDailyScreen(scrollStripToSelected = false) {
       if (!activeAamaal || !activeProfile) return;
+
+      const dailyContentArea = document.getElementById("daily-aamaal-content-area");
+      const userReportArea = document.getElementById("user-monthly-report-area");
+
+      if (activeAamaal.isReportTab) {
+        dailyContentArea.classList.add("hidden");
+        userReportArea.classList.remove("hidden");
+        renderUserMonthlyReport();
+        return;
+      } else {
+        dailyContentArea.classList.remove("hidden");
+        userReportArea.classList.add("hidden");
+      }
+
       const todayIST = getISTDateString();
       const last30Days = getISTDaysList(30);
       const last7DaysKeys = getLastNDaysKeys(7);
-
-      const dailyPicker = document.getElementById("daily-any-date-picker");
-      dailyPicker.value = selectedDateIST;
-      dailyPicker.max = todayIST;
-
-      const selectedDayIn30 = last30Days.find(d => d.dateKey === selectedDateIST);
-      const friendlyDateText = (selectedDateIST === todayIST)
-        ? "Today"
-        : (selectedDayIn30 ? selectedDayIn30.prettyLabel : formatAnyDatePretty(selectedDateIST));
+      const selectedDayObj = last30Days.find(d => d.dateKey === selectedDateIST) || last30Days[last30Days.length - 1];
 
       document.getElementById("current-aamaal-title").textContent = activeAamaal.name;
       document.getElementById("current-aamaal-arabic").textContent = activeAamaal.arabic;
       
+      const friendlyDateText = selectedDayObj.isToday ? "Today" : selectedDayObj.prettyLabel;
       document.getElementById("active-date-banner").textContent = `📅 Logging for: ${friendlyDateText}`;
       document.getElementById("selected-date-label").textContent = friendlyDateText;
 
       document.getElementById("target-question-text").textContent =
-        `Have you recited your daily target of ${activeAamaal.target} times ${activeAamaal.name} on ${friendlyDateText}?`;
+        `Have you recited your daily target of ${activeAamaal.target} times ${activeAamaal.name} on${friendlyDateText}?`;
       document.getElementById("stat-card-aamaal-1").textContent = activeAamaal.name;
       document.getElementById("stat-card-aamaal-2").textContent = activeAamaal.name;
 
@@ -1593,7 +1816,7 @@
     });
 
     function renderStatsScreen() {
-      if (!activeAamaal || !activeProfile) return;
+      if (!activeAamaal || activeAamaal.isReportTab || !activeProfile) return;
       const todayIST = getISTDateString();
       const last7Days = getISTDaysList(7);
       const weekDateKeys = new Set(last7Days.map(d => d.dateKey));
@@ -1651,8 +1874,7 @@
           row.innerHTML = `
             <div class="leader-top-line">
               <div class="leader-left">
-                <div class="rank-circle ${rankClass}">${idx + 1}</div>
-                ${INDIA_FLAG_SVG}
+                <div class="rank-circle ${rankClass}">${idx + 1}</div>${INDIA_FLAG_SVG}
                 <div class="leader-name">${item.name}</div>
               </div>
               <div class="leader-score">${item.score.toLocaleString('en-IN')}</div>
@@ -1698,6 +1920,262 @@
       });
     }
 
+    // --- SHARED HELPER TO BUILD RICH MONTHLY BREAKDOWN CARDS FOR ANY MEMBER ---
+    function buildMonthlyBreakdownHTML(member, targetMonthStr, containerEl, isUserReport = false) {
+      containerEl.innerHTML = "";
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
+
+      const clearName = getClearMemberName(member, memberMap);
+      const mInfo = getMonthDetails(targetMonthStr);
+      const prettyMonth = formatMonthYearPretty(targetMonthStr);
+
+      const headerBanner = document.createElement("div");
+      headerBanner.style.cssText = "background:#ecfdf5;border:1px solid #a7f3d0;padding:10px 12px;border-radius:14px;margin-bottom:12px;font-size:12.5px;color:#065f46;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;";
+      headerBanner.innerHTML = `
+        <span>👤 <strong>${clearName}</strong> •${prettyMonth}</span>
+        <span>${mInfo.isCurrentMonth ? `Day ${mInfo.elapsedDays} of ${mInfo.totalDaysInMonth}` : `${mInfo.totalDaysInMonth} Days`}</span>
+      `;
+      containerEl.appendChild(headerBanner);
+
+      allAamaalRaw.forEach(a => {
+        const dailyTarget = Number(a.target || 0);
+        const fullMonthTarget = dailyTarget * mInfo.totalDaysInMonth;
+        const targetTillNow = dailyTarget * mInfo.elapsedDays;
+        const comparisonTarget = mInfo.isCurrentMonth ? targetTillNow : fullMonthTarget;
+
+        const memberMonthLogs = allLogsForAamaal.filter(
+          l => l.memberId === member.id && l.aamaalId === a.id && (l.dateKey || "").startsWith(targetMonthStr)
+        );
+
+        const dayCountMap = {};
+        let actualCount = 0;
+        memberMonthLogs.forEach(l => {
+          const c = Number(l.count || 0);
+          if (c > 0) {
+            dayCountMap[l.dateKey] = c;
+            actualCount += c;
+          }
+        });
+
+        const daysCompleted = Object.keys(dayCountMap).length;
+        const daysMissed = Math.max(mInfo.elapsedDays - daysCompleted, 0);
+        const pct = comparisonTarget > 0 ? Math.round((actualCount / comparisonTarget) * 100) : 0;
+        const barWidth = Math.min(Math.max(pct, 4), 100);
+        const diff = actualCount - comparisonTarget;
+
+        let diffBadge = "";
+        if (diff >= 0) {
+          diffBadge = `<span class="pill-tag ahead">✓ +${diff.toLocaleString('en-IN')} Ahead (${pct}%)</span>`;
+        } else {
+          diffBadge = `<span class="pill-tag behind">${Math.abs(diff).toLocaleString('en-IN')} Remaining (${pct}%)</span>`;
+        }
+
+        const box = document.createElement("div");
+        box.className = "monthly-aamaal-box";
+
+        let daysGridHtml = "";
+        for (let d = 1; d <= mInfo.totalDaysInMonth; d++) {
+          const dayStr = String(d).padStart(2, "0");
+          const fullDateKey = `${targetMonthStr}-${dayStr}`;
+          const c = dayCountMap[fullDateKey] || 0;
+          let stateClass = "future";
+          if (d <= mInfo.elapsedDays) {
+            stateClass = c > 0 ? "done" : "missed";
+          } else if (c > 0) {
+            stateClass = "done";
+          }
+          daysGridHtml += `<div class="mini-cal-day ${stateClass}" data-date="${fullDateKey}" title="${fullDateKey}: ${c} recited">${d}</div>`;
+        }
+
+        box.innerHTML = `
+          <div class="admin-row-top">
+            <div>
+              <div style="font-weight:800;font-size:14.5px;color:#0f172a;">${a.name}</div>
+              <div style="font-size:11px;color:#64748b;">Daily Target: ${dailyTarget.toLocaleString('en-IN')}/day</div>
+            </div>
+            ${diffBadge}
+          </div>
+
+          <div class="monthly-metrics-grid">
+            <div class="monthly-metric-item">
+              <div class="monthly-metric-val" style="color:#0f766e;">${actualCount.toLocaleString('en-IN')}</div>
+              <div class="monthly-metric-lbl">Actual Recited</div>
+            </div>
+            <div class="monthly-metric-item">
+              <div class="monthly-metric-val">${comparisonTarget.toLocaleString('en-IN')}</div>
+              <div class="monthly-metric-lbl">${mInfo.isCurrentMonth ? `Target (${mInfo.elapsedDays}d)` : `Month Target (${mInfo.totalDaysInMonth}d)`}</div>
+            </div>
+            <div class="monthly-metric-item">
+              <div class="monthly-metric-val">${daysCompleted}/${mInfo.elapsedDays}</div>
+              <div class="monthly-metric-lbl">Days Done (${daysMissed} missed)</div>
+            </div>
+          </div>
+
+          ${mInfo.isCurrentMonth ? `<div style="font-size:11px;color:#64748b;margin-bottom:6px;display:flex;justify-content:space-between;">
+            <span>Full ${mInfo.totalDaysInMonth}-Day Month Target: <strong>${fullMonthTarget.toLocaleString('en-IN')}</strong></span>
+            <span>Month Progress: <strong>${Math.round((actualCount / fullMonthTarget) * 100)}%</strong></span>
+          </div>` : ''}
+
+          <div class="leader-bar-track" style="height:7px;margin-bottom:8px;">
+            <div class="leader-bar-fill" style="width:${barWidth}%;"></div>
+          </div>
+
+          <div style="font-size:10.5px;color:#64748b;font-weight:600;">
+            ${isUserReport ? 'Tap any day below to jump to that date & log/edit:' : 'Tap any day below to jump & edit in Admin Inspector:'}
+          </div>
+          <div class="mini-month-cal-grid">${daysGridHtml}</div>
+        `;
+
+        box.querySelectorAll(".mini-cal-day").forEach(dayEl => {
+          dayEl.addEventListener("click", () => {
+            const clickedDate = dayEl.dataset.date;
+            if (!clickedDate) return;
+            if (isUserReport) {
+              selectedDateIST = clickedDate;
+              activeAamaal = a;
+              renderAamaalTabs();
+              loadLogsAndRender(false);
+              window.scrollTo(0, 0);
+            } else {
+              adminFilterDate = clickedDate;
+              adminFilterAamaalId = a.id;
+              document.getElementById("admin-date-picker").value = clickedDate;
+              document.getElementById("admin-aamaal-select").value = a.id;
+              renderAdminScreen();
+              document.getElementById("admin-daily-inspector-card").scrollIntoView({ behavior: "smooth" });
+            }
+          });
+        });
+
+        containerEl.appendChild(box);
+      });
+    }
+
+    // Render User Monthly Report Tab
+    function renderUserMonthlyReport() {
+      const container = document.getElementById("user-monthly-breakdown-container");
+      const monthPicker = document.getElementById("user-monthly-month-picker");
+      if (!container || !monthPicker) return;
+
+      monthPicker.value = userMonthlyReportMonth;
+      monthPicker.max = getISTDateString().slice(0, 7);
+
+      if (activeProfile) {
+        buildMonthlyBreakdownHTML(activeProfile, userMonthlyReportMonth, container, true);
+      }
+    }
+
+    document.getElementById("user-monthly-month-picker").addEventListener("change", (e) => {
+      if (e.target.value) {
+        userMonthlyReportMonth = e.target.value;
+        renderUserMonthlyReport();
+      }
+    });
+
+    // Render Admin Member Monthly Report
+    function renderAdminMemberMonthlyReport() {
+      const container = document.getElementById("admin-member-monthly-breakdown");
+      const monthInput = document.getElementById("admin-monthly-month-picker");
+      if (!container || !monthInput) return;
+
+      monthInput.value = adminMonthlyMonth;
+      monthInput.max = getISTDateString().slice(0, 7);
+
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
+      const member = memberMap[adminMonthlyMemberId] || allMembers[0];
+      if (!member) {
+        container.innerHTML = `<div style="text-align:center;color:#94a3b8;font-size:13px;">No member selected.</div>`;
+        return;
+      }
+
+      buildMonthlyBreakdownHTML(member, adminMonthlyMonth, container, false);
+    }
+
+    // Copy Admin Member Monthly WhatsApp Report
+    document.getElementById("copy-monthly-whatsapp-btn").addEventListener("click", async () => {
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
+      const member = memberMap[adminMonthlyMemberId] || allMembers[0];
+      if (!member) return;
+
+      const clearName = getClearMemberName(member, memberMap);
+      const mInfo = getMonthDetails(adminMonthlyMonth);
+      const prettyMonth = formatMonthYearPretty(adminMonthlyMonth);
+
+      let lines = [];
+      lines.push(`🌙 *Islaah Foundation's Aamaal Circle*`);
+      lines.push(`📊 *Monthly Progress Report*`);
+      lines.push(`👤 *Member:* ${clearName}`);
+      lines.push(`🗓️ *Month:* ${prettyMonth} (${mInfo.isCurrentMonth ? `${mInfo.elapsedDays} days elapsed` : `${mInfo.totalDaysInMonth} days`})`);
+      lines.push(`────────────────────`);
+
+      allAamaalRaw.forEach(a => {
+        const dailyTarget = Number(a.target || 0);
+        const comparisonTarget = dailyTarget * mInfo.elapsedDays;
+        const fullMonthTarget = dailyTarget * mInfo.totalDaysInMonth;
+
+        const logs = allLogsForAamaal.filter(
+          l => l.memberId === member.id && l.aamaalId === a.id && (l.dateKey || "").startsWith(adminMonthlyMonth)
+        );
+        const actual = logs.reduce((s, l) => s + Number(l.count || 0), 0);
+        const daysDone = logs.filter(l => Number(l.count || 0) > 0).length;
+        const daysMissed = Math.max(mInfo.elapsedDays - daysDone, 0);
+        const pct = comparisonTarget > 0 ? Math.round((actual / comparisonTarget) * 100) : 0;
+
+        lines.push(`📿 *${a.name}*`);
+        lines.push(`• Recited: *${actual.toLocaleString('en-IN')}* / ${comparisonTarget.toLocaleString('en-IN')} (${pct}%)`);
+        if (mInfo.isCurrentMonth) {
+          lines.push(`• Full Month Target: ${fullMonthTarget.toLocaleString('en-IN')}`);
+        }
+        lines.push(`• Consistency: ${daysDone}/${mInfo.elapsedDays} days done (${daysMissed} missed)`);
+        lines.push(``);
+      });
+
+      const textToCopy = lines.join("\n").trim();
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        alert(`✅ Monthly Report for ${clearName} copied! Ready to paste in WhatsApp.`);
+      } catch (e) {
+        prompt("Copy the Monthly Report below:", textToCopy);
+      }
+    });
+
+    // Export Selected Member's Monthly Breakdown to CSV
+    document.getElementById("export-member-month-csv-btn").addEventListener("click", () => {
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
+      const member = memberMap[adminMonthlyMemberId] || allMembers[0];
+      if (!member) return;
+
+      const clearName = getClearMemberName(member, memberMap);
+      const mInfo = getMonthDetails(adminMonthlyMonth);
+
+      let csvRows = [];
+      csvRows.push(["Date (IST)", "Member Name", "Aamaal Name", "Daily Target", "Actual Recited", "Status"].join(","));
+
+      for (let d = 1; d <= mInfo.totalDaysInMonth; d++) {
+        const dayStr = String(d).padStart(2, "0");
+        const dateKey = `${adminMonthlyMonth}-${dayStr}`;
+        allAamaalRaw.forEach(a => {
+          const log = allLogsForAamaal.find(l => l.memberId === member.id && l.aamaalId === a.id && l.dateKey === dateKey);
+          const actual = log ? Number(log.count || 0) : 0;
+          const status = actual >= a.target ? "Target Met" : (actual > 0 ? "Partial" : (d <= mInfo.elapsedDays ? "Missed" : "Upcoming"));
+          csvRows.push(`"${dateKey}","${clearName.replace(/"/g, '""')}","${a.name.replace(/"/g, '""')}",${a.target},${actual},"${status}"`);
+        });
+      }
+
+      const blob = new Blob([csvRows.join("\r\n")], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `${clearName.replace(/\s+/g, '_')}_${adminMonthlyMonth}_report.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
     // --- ADMIN SCREEN ---
     function renderAdminScreen() {
       const keys7 = getLastNDaysKeys(7);
@@ -1710,7 +2188,6 @@
       }
       const targetAamaal = allAamaalRaw.find(a => a.id === adminFilterAamaalId) || allAamaalRaw[0];
 
-      // 1. Person-Wise Daily List for Any Picked Date & Aamaal
       const personWiseBox = document.getElementById("admin-person-wise-list");
       personWiseBox.innerHTML = "";
 
@@ -1801,7 +2278,8 @@
         });
       }
 
-      // 2. Weekly & Monthly Reports Table
+      renderAdminMemberMonthlyReport();
+
       const reportTbody = document.getElementById("admin-report-tbody");
       reportTbody.innerHTML = "";
       allAamaalRaw.forEach(a => {
@@ -1817,7 +2295,6 @@
         reportTbody.appendChild(tr);
       });
 
-      // 3. Manage Aamaal List
       const aamaalAdminList = document.getElementById("admin-aamaal-list");
       aamaalAdminList.innerHTML = "";
       allAamaalRaw.forEach(a => {
@@ -1864,7 +2341,6 @@
         aamaalAdminList.appendChild(div);
       });
 
-      // 4. Circle & Family Members List (With Working Rename + Reset Specific User's Data)
       const memBox = document.getElementById("admin-members-list");
       memBox.innerHTML = "";
       allMembers.forEach(m => {
@@ -1894,7 +2370,6 @@
           </div>
         `;
 
-        // Rename Member (Locks custom name so "Afzal's Mom" is never overwritten!)
         row.querySelector(".rename-mem-btn").addEventListener("click", async () => {
           const newName = prompt("Enter the exact name you want displayed (e.g., Afzal's Mom):", clearName);
           if (!newName || !newName.trim()) return;
@@ -1903,12 +2378,12 @@
             customNameLocked: true
           });
           await loadMembersAndProfiles(activeProfile.id);
+          populateAdminDropdowns();
           renderDailyScreen(false);
           renderStatsScreen();
           renderAdminScreen();
         });
 
-        // Reset ONLY this specific user's recitation logs
         row.querySelector(".reset-user-logs-btn").addEventListener("click", async () => {
           const userLogs = allLogsForAamaal.filter(l => l.memberId === m.id);
           if (userLogs.length === 0) {
@@ -1941,6 +2416,7 @@
             }
             await deleteDoc(doc(db, "members", m.id));
             await loadMembersAndProfiles(currentUser.uid);
+            populateAdminDropdowns();
             await loadLogsAndRender(false);
           });
         }
@@ -2132,7 +2608,6 @@
     document.getElementById("open-settings-btn").addEventListener("click", () => openSettingsModal());
     document.getElementById("close-settings-btn").addEventListener("click", () => settingsModal.classList.add("hidden"));
 
-    // Smart Family Member Naming: Uses "Afzal" instead of "Muhammad" for "Muhammad Afzal", or keeps custom "'s" names!
     document.getElementById("add-family-btn").addEventListener("click", async () => {
       const input = document.getElementById("new-family-name");
       const rawName = input.value.trim();
@@ -2159,6 +2634,7 @@
       });
       input.value = "";
       await loadMembersAndProfiles(famId);
+      populateAdminDropdowns();
       highlightPrivacyOption(activeProfile.privacy);
       alert(`"${formattedName}" added!`);
     });
