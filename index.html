@@ -306,7 +306,7 @@
       cursor: pointer;
     }
 
-    /* SLIDABLE 30-DAY MONTH STRIP */
+    /* SLIDABLE 30-DAY STRIP + FULL CALENDAR PICKER BAR */
     .week-strip-header {
       font-size: 12px;
       font-weight: 700;
@@ -315,7 +315,25 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
       padding: 0 2px;
+    }
+    .date-picker-mini-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .daily-date-picker {
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--teal-dark);
+      padding: 4px 8px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
     }
     .month-strip {
       display: flex;
@@ -621,6 +639,11 @@
       background: #fef2f2;
       color: #b91c1c;
     }
+    .mini-btn.warning {
+      border-color: #fde68a;
+      background: #fffbeb;
+      color: #b45309;
+    }
     .mini-btn.teal {
       border-color: #99f6e4;
       background: #f0fdfa;
@@ -791,10 +814,13 @@
         </div>
       </div>
 
-      <!-- 30-DAY SLIDING MONTH STRIP -->
+      <!-- 30-DAY SLIDING STRIP + ANY-DATE CALENDAR PICKER -->
       <div class="week-strip-header">
-        <span>◀ Slide 30 days & tap any date:</span>
-        <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;">Jump to Today ▶</span>
+        <span>◀ Slide 30d or pick any date:</span>
+        <div class="date-picker-mini-wrap">
+          <input type="date" id="daily-any-date-picker" class="daily-date-picker" title="Pick any date">
+          <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;">Today ▶</span>
+        </div>
       </div>
       <div class="month-strip" id="week-strip-container"></div>
 
@@ -902,15 +928,15 @@
         </div>
       </div>
 
-      <!-- 1. Person-Wise Daily Count Inspector + Edit/Delete + WhatsApp Report -->
+      <!-- 1. Person-Wise Daily Count Inspector (WITH ANY-DATE PICKER) -->
       <div class="section-heading">
         <span>📋 Person-Wise Daily Count & Edit</span>
       </div>
       <div class="admin-card">
         <div class="admin-filter-grid">
           <div>
-            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Date (IST):</label>
-            <select id="admin-date-select" class="select-input"></select>
+            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Pick Any Date (IST):</label>
+            <input type="date" id="admin-date-picker" class="select-input">
           </div>
           <div>
             <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Aamaal:</label>
@@ -966,7 +992,7 @@
         </div>
       </div>
 
-      <!-- 4. Circle & Family Members -->
+      <!-- 4. Circle & Family Members (With Rename + Reset Specific User's Data) -->
       <div class="section-heading"><span>👥 Circle & Family Members</span></div>
       <div class="admin-card" id="admin-members-list"></div>
     </div>
@@ -986,10 +1012,10 @@
 
       <div id="family-add-section">
         <label style="font-size:12px;font-weight:700;color:#475569;">
-          Add a Family Member (Your first name will be attached automatically, e.g. "Ubaid's Mom"):
+          Add a Family Member (e.g., type "Mom" or "Afzal's Mom"):
         </label>
         <div class="input-row">
-          <input type="text" id="new-family-name" class="text-input" placeholder="e.g., Mom, Wife, Dad, Brother">
+          <input type="text" id="new-family-name" class="text-input" placeholder="e.g., Mom, Wife, or Afzal's Mom">
           <button class="small-btn" id="add-family-btn">+ Add</button>
         </div>
         <div class="divider"></div>
@@ -1079,6 +1105,19 @@
       }).format(dateObj);
     }
 
+    function formatAnyDatePretty(dateKey) {
+      if (!dateKey) return "";
+      const [y, m, d] = dateKey.split("-").map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+      return new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      }).format(dt);
+    }
+
     function getLastNDaysKeys(n) {
       const keys = new Set();
       const now = new Date();
@@ -1116,18 +1155,41 @@
       return num.toLocaleString('en-IN');
     }
 
-    // Helper: Makes sure family members like "Mom" or "Wife" clearly show whose family member they are
+    // Smart extractor: If a user is named "Muhammad Afzal", returns "Afzal" instead of "Muhammad"
+    function getPreferredGivenName(fullName = "") {
+      const parts = fullName.trim().split(/\s+/);
+      if (parts.length === 0) return "Member";
+      const honorificPrefixes = ["muhammad", "mohammad", "mohammed", "mohd", "md", "md.", "syed", "sayed", "shaikh", "sheikh", "hafiz", "molana", "maulana"];
+      if (parts.length > 1 && honorificPrefixes.includes(parts[0].toLowerCase())) {
+        return parts[1];
+      }
+      return parts[0];
+    }
+
+    // Respects manual renames & apostrophes ("Afzal's Mom") while clarifying bare relations ("Mom", "Wife")
     function getClearMemberName(member, memberMap) {
       if (!member) return "Unknown Member";
       if (member.isPrimary) return member.name;
-      const parent = memberMap[member.parentUid];
-      if (!parent) return member.name;
-      const parentFirst = (parent.name || "Member").split(" ")[0];
-      // If the name already includes the parent's first name (e.g. "Ubaid's Mom"), return as-is
-      if (member.name.toLowerCase().includes(parentFirst.toLowerCase())) {
-        return member.name;
+
+      const raw = (member.name || "").trim();
+      // If Admin or User manually renamed it, or already included "'s" or "’s", NEVER override it!
+      if (member.customNameLocked || raw.includes("'s") || raw.includes("’s")) {
+        return raw;
       }
-      return `${parentFirst}'s ${member.name}`;
+
+      const parent = memberMap[member.parentUid];
+      if (!parent) return raw;
+
+      const preferredParentName = getPreferredGivenName(parent.name);
+      const parentParts = (parent.name || "").toLowerCase().split(/\s+/);
+      const rawLower = raw.toLowerCase();
+
+      // If any part of the parent's name is already in the family member's name, keep as-is
+      if (parentParts.some(p => p.length > 2 && rawLower.includes(p))) {
+        return raw;
+      }
+
+      return `${preferredParentName}'s ${raw}`;
     }
 
     function getLeaderboardDisplayName(member, memberMap) {
@@ -1314,18 +1376,11 @@
     document.addEventListener("click", () => { quickMemberMenu.classList.add("hidden"); });
 
     function populateAdminDropdowns() {
-      const dateSel = document.getElementById("admin-date-select");
+      const dateInput = document.getElementById("admin-date-picker");
       const aamaalSel = document.getElementById("admin-aamaal-select");
 
-      const days30 = getISTDaysList(30).reverse(); // Newest (Today) first
-      dateSel.innerHTML = "";
-      days30.forEach(d => {
-        const opt = document.createElement("option");
-        opt.value = d.dateKey;
-        opt.textContent = d.isToday ? `Today (${d.prettyLabel})` : `${d.prettyLabel} (${d.dateKey})`;
-        if (d.dateKey === adminFilterDate) opt.selected = true;
-        dateSel.appendChild(opt);
-      });
+      dateInput.value = adminFilterDate;
+      dateInput.max = getISTDateString();
 
       aamaalSel.innerHTML = "";
       allAamaalRaw.forEach(a => {
@@ -1337,14 +1392,24 @@
       });
     }
 
-    document.getElementById("admin-date-select").addEventListener("change", (e) => {
-      adminFilterDate = e.target.value;
-      renderAdminScreen();
+    document.getElementById("admin-date-picker").addEventListener("change", (e) => {
+      if (e.target.value) {
+        adminFilterDate = e.target.value;
+        renderAdminScreen();
+      }
     });
 
     document.getElementById("admin-aamaal-select").addEventListener("change", (e) => {
       adminFilterAamaalId = e.target.value;
       renderAdminScreen();
+    });
+
+    // Daily Screen Any-Date Picker
+    document.getElementById("daily-any-date-picker").addEventListener("change", (e) => {
+      if (e.target.value) {
+        selectedDateIST = e.target.value;
+        renderDailyScreen(true);
+      }
     });
 
     async function loadLogsAndRender(scrollStripToSelected = false) {
@@ -1364,12 +1429,19 @@
       const todayIST = getISTDateString();
       const last30Days = getISTDaysList(30);
       const last7DaysKeys = getLastNDaysKeys(7);
-      const selectedDayObj = last30Days.find(d => d.dateKey === selectedDateIST) || last30Days[last30Days.length - 1];
+
+      const dailyPicker = document.getElementById("daily-any-date-picker");
+      dailyPicker.value = selectedDateIST;
+      dailyPicker.max = todayIST;
+
+      const selectedDayIn30 = last30Days.find(d => d.dateKey === selectedDateIST);
+      const friendlyDateText = (selectedDateIST === todayIST)
+        ? "Today"
+        : (selectedDayIn30 ? selectedDayIn30.prettyLabel : formatAnyDatePretty(selectedDateIST));
 
       document.getElementById("current-aamaal-title").textContent = activeAamaal.name;
       document.getElementById("current-aamaal-arabic").textContent = activeAamaal.arabic;
       
-      const friendlyDateText = selectedDayObj.isToday ? "Today" : selectedDayObj.prettyLabel;
       document.getElementById("active-date-banner").textContent = `📅 Logging for: ${friendlyDateText}`;
       document.getElementById("selected-date-label").textContent = friendlyDateText;
 
@@ -1626,7 +1698,7 @@
       });
     }
 
-    // --- ADMIN SCREEN: FULL PERSON-WISE INSPECTOR, EDIT/DELETE ANY COUNT, WHATSAPP REPORT ---
+    // --- ADMIN SCREEN ---
     function renderAdminScreen() {
       const keys7 = getLastNDaysKeys(7);
       const keys30 = getLastNDaysKeys(30);
@@ -1638,7 +1710,7 @@
       }
       const targetAamaal = allAamaalRaw.find(a => a.id === adminFilterAamaalId) || allAamaalRaw[0];
 
-      // 1. Person-Wise Daily List for Selected Date & Aamaal
+      // 1. Person-Wise Daily List for Any Picked Date & Aamaal
       const personWiseBox = document.getElementById("admin-person-wise-list");
       personWiseBox.innerHTML = "";
 
@@ -1652,14 +1724,13 @@
         const totalDateCount = logsForSelectedDate.reduce((s, l) => s + Number(l.count || 0), 0);
 
         const summaryBanner = document.createElement("div");
-        summaryBanner.style.cssText = "background:#f8fafc;padding:10px 12px;border-radius:12px;margin-bottom:10px;font-size:12.5px;font-weight:700;color:#0f766e;display:flex;justify-content:space-between;";
+        summaryBanner.style.cssText = "background:#f8fafc;padding:10px 12px;border-radius:12px;margin-bottom:10px;font-size:12.5px;font-weight:700;color:#0f766e;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;";
         summaryBanner.innerHTML = `
-          <span>Done: ${logsForSelectedDate.length} / ${allMembers.length} members</span>
-          <span>Total: ${totalDateCount.toLocaleString('en-IN')}</span>
+          <span>📅 ${formatAnyDatePretty(adminFilterDate)}</span>
+          <span>Done: ${logsForSelectedDate.length}/${allMembers.length} • Total: ${totalDateCount.toLocaleString('en-IN')}</span>
         `;
         personWiseBox.appendChild(summaryBanner);
 
-        // Sort members: completed first, then alphabetically
         const sortedMembers = [...allMembers].sort((a, b) => {
           const cA = logByMember[a.id] ? logByMember[a.id].count : 0;
           const cB = logByMember[b.id] ? logByMember[b.id].count : 0;
@@ -1692,7 +1763,6 @@
             </div>
           `;
 
-          // Admin Edit / Log someone else's count
           row.querySelector(".admin-edit-log-btn").addEventListener("click", async () => {
             const defaultVal = count > 0 ? count : targetAamaal.target;
             const input = prompt(`Enter ${targetAamaal.name} count for ${clearName} on ${adminFilterDate}:`, defaultVal);
@@ -1717,7 +1787,6 @@
             await loadLogsAndRender(false);
           });
 
-          // Admin Delete someone else's count
           const delLogBtn = row.querySelector(".admin-del-log-btn");
           if (delLogBtn) {
             delLogBtn.addEventListener("click", async () => {
@@ -1795,13 +1864,15 @@
         aamaalAdminList.appendChild(div);
       });
 
-      // 4. Circle & Family Members List (With Rename Option)
+      // 4. Circle & Family Members List (With Working Rename + Reset Specific User's Data)
       const memBox = document.getElementById("admin-members-list");
       memBox.innerHTML = "";
       allMembers.forEach(m => {
         const clearName = getClearMemberName(m, memberMap);
         const parent = memberMap[m.parentUid];
         const isAdminRole = m.role === "admin";
+        const userLogCount = allLogsForAamaal.filter(l => l.memberId === m.id).length;
+
         const row = document.createElement("div");
         row.className = "admin-sub-row";
         row.innerHTML = `
@@ -1811,24 +1882,46 @@
                 ${clearName} ${isAdminRole ? '👑' : ''}
               </div>
               <div style="font-size:11.5px;color:#64748b;">
-                ${m.isPrimary ? 'Core Member' : `Family Member (Added by ${parent ? parent.name : 'Member'})`} • Privacy: <strong style="text-transform:capitalize;">${m.privacy}</strong>
+                ${m.isPrimary ? 'Core Member' : `Family (via ${parent ? parent.name : 'Member'})`} • Privacy: <strong style="text-transform:capitalize;">${m.privacy}</strong> • Logs: <strong>${userLogCount}</strong>
               </div>
             </div>
-            <div class="admin-btn-group">
-              <button class="mini-btn rename-mem-btn">✏️ Rename</button>
-              ${m.isPrimary && m.id !== currentUser.uid ? `<button class="mini-btn teal role-btn">${isAdminRole ? 'Remove Admin' : 'Make Admin'}</button>` : ''}
-              ${!m.isPrimary ? `<button class="mini-btn danger del-mem-btn">Remove</button>` : ''}
-            </div>
+          </div>
+          <div class="admin-btn-group" style="margin-top:4px;">
+            <button class="mini-btn rename-mem-btn">✏️ Rename</button>
+            <button class="mini-btn warning reset-user-logs-btn">🔄 Reset Data (${userLogCount})</button>
+            ${m.isPrimary && m.id !== currentUser.uid ? `<button class="mini-btn teal role-btn">${isAdminRole ? 'Remove Admin' : 'Make Admin'}</button>` : ''}
+            ${!m.isPrimary ? `<button class="mini-btn danger del-mem-btn">🗑️ Remove Member</button>` : ''}
           </div>
         `;
+
+        // Rename Member (Locks custom name so "Afzal's Mom" is never overwritten!)
         row.querySelector(".rename-mem-btn").addEventListener("click", async () => {
-          const newName = prompt("Enter updated name for this member:", clearName);
+          const newName = prompt("Enter the exact name you want displayed (e.g., Afzal's Mom):", clearName);
           if (!newName || !newName.trim()) return;
-          await updateDoc(doc(db, "members", m.id), { name: newName.trim() });
+          await updateDoc(doc(db, "members", m.id), {
+            name: newName.trim(),
+            customNameLocked: true
+          });
           await loadMembersAndProfiles(activeProfile.id);
+          renderDailyScreen(false);
           renderStatsScreen();
           renderAdminScreen();
         });
+
+        // Reset ONLY this specific user's recitation logs
+        row.querySelector(".reset-user-logs-btn").addEventListener("click", async () => {
+          const userLogs = allLogsForAamaal.filter(l => l.memberId === m.id);
+          if (userLogs.length === 0) {
+            return alert(`${clearName} has no recitation logs to reset.`);
+          }
+          if (!confirm(`⚠️ Reset ALL ${userLogs.length} recitation logs for "${clearName}"? (Other members' data will NOT be touched).`)) return;
+          for (const logItem of userLogs) {
+            await deleteDoc(doc(db, "logs", logItem.id));
+          }
+          alert(`All recitation logs for "${clearName}" have been reset to 0.`);
+          await loadLogsAndRender(false);
+        });
+
         const roleBtn = row.querySelector(".role-btn");
         if (roleBtn) {
           roleBtn.addEventListener("click", async () => {
@@ -1837,13 +1930,18 @@
             renderAdminScreen();
           });
         }
+
         const delBtn = row.querySelector(".del-mem-btn");
         if (delBtn) {
           delBtn.addEventListener("click", async () => {
-            if (!confirm(`Remove "${clearName}"?`)) return;
+            if (!confirm(`Remove member profile "${clearName}" and all their logs?`)) return;
+            const userLogs = allLogsForAamaal.filter(l => l.memberId === m.id);
+            for (const logItem of userLogs) {
+              await deleteDoc(doc(db, "logs", logItem.id));
+            }
             await deleteDoc(doc(db, "members", m.id));
             await loadMembersAndProfiles(currentUser.uid);
-            renderAdminScreen();
+            await loadLogsAndRender(false);
           });
         }
         memBox.appendChild(row);
@@ -1868,7 +1966,7 @@
       let lines = [];
       lines.push(`🌙 *Islaah Foundation's Aamaal Circle*`);
       lines.push(`📿 *Aamaal:* ${targetAamaal.name}`);
-      lines.push(`📅 *Date:* ${adminFilterDate}`);
+      lines.push(`📅 *Date:* ${formatAnyDatePretty(adminFilterDate)}`);
       lines.push(`────────────────────`);
 
       allMembers.forEach(m => {
@@ -2034,17 +2132,18 @@
     document.getElementById("open-settings-btn").addEventListener("click", () => openSettingsModal());
     document.getElementById("close-settings-btn").addEventListener("click", () => settingsModal.classList.add("hidden"));
 
-    // Add Family Member -> Automatically prefixes Primary Member's First Name (e.g. "Ubaid's Mom")
+    // Smart Family Member Naming: Uses "Afzal" instead of "Muhammad" for "Muhammad Afzal", or keeps custom "'s" names!
     document.getElementById("add-family-btn").addEventListener("click", async () => {
       const input = document.getElementById("new-family-name");
       const rawName = input.value.trim();
       if (!rawName) return alert("Please enter a family member's name or relation (e.g., Mom, Wife).");
 
       const primary = myProfiles.find(p => p.isPrimary) || { name: currentUser.displayName || "Member" };
-      const firstName = (primary.name || "Member").split(" ")[0];
-      const formattedName = rawName.toLowerCase().includes(firstName.toLowerCase())
+      const preferredName = getPreferredGivenName(primary.name);
+      const hasCustomApostrophe = rawName.includes("'s") || rawName.includes("’s");
+      const formattedName = (hasCustomApostrophe || rawName.toLowerCase().includes(preferredName.toLowerCase()))
         ? rawName
-        : `${firstName}'s ${rawName}`;
+        : `${preferredName}'s ${rawName}`;
 
       const famId = currentUser.uid + "_fam_" + Date.now();
       await setDoc(doc(db, "members", famId), {
@@ -2052,6 +2151,7 @@
         parentUid: currentUser.uid,
         isPrimary: false,
         name: formattedName,
+        customNameLocked: true,
         email: "",
         privacy: "public",
         role: "family",
