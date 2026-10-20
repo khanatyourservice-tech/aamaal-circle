@@ -190,16 +190,6 @@
       color: #ffffff;
       border-color: var(--teal-dark);
     }
-    .aamaal-tab.report-tab {
-      background: #e0f2fe;
-      color: #0369a1;
-      border-color: #bae6fd;
-    }
-    .aamaal-tab.report-tab.active {
-      background: #0284c7;
-      color: #ffffff;
-      border-color: #0284c7;
-    }
 
     /* DAILY SCREEN */
     .aamaal-heading-title {
@@ -427,7 +417,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
     .mint-stat-card {
       background: linear-gradient(145deg, #d8ede8 0%, #e3f3ef 100%);
@@ -439,7 +429,28 @@
     .mint-stat-value { font-size: 26px; font-weight: 800; color: #1e293b; margin-bottom: 4px; }
     .mint-stat-sub { font-size: 11.5px; color: #64748b; font-weight: 500; }
 
-    /* BOTTOM BUTTON */
+    /* PROMINENT USER MONTHLY REPORT BUTTON + BOTTOM SUMMARY BUTTON */
+    .my-monthly-report-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #072c28 0%, #0d524a 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(7, 44, 40, 0.16);
+      margin-bottom: 10px;
+    }
+    .my-monthly-report-text {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #ecfccb;
+      text-align: center;
+      flex: 1;
+    }
     .worldwide-pill-btn {
       width: 100%;
       background: #ffffff;
@@ -562,7 +573,7 @@
     .bar-fill { width: 100%; max-width: 24px; background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%); border-radius: 6px 6px 3px 3px; min-height: 6px; }
     .bar-day { font-size: 10.5px; color: #64748b; margin-top: 6px; font-weight: 600; }
 
-    /* ADMIN PANEL SCREEN */
+    /* ADMIN PANEL & USER MONTHLY SCREEN */
     .admin-card {
       background: #ffffff;
       border-radius: 22px;
@@ -614,15 +625,13 @@
     .pill-tag.ahead { background: #dcfce7; color: #166534; }
     .pill-tag.behind { background: #fffbeb; color: #b45309; }
 
-    /* MONTHLY MEMBER VS TARGET BREAKDOWN CARD */
+    /* SINGLE MONTHLY BREAKDOWN CARD */
     .monthly-aamaal-box {
       border: 1.5px solid #e2e8f0;
       border-radius: 18px;
       padding: 14px;
-      margin-bottom: 12px;
       background: #f8fafc;
     }
-    .monthly-aamaal-box:last-child { margin-bottom: 0; }
     .monthly-metrics-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -762,15 +771,15 @@
       font-size: 16px; font-weight: 700; color: #475569; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
     }
-    .modal-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.45; }
+    .modal-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.45; }
     .privacy-option { border: 2px solid #e2e8f0; border-radius: 16px; padding: 14px; margin-bottom: 10px; cursor: pointer; }
     .privacy-option.selected { border-color: #0d9488; background: #f0fdf4; }
     .privacy-option-title { font-weight: 700; font-size: 15px; color: var(--teal-dark); margin-bottom: 3px; display: flex; justify-content: space-between; }
     .privacy-option-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
     .input-row { display: flex; gap: 8px; margin-top: 8px; }
     .text-input { flex: 1; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #cbd5e1; font-family: inherit; font-size: 14px; min-width: 0; width: 100%; }
-    .small-btn { background: var(--teal-dark); color: #ffffff; border: none; padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; }
-    .divider { height: 1px; background: #e2e8f0; margin: 18px 0; }
+    .small-btn { background: var(--teal-dark); color: #ffffff; border: none; padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; }
+    .divider { height: 1px; background: #e2e8f0; margin: 16px 0; }
     .action-btn {
       background: linear-gradient(90deg, #d9f99d 0%, #bbf7d0 100%); color: #062c28; border: none; padding: 14px 24px; border-radius: 999px; font-weight: 700; font-size: 15px; font-family: inherit; cursor: pointer; width: 100%;
     }
@@ -840,7 +849,7 @@
     <!-- VIEW A: DAILY AAMAAL SCREEN -->
     <div id="daily-view">
       <div class="top-bar">
-        <button class="icon-btn" id="open-settings-btn" title="Settings">⚙️</button>
+        <button class="icon-btn" id="open-settings-btn" title="Settings & Rename">⚙️</button>
 
         <div class="member-dropdown-wrapper">
           <button class="member-dropdown-btn" id="quick-member-btn">
@@ -854,99 +863,111 @@
         <div id="admin-spacer" style="width:42px;"></div>
       </div>
 
-      <!-- AAMAAL TABS + NEW "📊 MY MONTHLY REPORT" TAB -->
+      <!-- AAMAAL TABS -->
       <div class="aamaal-tabs" id="aamaal-tabs-container"></div>
 
-      <!-- DYNAMIC CONTENT AREA: EITHER DAILY AAMAAL OR USER MONTHLY REPORT -->
-      <div id="daily-aamaal-content-area">
-        <div class="aamaal-heading-title" id="current-aamaal-title">Durood Shareef</div>
-        <div class="arabic-banner" id="current-aamaal-arabic">اللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ</div>
+      <div class="aamaal-heading-title" id="current-aamaal-title">Durood Shareef</div>
+      <div class="arabic-banner" id="current-aamaal-arabic">اللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ</div>
 
-        <div class="daily-target-card">
-          <div class="selected-date-pill" id="active-date-banner">📅 Logging for: Today</div>
-          <div class="salam-arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
-          <div class="target-question" id="target-question-text">
-            Have you recited your daily target of 313 times Durood Shareef?
+      <div class="daily-target-card">
+        <div class="selected-date-pill" id="active-date-banner">📅 Logging for: Today</div>
+        <div class="salam-arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
+        <div class="target-question" id="target-question-text">
+          Have you recited your daily target of 313 times Durood Shareef?
+        </div>
+
+        <div id="not-recited-box">
+          <button class="mark-recited-btn" id="mark-recited-btn">Mark as Recited</button>
+        </div>
+
+        <div id="recited-box" class="hidden">
+          <div class="completed-badge">
+            ✓ Completed (<span id="selected-date-label">Today</span>): <span id="today-logged-num">313</span>
+          </div>
+          <div class="completed-actions">
+            <button class="secondary-pill-btn" id="toggle-extra-btn">+ Add / Edit Count</button>
+            <button class="secondary-pill-btn" id="undo-today-btn" style="color:#fca5a5;border-color:rgba(252,165,165,0.4);">Undo</button>
           </div>
 
-          <div id="not-recited-box">
-            <button class="mark-recited-btn" id="mark-recited-btn">Mark as Recited</button>
-          </div>
-
-          <div id="recited-box" class="hidden">
-            <div class="completed-badge">
-              ✓ Completed (<span id="selected-date-label">Today</span>): <span id="today-logged-num">313</span>
+          <div id="extra-count-panel" class="extra-count-box hidden">
+            <div style="font-size:12px;color:#cbd5e1;margin-bottom:8px;">Tap to add more, or type exact total for this day:</div>
+            <div class="quick-add-chips">
+              <button class="chip-btn" data-add="100">+100</button>
+              <button class="chip-btn" data-add="313">+313</button>
+              <button class="chip-btn" data-add="500">+500</button>
             </div>
-            <div class="completed-actions">
-              <button class="secondary-pill-btn" id="toggle-extra-btn">+ Add / Edit Count</button>
-              <button class="secondary-pill-btn" id="undo-today-btn" style="color:#fca5a5;border-color:rgba(252,165,165,0.4);">Undo</button>
-            </div>
-
-            <div id="extra-count-panel" class="extra-count-box hidden">
-              <div style="font-size:12px;color:#cbd5e1;margin-bottom:8px;">Tap to add more, or type exact total for this day:</div>
-              <div class="quick-add-chips">
-                <button class="chip-btn" data-add="100">+100</button>
-                <button class="chip-btn" data-add="313">+313</button>
-                <button class="chip-btn" data-add="500">+500</button>
-              </div>
-              <div class="input-row">
-                <input type="number" id="custom-count-input" class="text-input" placeholder="Enter total (e.g. 500)" style="background:#ffffff;color:#0f172a;">
-                <button class="small-btn" id="save-custom-count-btn" style="background:#bef264;color:#062c28;">Save</button>
-              </div>
+            <div class="input-row">
+              <input type="number" id="custom-count-input" class="text-input" placeholder="Enter total (e.g. 500)" style="background:#ffffff;color:#0f172a;">
+              <button class="small-btn" id="save-custom-count-btn" style="background:#bef264;color:#062c28;">Save</button>
             </div>
           </div>
         </div>
-
-        <!-- 30-DAY SLIDING STRIP + ANY-DATE CALENDAR PICKER -->
-        <div class="week-strip-header">
-          <span>◀ Slide 30d or pick any date:</span>
-          <div class="date-picker-mini-wrap">
-            <input type="date" id="daily-any-date-picker" class="daily-date-picker" title="Pick any date">
-            <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;">Today ▶</span>
-          </div>
-        </div>
-        <div class="month-strip" id="week-strip-container"></div>
-
-        <div class="personal-stats-grid">
-          <div class="mint-stat-card">
-            <div class="mint-stat-label">Recited by you this week</div>
-            <div class="mint-stat-value" id="my-week-total">0</div>
-            <div class="mint-stat-sub" id="stat-card-aamaal-1">Durood Shareef</div>
-          </div>
-          <div class="mint-stat-card">
-            <div class="mint-stat-label">Recited by you today</div>
-            <div class="mint-stat-value" id="my-today-total">0</div>
-            <div class="mint-stat-sub" id="stat-card-aamaal-2">Durood Shareef</div>
-          </div>
-        </div>
-
-        <button class="worldwide-pill-btn" id="open-stats-btn">
-          <span class="double-arrow">«</span>
-          <span class="worldwide-pill-text" id="bottom-summary-text">
-            View the total number of Durood recited
-          </span>
-          <span class="double-arrow">»</span>
-        </button>
       </div>
 
-      <!-- USER MONTHLY REPORT VIEW (TAB) - WHATSAPP BUTTON REMOVED -->
-      <div id="user-monthly-report-area" class="hidden">
-        <div class="admin-card">
-          <div style="font-size:16px;font-weight:800;color:var(--teal-dark);margin-bottom:10px;">
-            📊 My Monthly Count vs. Target
+      <!-- 30-DAY SLIDING STRIP + ANY-DATE CALENDAR PICKER -->
+      <div class="week-strip-header">
+        <span>◀ Slide 30d or pick any date:</span>
+        <div class="date-picker-mini-wrap">
+          <input type="date" id="daily-any-date-picker" class="daily-date-picker" title="Pick any date">
+          <span id="reset-to-today-link" style="color:#0d9488;cursor:pointer;">Today ▶</span>
+        </div>
+      </div>
+      <div class="month-strip" id="week-strip-container"></div>
+
+      <div class="personal-stats-grid">
+        <div class="mint-stat-card">
+          <div class="mint-stat-label">Recited by you this week</div>
+          <div class="mint-stat-value" id="my-week-total">0</div>
+          <div class="mint-stat-sub" id="stat-card-aamaal-1">Durood Shareef</div>
+        </div>
+        <div class="mint-stat-card">
+          <div class="mint-stat-label">Recited by you today</div>
+          <div class="mint-stat-value" id="my-today-total">0</div>
+          <div class="mint-stat-sub" id="stat-card-aamaal-2">Durood Shareef</div>
+        </div>
+      </div>
+
+      <!-- PROMINENT VISIBLE BUTTON FOR USER MONTHLY REPORT & MISSED DAYS -->
+      <button class="my-monthly-report-btn" id="open-user-monthly-btn">
+        <span style="font-size:16px;">📊</span>
+        <span class="my-monthly-report-text">View My Monthly Report & Missed Days</span>
+        <span style="font-size:16px;color:#bef264;">→</span>
+      </button>
+
+      <!-- BOTTOM GROUP SUMMARY BUTTON -->
+      <button class="worldwide-pill-btn" id="open-stats-btn">
+        <span class="double-arrow">«</span>
+        <span class="worldwide-pill-text" id="bottom-summary-text">
+          View the total number of Durood recited
+        </span>
+        <span class="double-arrow">»</span>
+      </button>
+    </div>
+
+    <!-- VIEW B: DEDICATED USER MONTHLY REPORT SCREEN (SINGLE CARD + AAMAAL DROPDOWN) -->
+    <div id="user-monthly-view" class="hidden">
+      <div class="stats-top-header">
+        <button class="back-btn" id="back-from-user-monthly-btn">←</button>
+        <div class="stats-header-title">📊 My Monthly Report & Missed Days</div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-filter-grid">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Aamaal:</label>
+            <select id="user-monthly-aamaal-select" class="select-input"></select>
           </div>
-          <div style="margin-bottom:14px;">
+          <div>
             <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Month:</label>
             <input type="month" id="user-monthly-month-picker" class="select-input">
           </div>
-
-          <div id="user-monthly-breakdown-container"></div>
         </div>
-      </div>
 
+        <div id="user-monthly-breakdown-container"></div>
+      </div>
     </div>
 
-    <!-- VIEW B: GROUP STATISTICS SCREEN -->
+    <!-- VIEW C: GROUP STATISTICS SCREEN -->
     <div id="stats-view" class="hidden">
       <div class="stats-top-header">
         <button class="back-btn" id="back-to-daily-btn">←</button>
@@ -1006,7 +1027,7 @@
       </div>
     </div>
 
-    <!-- VIEW C: ADMIN PANEL SCREEN -->
+    <!-- VIEW D: ADMIN PANEL SCREEN -->
     <div id="admin-view" class="hidden">
       <div class="stats-top-header">
         <button class="back-btn" id="back-from-admin-btn">←</button>
@@ -1028,7 +1049,7 @@
         </div>
       </div>
 
-      <!-- 1. Person-Wise Daily Count Inspector (WITH ANY-DATE PICKER) -->
+      <!-- 1. Person-Wise Daily Count Inspector -->
       <div class="section-heading">
         <span>📋 Person-Wise Daily Count & Edit</span>
       </div>
@@ -1051,15 +1072,19 @@
         <div id="admin-person-wise-list"></div>
       </div>
 
-      <!-- 2. INDIVIDUAL MEMBER MONTHLY COUNT VS TARGET -->
+      <!-- 2. INDIVIDUAL MEMBER MONTHLY COUNT VS TARGET (SINGLE CARD + AAMAAL DROPDOWN) -->
       <div class="section-heading">
         <span>🎯 Member Monthly Count vs. Target</span>
       </div>
       <div class="admin-card">
+        <div style="margin-bottom:10px;">
+          <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Member:</label>
+          <select id="admin-monthly-member-select" class="select-input"></select>
+        </div>
         <div class="admin-filter-grid">
           <div>
-            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Member:</label>
-            <select id="admin-monthly-member-select" class="select-input"></select>
+            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Aamaal:</label>
+            <select id="admin-monthly-aamaal-select" class="select-input"></select>
           </div>
           <div>
             <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Select Month:</label>
@@ -1127,20 +1152,33 @@
 
   </div>
 
-  <!-- 3. SETTINGS MODAL -->
+  <!-- 3. SETTINGS MODAL (WITH USER RENAME FEATURE) -->
   <div id="settings-modal" class="modal-backdrop hidden">
     <div class="modal-sheet">
       <div class="modal-header-row">
-        <div class="modal-title" id="modal-heading">Settings & Family Setup</div>
+        <div class="modal-title" id="modal-heading">Settings & Profile</div>
         <button class="close-modal-btn" id="close-settings-btn" title="Close">✕</button>
       </div>
       <div class="modal-sub" id="modal-subheading">
-        Add family members who report through you, or adjust leaderboard privacy for the currently selected person.
+        Update your display name, add family members, or adjust leaderboard privacy for the currently selected profile.
       </div>
+
+      <!-- NEW: User Can Edit Their Own or Selected Family Member's Name -->
+      <div>
+        <label style="font-size:12px;font-weight:700;color:#0f766e;">
+          ✏️ Edit Display Name for Selected Profile:
+        </label>
+        <div class="input-row">
+          <input type="text" id="edit-current-profile-name" class="text-input" placeholder="Enter preferred display name">
+          <button class="small-btn" id="save-profile-name-btn" style="background:#0d9488;">Save Name</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
 
       <div id="family-add-section">
         <label style="font-size:12px;font-weight:700;color:#475569;">
-          Add a Family Member (e.g., type "Mom" or "Afzal's Mom"):
+          👨‍👩‍👧‍👦 Add a New Family Member (e.g., type "Mom" or "Afzal's Mom"):
         </label>
         <div class="input-row">
           <input type="text" id="new-family-name" class="text-input" placeholder="e.g., Mom, Wife, or Afzal's Mom">
@@ -1220,10 +1258,14 @@
     let isFirstLogin = false;
     let selectedDateIST = getISTDateString();
 
+    // Filters for Admin & User Monthly Single-Card Views
     let adminFilterDate = getISTDateString();
     let adminFilterAamaalId = "";
     let adminMonthlyMemberId = "";
+    let adminMonthlyAamaalId = "";
     let adminMonthlyMonth = getISTDateString().slice(0, 7);
+
+    let userMonthlyAamaalId = "";
     let userMonthlyReportMonth = getISTDateString().slice(0, 7);
 
     function getISTDateString(dateObj = new Date()) {
@@ -1349,7 +1391,7 @@
         return raw;
       }
 
-      return `${preferredParentName}'s${raw}`;
+      return `${preferredParentName}'s ${raw}`;
     }
 
     function getLeaderboardDisplayName(member, memberMap) {
@@ -1430,6 +1472,7 @@
       await loadAamaalTabs();
       await loadMembersAndProfiles(user.uid);
       populateAdminDropdowns();
+      populateUserMonthlyDropdowns();
       await loadLogsAndRender(true);
 
       document.getElementById("splash-screen").classList.add("hidden");
@@ -1452,17 +1495,17 @@
       allAamaalRaw.sort((a, b) => (a.order || 1) - (b.order || 1));
       aamaalList.sort((a, b) => (a.order || 1) - (b.order || 1));
 
-      aamaalList.push({
-        id: "MY_MONTHLY_REPORT",
-        name: "📊 My Monthly Report",
-        isReportTab: true
-      });
-
       if (!activeAamaal || !aamaalList.find(a => a.id === activeAamaal.id)) {
-        activeAamaal = aamaalList[0];
+        activeAamaal = aamaalList[0] || allAamaalRaw[0];
       }
       if (!adminFilterAamaalId && allAamaalRaw.length > 0) {
         adminFilterAamaalId = allAamaalRaw[0].id;
+      }
+      if (!adminMonthlyAamaalId && allAamaalRaw.length > 0) {
+        adminMonthlyAamaalId = allAamaalRaw[0].id;
+      }
+      if (!userMonthlyAamaalId && aamaalList.length > 0) {
+        userMonthlyAamaalId = aamaalList[0].id;
       }
       renderAamaalTabs();
     }
@@ -1472,11 +1515,11 @@
       container.innerHTML = "";
       aamaalList.forEach(item => {
         const btn = document.createElement("button");
-        const isReport = item.isReportTab;
-        btn.className = "aamaal-tab" + (isReport ? " report-tab" : "") + (item.id === activeAamaal.id ? " active" : "");
+        btn.className = "aamaal-tab" + (item.id === activeAamaal.id ? " active" : "");
         btn.textContent = item.name;
         btn.addEventListener("click", async () => {
           activeAamaal = item;
+          userMonthlyAamaalId = item.id;
           selectedDateIST = getISTDateString();
           renderAamaalTabs();
           await loadLogsAndRender(true);
@@ -1550,10 +1593,29 @@
     });
     document.addEventListener("click", () => { quickMemberMenu.classList.add("hidden"); });
 
+    function populateUserMonthlyDropdowns() {
+      const aamaalSel = document.getElementById("user-monthly-aamaal-select");
+      const monthInput = document.getElementById("user-monthly-month-picker");
+      const todayIST = getISTDateString();
+
+      aamaalSel.innerHTML = "";
+      aamaalList.forEach(a => {
+        const opt = document.createElement("option");
+        opt.value = a.id;
+        opt.textContent = a.name;
+        if (a.id === userMonthlyAamaalId) opt.selected = true;
+        aamaalSel.appendChild(opt);
+      });
+
+      monthInput.value = userMonthlyReportMonth;
+      monthInput.max = todayIST.slice(0, 7);
+    }
+
     function populateAdminDropdowns() {
       const dateInput = document.getElementById("admin-date-picker");
       const aamaalSel = document.getElementById("admin-aamaal-select");
       const memberSel = document.getElementById("admin-monthly-member-select");
+      const monthlyAamaalSel = document.getElementById("admin-monthly-aamaal-select");
       const monthInput = document.getElementById("admin-monthly-month-picker");
 
       const todayIST = getISTDateString();
@@ -1561,12 +1623,19 @@
       dateInput.max = todayIST;
 
       aamaalSel.innerHTML = "";
+      monthlyAamaalSel.innerHTML = "";
       allAamaalRaw.forEach(a => {
-        const opt = document.createElement("option");
-        opt.value = a.id;
-        opt.textContent = a.name;
-        if (a.id === adminFilterAamaalId) opt.selected = true;
-        aamaalSel.appendChild(opt);
+        const opt1 = document.createElement("option");
+        opt1.value = a.id;
+        opt1.textContent = a.name;
+        if (a.id === adminFilterAamaalId) opt1.selected = true;
+        aamaalSel.appendChild(opt1);
+
+        const opt2 = document.createElement("option");
+        opt2.value = a.id;
+        opt2.textContent = a.name;
+        if (a.id === adminMonthlyAamaalId) opt2.selected = true;
+        monthlyAamaalSel.appendChild(opt2);
       });
 
       const memberMap = {};
@@ -1606,11 +1675,21 @@
       renderAdminMemberMonthlyReport();
     });
 
+    document.getElementById("admin-monthly-aamaal-select").addEventListener("change", (e) => {
+      adminMonthlyAamaalId = e.target.value;
+      renderAdminMemberMonthlyReport();
+    });
+
     document.getElementById("admin-monthly-month-picker").addEventListener("change", (e) => {
       if (e.target.value) {
         adminMonthlyMonth = e.target.value;
         renderAdminMemberMonthlyReport();
       }
+    });
+
+    document.getElementById("user-monthly-aamaal-select").addEventListener("change", (e) => {
+      userMonthlyAamaalId = e.target.value;
+      renderUserMonthlyReport();
     });
 
     document.getElementById("user-monthly-month-picker").addEventListener("change", (e) => {
@@ -1643,33 +1722,27 @@
     function renderDailyScreen(scrollStripToSelected = false) {
       if (!activeAamaal || !activeProfile) return;
 
-      const dailyContentArea = document.getElementById("daily-aamaal-content-area");
-      const userReportArea = document.getElementById("user-monthly-report-area");
-
-      if (activeAamaal.isReportTab) {
-        dailyContentArea.classList.add("hidden");
-        userReportArea.classList.remove("hidden");
-        renderUserMonthlyReport();
-        return;
-      } else {
-        dailyContentArea.classList.remove("hidden");
-        userReportArea.classList.add("hidden");
-      }
-
       const todayIST = getISTDateString();
       const last30Days = getISTDaysList(30);
       const last7DaysKeys = getLastNDaysKeys(7);
-      const selectedDayObj = last30Days.find(d => d.dateKey === selectedDateIST) || last30Days[last30Days.length - 1];
+
+      const dailyPicker = document.getElementById("daily-any-date-picker");
+      dailyPicker.value = selectedDateIST;
+      dailyPicker.max = todayIST;
+
+      const selectedDayIn30 = last30Days.find(d => d.dateKey === selectedDateIST);
+      const friendlyDateText = (selectedDateIST === todayIST)
+        ? "Today"
+        : (selectedDayIn30 ? selectedDayIn30.prettyLabel : formatAnyDatePretty(selectedDateIST));
 
       document.getElementById("current-aamaal-title").textContent = activeAamaal.name;
       document.getElementById("current-aamaal-arabic").textContent = activeAamaal.arabic;
       
-      const friendlyDateText = selectedDayObj.isToday ? "Today" : selectedDayObj.prettyLabel;
       document.getElementById("active-date-banner").textContent = `📅 Logging for: ${friendlyDateText}`;
       document.getElementById("selected-date-label").textContent = friendlyDateText;
 
       document.getElementById("target-question-text").textContent =
-        `Have you recited your daily target of ${activeAamaal.target} times ${activeAamaal.name} on${friendlyDateText}?`;
+        `Have you recited your daily target of ${activeAamaal.target} times ${activeAamaal.name} on ${friendlyDateText}?`;
       document.getElementById("stat-card-aamaal-1").textContent = activeAamaal.name;
       document.getElementById("stat-card-aamaal-2").textContent = activeAamaal.name;
 
@@ -1816,7 +1889,7 @@
     });
 
     function renderStatsScreen() {
-      if (!activeAamaal || activeAamaal.isReportTab || !activeProfile) return;
+      if (!activeAamaal || !activeProfile) return;
       const todayIST = getISTDateString();
       const last7Days = getISTDaysList(7);
       const weekDateKeys = new Set(last7Days.map(d => d.dateKey));
@@ -1874,7 +1947,8 @@
           row.innerHTML = `
             <div class="leader-top-line">
               <div class="leader-left">
-                <div class="rank-circle ${rankClass}">${idx + 1}</div>${INDIA_FLAG_SVG}
+                <div class="rank-circle ${rankClass}">${idx + 1}</div>
+                ${INDIA_FLAG_SVG}
                 <div class="leader-name">${item.name}</div>
               </div>
               <div class="leader-score">${item.score.toLocaleString('en-IN')}</div>
@@ -1920,9 +1994,11 @@
       });
     }
 
-    // --- SHARED HELPER TO BUILD RICH MONTHLY BREAKDOWN CARDS FOR ANY MEMBER ---
-    function buildMonthlyBreakdownHTML(member, targetMonthStr, containerEl, isUserReport = false) {
+    // --- SHARED HELPER: RENDERS ONE SINGLE BREAKDOWN CARD FOR THE SELECTED AAMAAL ---
+    function buildSingleAamaalMonthlyCard(member, aamaalObj, targetMonthStr, containerEl, isUserReport = false) {
       containerEl.innerHTML = "";
+      if (!member || !aamaalObj) return;
+
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
 
@@ -1933,164 +2009,172 @@
       const headerBanner = document.createElement("div");
       headerBanner.style.cssText = "background:#ecfdf5;border:1px solid #a7f3d0;padding:10px 12px;border-radius:14px;margin-bottom:12px;font-size:12.5px;color:#065f46;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;";
       headerBanner.innerHTML = `
-        <span>👤 <strong>${clearName}</strong> •${prettyMonth}</span>
+        <span>👤 <strong>${clearName}</strong> • ${prettyMonth}</span>
         <span>${mInfo.isCurrentMonth ? `Day ${mInfo.elapsedDays} of ${mInfo.totalDaysInMonth}` : `${mInfo.totalDaysInMonth} Days`}</span>
       `;
       containerEl.appendChild(headerBanner);
 
-      allAamaalRaw.forEach(a => {
-        const dailyTarget = Number(a.target || 0);
-        const fullMonthTarget = dailyTarget * mInfo.totalDaysInMonth;
-        const targetTillNow = dailyTarget * mInfo.elapsedDays;
-        const comparisonTarget = mInfo.isCurrentMonth ? targetTillNow : fullMonthTarget;
+      const dailyTarget = Number(aamaalObj.target || 0);
+      const fullMonthTarget = dailyTarget * mInfo.totalDaysInMonth;
+      const targetTillNow = dailyTarget * mInfo.elapsedDays;
+      const comparisonTarget = mInfo.isCurrentMonth ? targetTillNow : fullMonthTarget;
 
-        const memberMonthLogs = allLogsForAamaal.filter(
-          l => l.memberId === member.id && l.aamaalId === a.id && (l.dateKey || "").startsWith(targetMonthStr)
-        );
+      const memberMonthLogs = allLogsForAamaal.filter(
+        l => l.memberId === member.id && l.aamaalId === aamaalObj.id && (l.dateKey || "").startsWith(targetMonthStr)
+      );
 
-        const dayCountMap = {};
-        let actualCount = 0;
-        memberMonthLogs.forEach(l => {
-          const c = Number(l.count || 0);
-          if (c > 0) {
-            dayCountMap[l.dateKey] = c;
-            actualCount += c;
-          }
-        });
-
-        const daysCompleted = Object.keys(dayCountMap).length;
-        const daysMissed = Math.max(mInfo.elapsedDays - daysCompleted, 0);
-        const pct = comparisonTarget > 0 ? Math.round((actualCount / comparisonTarget) * 100) : 0;
-        const barWidth = Math.min(Math.max(pct, 4), 100);
-        const diff = actualCount - comparisonTarget;
-
-        let diffBadge = "";
-        if (diff >= 0) {
-          diffBadge = `<span class="pill-tag ahead">✓ +${diff.toLocaleString('en-IN')} Ahead (${pct}%)</span>`;
-        } else {
-          diffBadge = `<span class="pill-tag behind">${Math.abs(diff).toLocaleString('en-IN')} Remaining (${pct}%)</span>`;
+      const dayCountMap = {};
+      let actualCount = 0;
+      memberMonthLogs.forEach(l => {
+        const c = Number(l.count || 0);
+        if (c > 0) {
+          dayCountMap[l.dateKey] = c;
+          actualCount += c;
         }
-
-        const box = document.createElement("div");
-        box.className = "monthly-aamaal-box";
-
-        let daysGridHtml = "";
-        for (let d = 1; d <= mInfo.totalDaysInMonth; d++) {
-          const dayStr = String(d).padStart(2, "0");
-          const fullDateKey = `${targetMonthStr}-${dayStr}`;
-          const c = dayCountMap[fullDateKey] || 0;
-          let stateClass = "future";
-          if (d <= mInfo.elapsedDays) {
-            stateClass = c > 0 ? "done" : "missed";
-          } else if (c > 0) {
-            stateClass = "done";
-          }
-          daysGridHtml += `<div class="mini-cal-day ${stateClass}" data-date="${fullDateKey}" title="${fullDateKey}: ${c} recited">${d}</div>`;
-        }
-
-        box.innerHTML = `
-          <div class="admin-row-top">
-            <div>
-              <div style="font-weight:800;font-size:14.5px;color:#0f172a;">${a.name}</div>
-              <div style="font-size:11px;color:#64748b;">Daily Target: ${dailyTarget.toLocaleString('en-IN')}/day</div>
-            </div>
-            ${diffBadge}
-          </div>
-
-          <div class="monthly-metrics-grid">
-            <div class="monthly-metric-item">
-              <div class="monthly-metric-val" style="color:#0f766e;">${actualCount.toLocaleString('en-IN')}</div>
-              <div class="monthly-metric-lbl">Actual Recited</div>
-            </div>
-            <div class="monthly-metric-item">
-              <div class="monthly-metric-val">${comparisonTarget.toLocaleString('en-IN')}</div>
-              <div class="monthly-metric-lbl">${mInfo.isCurrentMonth ? `Target (${mInfo.elapsedDays}d)` : `Month Target (${mInfo.totalDaysInMonth}d)`}</div>
-            </div>
-            <div class="monthly-metric-item">
-              <div class="monthly-metric-val">${daysCompleted}/${mInfo.elapsedDays}</div>
-              <div class="monthly-metric-lbl">Days Done (${daysMissed} missed)</div>
-            </div>
-          </div>
-
-          ${mInfo.isCurrentMonth ? `<div style="font-size:11px;color:#64748b;margin-bottom:6px;display:flex;justify-content:space-between;">
-            <span>Full ${mInfo.totalDaysInMonth}-Day Month Target: <strong>${fullMonthTarget.toLocaleString('en-IN')}</strong></span>
-            <span>Month Progress: <strong>${Math.round((actualCount / fullMonthTarget) * 100)}%</strong></span>
-          </div>` : ''}
-
-          <div class="leader-bar-track" style="height:7px;margin-bottom:8px;">
-            <div class="leader-bar-fill" style="width:${barWidth}%;"></div>
-          </div>
-
-          <div style="font-size:10.5px;color:#64748b;font-weight:600;">
-            ${isUserReport ? 'Tap any day below to jump to that date & log/edit:' : 'Tap any day below to jump & edit in Admin Inspector:'}
-          </div>
-          <div class="mini-month-cal-grid">${daysGridHtml}</div>
-        `;
-
-        box.querySelectorAll(".mini-cal-day").forEach(dayEl => {
-          dayEl.addEventListener("click", () => {
-            const clickedDate = dayEl.dataset.date;
-            if (!clickedDate) return;
-            if (isUserReport) {
-              selectedDateIST = clickedDate;
-              activeAamaal = a;
-              renderAamaalTabs();
-              loadLogsAndRender(false);
-              window.scrollTo(0, 0);
-            } else {
-              adminFilterDate = clickedDate;
-              adminFilterAamaalId = a.id;
-              document.getElementById("admin-date-picker").value = clickedDate;
-              document.getElementById("admin-aamaal-select").value = a.id;
-              renderAdminScreen();
-              document.getElementById("admin-daily-inspector-card").scrollIntoView({ behavior: "smooth" });
-            }
-          });
-        });
-
-        containerEl.appendChild(box);
       });
+
+      const daysCompleted = Object.keys(dayCountMap).length;
+      const daysMissed = Math.max(mInfo.elapsedDays - daysCompleted, 0);
+      const totalMissedCount = daysMissed * dailyTarget;
+      const pct = comparisonTarget > 0 ? Math.round((actualCount / comparisonTarget) * 100) : 0;
+      const barWidth = Math.min(Math.max(pct, 4), 100);
+      const diff = actualCount - comparisonTarget;
+
+      let diffBadge = "";
+      if (diff >= 0) {
+        diffBadge = `<span class="pill-tag ahead">✓ +${diff.toLocaleString('en-IN')} Ahead (${pct}%)</span>`;
+      } else {
+        diffBadge = `<span class="pill-tag behind">${Math.abs(diff).toLocaleString('en-IN')} Remaining (${pct}%)</span>`;
+      }
+
+      let daysGridHtml = "";
+      for (let d = 1; d <= mInfo.totalDaysInMonth; d++) {
+        const dayStr = String(d).padStart(2, "0");
+        const fullDateKey = `${targetMonthStr}-${dayStr}`;
+        const c = dayCountMap[fullDateKey] || 0;
+        let stateClass = "future";
+        if (d <= mInfo.elapsedDays) {
+          stateClass = c > 0 ? "done" : "missed";
+        } else if (c > 0) {
+          stateClass = "done";
+        }
+        daysGridHtml += `<div class="mini-cal-day ${stateClass}" data-date="${fullDateKey}" title="${fullDateKey}: ${c} recited">${d}</div>`;
+      }
+
+      const box = document.createElement("div");
+      box.className = "monthly-aamaal-box";
+      box.innerHTML = `
+        <div class="admin-row-top">
+          <div>
+            <div style="font-weight:800;font-size:15px;color:#0f172a;">${aamaalObj.name}</div>
+            <div style="font-size:11px;color:#64748b;">Daily Target: ${dailyTarget.toLocaleString('en-IN')}/day</div>
+          </div>
+          ${diffBadge}
+        </div>
+
+        <div class="monthly-metrics-grid">
+          <div class="monthly-metric-item">
+            <div class="monthly-metric-val" style="color:#0f766e;">${actualCount.toLocaleString('en-IN')}</div>
+            <div class="monthly-metric-lbl">Actual Recited</div>
+          </div>
+          <div class="monthly-metric-item">
+            <div class="monthly-metric-val">${comparisonTarget.toLocaleString('en-IN')}</div>
+            <div class="monthly-metric-lbl">${mInfo.isCurrentMonth ? `Target (${mInfo.elapsedDays}d)` : `Month Target (${mInfo.totalDaysInMonth}d)`}</div>
+          </div>
+          <div class="monthly-metric-item">
+            <div class="monthly-metric-val" style="color:${daysMissed > 0 ? '#b91c1c' : '#166534'};">${daysMissed} Days</div>
+            <div class="monthly-metric-lbl">Missed (${totalMissedCount.toLocaleString('en-IN')})</div>
+          </div>
+        </div>
+
+        <div style="font-size:11.5px;color:#475569;margin-bottom:6px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+          <span>Consistency: <strong>${daysCompleted}/${mInfo.elapsedDays} days logged</strong></span>
+          <span>Full ${mInfo.totalDaysInMonth}d Target: <strong>${fullMonthTarget.toLocaleString('en-IN')}</strong></span>
+        </div>
+
+        <div class="leader-bar-track" style="height:7px;margin-bottom:10px;">
+          <div class="leader-bar-fill" style="width:${barWidth}%;"></div>
+        </div>
+
+        <div style="font-size:10.5px;color:#64748b;font-weight:600;">
+          ${isUserReport ? 'Tap any day below to jump to that date & log/edit:' : 'Tap any day below to jump & edit in Admin Inspector:'}
+        </div>
+        <div class="mini-month-cal-grid">${daysGridHtml}</div>
+      `;
+
+      box.querySelectorAll(".mini-cal-day").forEach(dayEl => {
+        dayEl.addEventListener("click", () => {
+          const clickedDate = dayEl.dataset.date;
+          if (!clickedDate) return;
+          if (isUserReport) {
+            selectedDateIST = clickedDate;
+            activeAamaal = aamaalObj;
+            renderAamaalTabs();
+            document.getElementById("user-monthly-view").classList.add("hidden");
+            document.getElementById("daily-view").classList.remove("hidden");
+            loadLogsAndRender(false);
+            window.scrollTo(0, 0);
+          } else {
+            adminFilterDate = clickedDate;
+            adminFilterAamaalId = aamaalObj.id;
+            document.getElementById("admin-date-picker").value = clickedDate;
+            document.getElementById("admin-aamaal-select").value = aamaalObj.id;
+            renderAdminScreen();
+            document.getElementById("admin-daily-inspector-card").scrollIntoView({ behavior: "smooth" });
+          }
+        });
+      });
+
+      containerEl.appendChild(box);
     }
 
-    // Render User Monthly Report Tab
+    // Render User Monthly Report Screen (Single Card)
     function renderUserMonthlyReport() {
       const container = document.getElementById("user-monthly-breakdown-container");
       const monthPicker = document.getElementById("user-monthly-month-picker");
-      if (!container || !monthPicker) return;
+      const aamaalSel = document.getElementById("user-monthly-aamaal-select");
+      if (!container || !monthPicker || !aamaalSel) return;
 
       monthPicker.value = userMonthlyReportMonth;
       monthPicker.max = getISTDateString().slice(0, 7);
 
-      if (activeProfile) {
-        buildMonthlyBreakdownHTML(activeProfile, userMonthlyReportMonth, container, true);
+      if (!userMonthlyAamaalId && aamaalList.length > 0) {
+        userMonthlyAamaalId = aamaalList[0].id;
+      }
+      aamaalSel.value = userMonthlyAamaalId;
+
+      const chosenAamaal = aamaalList.find(a => a.id === userMonthlyAamaalId) || aamaalList[0];
+      if (activeProfile && chosenAamaal) {
+        buildSingleAamaalMonthlyCard(activeProfile, chosenAamaal, userMonthlyReportMonth, container, true);
       }
     }
 
-    document.getElementById("user-monthly-month-picker").addEventListener("change", (e) => {
-      if (e.target.value) {
-        userMonthlyReportMonth = e.target.value;
-        renderUserMonthlyReport();
-      }
-    });
-
-    // Render Admin Member Monthly Report
+    // Render Admin Member Monthly Report (Single Card)
     function renderAdminMemberMonthlyReport() {
       const container = document.getElementById("admin-member-monthly-breakdown");
       const monthInput = document.getElementById("admin-monthly-month-picker");
-      if (!container || !monthInput) return;
+      const aamaalSel = document.getElementById("admin-monthly-aamaal-select");
+      if (!container || !monthInput || !aamaalSel) return;
 
       monthInput.value = adminMonthlyMonth;
       monthInput.max = getISTDateString().slice(0, 7);
 
+      if (!adminMonthlyAamaalId && allAamaalRaw.length > 0) {
+        adminMonthlyAamaalId = allAamaalRaw[0].id;
+      }
+      aamaalSel.value = adminMonthlyAamaalId;
+
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
       const member = memberMap[adminMonthlyMemberId] || allMembers[0];
-      if (!member) {
-        container.innerHTML = `<div style="text-align:center;color:#94a3b8;font-size:13px;">No member selected.</div>`;
+      const chosenAamaal = allAamaalRaw.find(a => a.id === adminMonthlyAamaalId) || allAamaalRaw[0];
+
+      if (!member || !chosenAamaal) {
+        container.innerHTML = `<div style="text-align:center;color:#94a3b8;font-size:13px;">No member or aamaal selected.</div>`;
         return;
       }
 
-      buildMonthlyBreakdownHTML(member, adminMonthlyMonth, container, false);
+      buildSingleAamaalMonthlyCard(member, chosenAamaal, adminMonthlyMonth, container, false);
     }
 
     // Copy Admin Member Monthly WhatsApp Report
@@ -2098,40 +2182,37 @@
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
       const member = memberMap[adminMonthlyMemberId] || allMembers[0];
-      if (!member) return;
+      const chosenAamaal = allAamaalRaw.find(a => a.id === adminMonthlyAamaalId) || allAamaalRaw[0];
+      if (!member || !chosenAamaal) return;
 
       const clearName = getClearMemberName(member, memberMap);
       const mInfo = getMonthDetails(adminMonthlyMonth);
       const prettyMonth = formatMonthYearPretty(adminMonthlyMonth);
 
+      const dailyTarget = Number(chosenAamaal.target || 0);
+      const comparisonTarget = dailyTarget * mInfo.elapsedDays;
+      const fullMonthTarget = dailyTarget * mInfo.totalDaysInMonth;
+
+      const logs = allLogsForAamaal.filter(
+        l => l.memberId === member.id && l.aamaalId === chosenAamaal.id && (l.dateKey || "").startsWith(adminMonthlyMonth)
+      );
+      const actual = logs.reduce((s, l) => s + Number(l.count || 0), 0);
+      const daysDone = logs.filter(l => Number(l.count || 0) > 0).length;
+      const daysMissed = Math.max(mInfo.elapsedDays - daysDone, 0);
+      const missedCount = daysMissed * dailyTarget;
+      const pct = comparisonTarget > 0 ? Math.round((actual / comparisonTarget) * 100) : 0;
+
       let lines = [];
       lines.push(`🌙 *Islaah Foundation's Aamaal Circle*`);
       lines.push(`📊 *Monthly Progress Report*`);
       lines.push(`👤 *Member:* ${clearName}`);
+      lines.push(`📿 *Aamaal:* ${chosenAamaal.name}`);
       lines.push(`🗓️ *Month:* ${prettyMonth} (${mInfo.isCurrentMonth ? `${mInfo.elapsedDays} days elapsed` : `${mInfo.totalDaysInMonth} days`})`);
       lines.push(`────────────────────`);
-
-      allAamaalRaw.forEach(a => {
-        const dailyTarget = Number(a.target || 0);
-        const comparisonTarget = dailyTarget * mInfo.elapsedDays;
-        const fullMonthTarget = dailyTarget * mInfo.totalDaysInMonth;
-
-        const logs = allLogsForAamaal.filter(
-          l => l.memberId === member.id && l.aamaalId === a.id && (l.dateKey || "").startsWith(adminMonthlyMonth)
-        );
-        const actual = logs.reduce((s, l) => s + Number(l.count || 0), 0);
-        const daysDone = logs.filter(l => Number(l.count || 0) > 0).length;
-        const daysMissed = Math.max(mInfo.elapsedDays - daysDone, 0);
-        const pct = comparisonTarget > 0 ? Math.round((actual / comparisonTarget) * 100) : 0;
-
-        lines.push(`📿 *${a.name}*`);
-        lines.push(`• Recited: *${actual.toLocaleString('en-IN')}* / ${comparisonTarget.toLocaleString('en-IN')} (${pct}%)`);
-        if (mInfo.isCurrentMonth) {
-          lines.push(`• Full Month Target: ${fullMonthTarget.toLocaleString('en-IN')}`);
-        }
-        lines.push(`• Consistency: ${daysDone}/${mInfo.elapsedDays} days done (${daysMissed} missed)`);
-        lines.push(``);
-      });
+      lines.push(`• Recited: *${actual.toLocaleString('en-IN')}* / ${comparisonTarget.toLocaleString('en-IN')} (${pct}%)`);
+      lines.push(`• Full Month Target: ${fullMonthTarget.toLocaleString('en-IN')}`);
+      lines.push(`• Consistency: ${daysDone}/${mInfo.elapsedDays} days done`);
+      lines.push(`• Missed: *${daysMissed} days* (${missedCount.toLocaleString('en-IN')} count)`);
 
       const textToCopy = lines.join("\n").trim();
       try {
@@ -2147,7 +2228,8 @@
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
       const member = memberMap[adminMonthlyMemberId] || allMembers[0];
-      if (!member) return;
+      const chosenAamaal = allAamaalRaw.find(a => a.id === adminMonthlyAamaalId) || allAamaalRaw[0];
+      if (!member || !chosenAamaal) return;
 
       const clearName = getClearMemberName(member, memberMap);
       const mInfo = getMonthDetails(adminMonthlyMonth);
@@ -2158,19 +2240,17 @@
       for (let d = 1; d <= mInfo.totalDaysInMonth; d++) {
         const dayStr = String(d).padStart(2, "0");
         const dateKey = `${adminMonthlyMonth}-${dayStr}`;
-        allAamaalRaw.forEach(a => {
-          const log = allLogsForAamaal.find(l => l.memberId === member.id && l.aamaalId === a.id && l.dateKey === dateKey);
-          const actual = log ? Number(log.count || 0) : 0;
-          const status = actual >= a.target ? "Target Met" : (actual > 0 ? "Partial" : (d <= mInfo.elapsedDays ? "Missed" : "Upcoming"));
-          csvRows.push(`"${dateKey}","${clearName.replace(/"/g, '""')}","${a.name.replace(/"/g, '""')}",${a.target},${actual},"${status}"`);
-        });
+        const log = allLogsForAamaal.find(l => l.memberId === member.id && l.aamaalId === chosenAamaal.id && l.dateKey === dateKey);
+        const actual = log ? Number(log.count || 0) : 0;
+        const status = actual >= chosenAamaal.target ? "Target Met" : (actual > 0 ? "Partial" : (d <= mInfo.elapsedDays ? "Missed" : "Upcoming"));
+        csvRows.push(`"${dateKey}","${clearName.replace(/"/g, '""')}","${chosenAamaal.name.replace(/"/g, '""')}",${chosenAamaal.target},${actual},"${status}"`);
       }
 
       const blob = new Blob([csvRows.join("\r\n")], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.setAttribute("href", url);
-      link.setAttribute("download", `${clearName.replace(/\s+/g, '_')}_${adminMonthlyMonth}_report.csv`);
+      link.setAttribute("download", `${clearName.replace(/\s+/g, '_')}_${chosenAamaal.name.replace(/\s+/g, '_')}_${adminMonthlyMonth}.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -2329,6 +2409,7 @@
           await updateDoc(doc(db, "aamaal", a.id), { active: isPaused });
           await loadAamaalTabs();
           populateAdminDropdowns();
+          populateUserMonthlyDropdowns();
           await loadLogsAndRender(false);
         });
         div.querySelector(".delete-a-btn").addEventListener("click", async () => {
@@ -2336,6 +2417,7 @@
           await deleteDoc(doc(db, "aamaal", a.id));
           await loadAamaalTabs();
           populateAdminDropdowns();
+          populateUserMonthlyDropdowns();
           await loadLogsAndRender(false);
         });
         aamaalAdminList.appendChild(div);
@@ -2545,13 +2627,33 @@
       resetAamaalForm();
       await loadAamaalTabs();
       populateAdminDropdowns();
+      populateUserMonthlyDropdowns();
       await loadLogsAndRender(false);
       alert("Aamaal saved!");
+    });
+
+    // Screen Navigation Handlers
+    document.getElementById("open-user-monthly-btn").addEventListener("click", () => {
+      if (activeAamaal) userMonthlyAamaalId = activeAamaal.id;
+      populateUserMonthlyDropdowns();
+      renderUserMonthlyReport();
+      document.getElementById("daily-view").classList.add("hidden");
+      document.getElementById("stats-view").classList.add("hidden");
+      document.getElementById("admin-view").classList.add("hidden");
+      document.getElementById("user-monthly-view").classList.remove("hidden");
+      window.scrollTo(0, 0);
+    });
+
+    document.getElementById("back-from-user-monthly-btn").addEventListener("click", () => {
+      document.getElementById("user-monthly-view").classList.add("hidden");
+      document.getElementById("daily-view").classList.remove("hidden");
+      window.scrollTo(0, 0);
     });
 
     document.getElementById("open-stats-btn").addEventListener("click", () => {
       renderStatsScreen();
       document.getElementById("daily-view").classList.add("hidden");
+      document.getElementById("user-monthly-view").classList.add("hidden");
       document.getElementById("admin-view").classList.add("hidden");
       document.getElementById("stats-view").classList.remove("hidden");
       window.scrollTo(0, 0);
@@ -2559,6 +2661,7 @@
 
     document.getElementById("back-to-daily-btn").addEventListener("click", () => {
       document.getElementById("stats-view").classList.add("hidden");
+      document.getElementById("user-monthly-view").classList.add("hidden");
       document.getElementById("admin-view").classList.add("hidden");
       document.getElementById("daily-view").classList.remove("hidden");
       window.scrollTo(0, 0);
@@ -2568,6 +2671,7 @@
       populateAdminDropdowns();
       renderAdminScreen();
       document.getElementById("daily-view").classList.add("hidden");
+      document.getElementById("user-monthly-view").classList.add("hidden");
       document.getElementById("stats-view").classList.add("hidden");
       document.getElementById("admin-view").classList.remove("hidden");
       window.scrollTo(0, 0);
@@ -2579,6 +2683,7 @@
       window.scrollTo(0, 0);
     });
 
+    // Settings Modal (Including User Self-Rename & Family Rename)
     const settingsModal = document.getElementById("settings-modal");
     const privacyOptions = document.querySelectorAll(".privacy-option");
 
@@ -2600,13 +2705,37 @@
     function openSettingsModal() {
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
-      document.getElementById("privacy-target-name").textContent = getClearMemberName(activeProfile, memberMap);
+      const currentClearName = getClearMemberName(activeProfile, memberMap);
+      document.getElementById("privacy-target-name").textContent = currentClearName;
+      document.getElementById("edit-current-profile-name").value = currentClearName;
       highlightPrivacyOption(activeProfile.privacy || "public");
       settingsModal.classList.remove("hidden");
     }
 
     document.getElementById("open-settings-btn").addEventListener("click", () => openSettingsModal());
     document.getElementById("close-settings-btn").addEventListener("click", () => settingsModal.classList.add("hidden"));
+
+    // User Saves Updated Display Name
+    document.getElementById("save-profile-name-btn").addEventListener("click", async () => {
+      const nameInput = document.getElementById("edit-current-profile-name");
+      const newName = nameInput.value.trim();
+      if (!newName) return alert("Please enter a valid display name.");
+
+      await updateDoc(doc(db, "members", activeProfile.id), {
+        name: newName,
+        customNameLocked: true
+      });
+      activeProfile.name = newName;
+      activeProfile.customNameLocked = true;
+
+      await loadMembersAndProfiles(activeProfile.id);
+      populateAdminDropdowns();
+      document.getElementById("privacy-target-name").textContent = newName;
+      renderDailyScreen(false);
+      renderStatsScreen();
+      renderAdminScreen();
+      alert(`Display name updated to "${newName}"!`);
+    });
 
     document.getElementById("add-family-btn").addEventListener("click", async () => {
       const input = document.getElementById("new-family-name");
@@ -2635,17 +2764,33 @@
       input.value = "";
       await loadMembersAndProfiles(famId);
       populateAdminDropdowns();
+      document.getElementById("edit-current-profile-name").value = formattedName;
+      document.getElementById("privacy-target-name").textContent = formattedName;
       highlightPrivacyOption(activeProfile.privacy);
       alert(`"${formattedName}" added!`);
     });
 
     document.getElementById("save-settings-btn").addEventListener("click", async () => {
-      if (activeProfile && selectedPrivacy !== activeProfile.privacy) {
-        await updateDoc(doc(db, "members", activeProfile.id), { privacy: selectedPrivacy });
+      const nameInput = document.getElementById("edit-current-profile-name");
+      const newName = nameInput.value.trim();
+
+      const updates = { privacy: selectedPrivacy };
+      if (newName && newName !== activeProfile.name) {
+        updates.name = newName;
+        updates.customNameLocked = true;
+      }
+
+      if (activeProfile) {
+        await updateDoc(doc(db, "members", activeProfile.id), updates);
         activeProfile.privacy = selectedPrivacy;
+        if (updates.name) {
+          activeProfile.name = updates.name;
+          activeProfile.customNameLocked = true;
+        }
       }
       isFirstLogin = false;
       await loadMembersAndProfiles(activeProfile.id);
+      populateAdminDropdowns();
       renderStatsScreen();
       renderAdminScreen();
       settingsModal.classList.add("hidden");
