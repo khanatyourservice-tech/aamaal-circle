@@ -4,7 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Islaah Foundation's Aamaal Circle</title>
+
+  <!-- Android & Standard PWA Manifest -->
   <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#072c28">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Apple iOS / iPadOS PWA Support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Aamaal Circle">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3059/3059518.png">
+
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -28,7 +39,7 @@
     }
     .hidden { display: none !important; }
 
-    /* 1. SPLASH & MULTI-LOGIN SCREEN */
+    /* 1. SPLASH & LOGIN SCREEN */
     #splash-screen {
       background: linear-gradient(160deg, var(--teal-dark) 0%, var(--teal-mid) 55%, var(--teal-deep) 100%);
       color: #ffffff;
@@ -133,30 +144,6 @@
       padding: 14px;
       border-radius: 18px;
     }
-    .phone-mode-tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      margin-bottom: 12px;
-      background: rgba(255,255,255,0.08);
-      padding: 4px;
-      border-radius: 12px;
-    }
-    .phone-mode-tab {
-      background: transparent;
-      border: none;
-      color: #cbd5e1;
-      padding: 7px 6px;
-      border-radius: 9px;
-      font-size: 11.5px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-    }
-    .phone-mode-tab.active {
-      background: #bef264;
-      color: #062c28;
-    }
     .auth-input {
       width: 100%;
       padding: 11px 12px;
@@ -168,6 +155,23 @@
       font-size: 14px;
       font-weight: 600;
       margin-bottom: 8px;
+    }
+    .phone-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .country-code-select {
+      width: 105px;
+      padding: 11px 6px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.95);
+      color: #0f172a;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
     }
     .phone-submit-btn {
       width: 100%;
@@ -558,6 +562,7 @@
       justify-content: space-between;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+      margin-bottom: 10px;
     }
     .worldwide-pill-text {
       font-size: 13px;
@@ -568,6 +573,24 @@
       flex: 1;
     }
     .double-arrow { font-size: 16px; color: #64748b; font-weight: 700; padding: 0 4px; }
+
+    /* INSTALL PWA BANNER BUTTON */
+    .install-pwa-btn {
+      width: 100%;
+      background: #f0fdf4;
+      border: 1.5px dashed #14b8a6;
+      color: #0f766e;
+      border-radius: 16px;
+      padding: 11px 16px;
+      font-size: 12.5px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
 
     /* GROUP STATISTICS SCREEN */
     .stats-top-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
@@ -623,10 +646,10 @@
     .mini-summary-lbl { font-size: 11px; color: #64748b; font-weight: 600; line-height: 1.25; }
 
     .section-heading {
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 16px;
+      font-weight: 600;
       color: #1e293b;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -646,8 +669,10 @@
     .rank-1 { background: #fef3c7; color: #b45309; }
     .rank-2 { background: #e2e8f0; color: #334155; }
     .rank-3 { background: #ffedd5; color: #9a3412; }
-    .india-flag-icon {
-      width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.15); flex-shrink: 0;
+    .flag-badge {
+      font-size: 18px;
+      line-height: 1;
+      flex-shrink: 0;
     }
     .leader-name { font-size: 14px; font-weight: 700; color: #1e293b; }
     .leader-score { font-size: 14.5px; font-weight: 800; color: #0f766e; }
@@ -662,7 +687,80 @@
     .perf-num { font-size: 22px; font-weight: 800; color: #1e293b; margin-bottom: 4px; }
     .perf-label { font-size: 12px; color: #64748b; font-weight: 600; }
 
-    .weekly-chart-card { background: #ffffff; border-radius: 22px; padding: 18px 14px 14px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); }
+    /* WEEKLY & MONTHLY PERFORMANCE CARDS (WITH TOP BY COUNTRY) */
+    .perf-summary-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 20px 18px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+      margin-bottom: 24px;
+    }
+    .perf-top-metric-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .perf-top-metric-val {
+      min-width: 90px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+    .perf-top-metric-lbl {
+      font-size: 14px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+    .perf-divider {
+      height: 1px;
+      background: #f1f5f9;
+      margin: 14px 0;
+    }
+    .top-country-heading {
+      font-size: 14px;
+      color: #94a3b8;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+    .country-stat-row {
+      display: grid;
+      grid-template-columns: 105px 1fr 75px;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .country-stat-row:last-child { margin-bottom: 0; }
+    .country-stat-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #334155;
+      line-height: 1.25;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .country-bar-track {
+      width: 100%;
+      height: 9px;
+      background: #f1f5f9;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .country-bar-fill {
+      height: 100%;
+      background: #76a878;
+      border-radius: 999px;
+      min-width: 6px;
+    }
+    .country-stat-val {
+      text-align: right;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .weekly-chart-card { background: #ffffff; border-radius: 22px; padding: 18px 14px 14px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); margin-bottom: 22px; }
     .bars-wrap { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; height: 115px; align-items: flex-end; padding-top: 18px; }
     .bar-col { display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
     .bar-val { font-size: 9.5px; color: #64748b; font-weight: 700; margin-bottom: 4px; }
@@ -847,7 +945,7 @@
       margin-bottom: -4px;
     }
 
-    /* SETTINGS MODAL */
+    /* SETTINGS & iOS INSTALL MODALS */
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(4, 31, 28, 0.72); backdrop-filter: blur(4px);
       display: flex; align-items: flex-end; justify-content: center; z-index: 100; padding: 16px;
@@ -882,11 +980,22 @@
     .signout-btn {
       width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #fecaca; background: #fef2f2; color: #b91c1c; font-weight: 700; font-size: 13px; margin-top: 12px; cursor: pointer;
     }
+    .ios-step-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
 
-  <!-- 1. SPLASH & MULTI-AUTH SCREEN (GOOGLE + MOBILE NUMBER) -->
+  <!-- 1. SPLASH & LOGIN SCREEN (GOOGLE + MOBILE & PIN ONLY) -->
   <div id="splash-screen">
     <div class="welcome-label">Welcome To</div>
     <div class="logo-wrap">
@@ -942,35 +1051,31 @@
       <div class="or-divider">OR</div>
 
       <button id="toggle-phone-auth-btn" class="phone-toggle-btn">
-        📱 Sign In / Sign Up with Mobile Number
+        📱 Sign In / Sign Up with Mobile & PIN
       </button>
 
-      <!-- EXPANDABLE MOBILE NUMBER LOGIN PANEL -->
+      <!-- MOBILE NUMBER + PIN PANEL (SUPPORTS INDIA, USA, & GLOBAL NUMBERS) -->
       <div id="phone-auth-panel" class="phone-auth-panel hidden">
-        <div class="phone-mode-tabs">
-          <button class="phone-mode-tab active" id="tab-pin-mode">⚡ Mobile + PIN (Free)</button>
-          <button class="phone-mode-tab" id="tab-otp-mode">📩 Mobile + SMS OTP</button>
+        <div style="font-size:12px;color:#a7f3d0;font-weight:700;margin-bottom:8px;">
+          Enter Mobile & 4-Digit PIN (First time? Enter your Full Name too):
         </div>
-
-        <input type="text" id="phone-user-name" class="auth-input" placeholder="Your Full Name (for first-time sign up)">
-        <input type="tel" id="phone-number-input" class="auth-input" placeholder="10-Digit Mobile Number (e.g. 9876543210)" maxlength="15">
-
-        <!-- Mode 1: Instant Mobile + PIN (Works on Free Firebase Spark Plan) -->
-        <div id="pin-mode-box">
-          <input type="password" id="phone-pin-input" class="auth-input" placeholder="Create or Enter 4-Digit PIN (e.g. 1234)" inputmode="numeric" maxlength="8">
-          <button class="phone-submit-btn" id="phone-pin-submit-btn">Continue with Mobile & PIN →</button>
+        <input type="text" id="phone-user-name" class="auth-input" placeholder="Full Name (only needed first time)">
+        <div class="phone-row">
+          <select id="phone-country-code" class="country-code-select">
+            <option value="+91">🇮🇳 +91</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+971">🇦🇪 +971</option>
+            <option value="+966">🇸🇦 +966</option>
+            <option value="+968">🇴🇲 +968</option>
+            <option value="+974">🇶🇦 +974</option>
+            <option value="+965">🇰🇼 +965</option>
+            <option value="+61">🇦🇺 +61</option>
+          </select>
+          <input type="tel" id="phone-number-input" class="auth-input" style="margin-bottom:0;" placeholder="Mobile Number" maxlength="15">
         </div>
-
-        <!-- Mode 2: Real SMS OTP (Requires Firebase Phone Auth Enabled) -->
-        <div id="otp-mode-box" class="hidden">
-          <div id="recaptcha-container"></div>
-          <button class="phone-submit-btn" id="send-otp-btn">Send 6-Digit SMS OTP</button>
-
-          <div id="verify-otp-section" class="hidden" style="margin-top:10px;">
-            <input type="text" id="otp-code-input" class="auth-input" placeholder="Enter 6-Digit OTP Code" inputmode="numeric" maxlength="6">
-            <button class="phone-submit-btn" id="verify-otp-btn" style="background:#84cc16;color:#062c28;">Verify OTP & Sign In</button>
-          </div>
-        </div>
+        <input type="password" id="phone-pin-input" class="auth-input" placeholder="4-Digit Secret PIN (e.g. 1234)" inputmode="numeric" maxlength="8">
+        <button class="phone-submit-btn" id="phone-pin-submit-btn">Continue with Mobile & PIN →</button>
       </div>
     </div>
 
@@ -987,7 +1092,7 @@
 
         <div class="member-dropdown-wrapper">
           <button class="member-dropdown-btn" id="quick-member-btn">
-            <span>👤 <span id="active-member-name">Loading...</span></span>
+            <span><span id="active-member-flag">🇮🇳</span> <span id="active-member-name">Loading...</span></span>
             <span style="font-size:11px;">▼</span>
           </button>
           <div id="quick-member-menu" class="quick-dropdown-menu hidden"></div>
@@ -1038,7 +1143,7 @@
         </div>
       </div>
 
-      <!-- 30-DAY SLIDING STRIP + ANY-DATE CALENDAR PICKER -->
+      <!-- 30-DAY SLIDING STRIP + ANY-DATE CALENDAR PICKER (LOCAL TIMEZONE) -->
       <div class="week-strip-header">
         <span>◀ Slide 30d or pick any date:</span>
         <div class="date-picker-mini-wrap">
@@ -1072,13 +1177,18 @@
       <button class="worldwide-pill-btn" id="open-stats-btn">
         <span class="double-arrow">«</span>
         <span class="worldwide-pill-text" id="bottom-summary-text">
-          View the total number of Durood recited
+          View the total number of Durood Shareef recited
         </span>
         <span class="double-arrow">»</span>
       </button>
+
+      <!-- INSTALL APP BUTTON -->
+      <button id="install-pwa-btn" class="install-pwa-btn">
+        📲 Install App to Phone Home Screen (Android / iPhone)
+      </button>
     </div>
 
-    <!-- VIEW B: DEDICATED USER MONTHLY REPORT SCREEN (SINGLE CARD + AAMAAL DROPDOWN) -->
+    <!-- VIEW B: DEDICATED USER MONTHLY REPORT SCREEN -->
     <div id="user-monthly-view" class="hidden">
       <div class="stats-top-header">
         <button class="back-btn" id="back-from-user-monthly-btn">←</button>
@@ -1101,17 +1211,17 @@
       </div>
     </div>
 
-    <!-- VIEW C: GROUP STATISTICS SCREEN -->
+    <!-- VIEW C: GROUP STATISTICS SCREEN (WITH WEEKLY & MONTHLY TOP BY COUNTRY SUMMARIES) -->
     <div id="stats-view" class="hidden">
       <div class="stats-top-header">
         <button class="back-btn" id="back-to-daily-btn">←</button>
         <div class="stats-header-title" id="stats-top-title-text">
-          View the total number of Durood recited
+          View the total number of Durood Shareef recited
         </div>
       </div>
 
       <div class="lifetime-hero-card">
-        <div class="lifetime-pill">🇮🇳 Islaah Foundation Circle</div>
+        <div class="lifetime-pill">🌍 Islaah Foundation Circle</div>
         <div style="font-size:13px;color:#e2e8f0;margin-bottom:4px;">Cumulative <span id="lifetime-aamaal-name">Durood Shareef</span></div>
         <div class="lifetime-number" id="group-lifetime-total">0</div>
         <div class="lifetime-sub">Combined recitations by all circle & family members</div>
@@ -1143,7 +1253,7 @@
       </div>
       <div class="white-list-card" id="leaderboard-container"></div>
 
-      <div class="section-heading"><span>⚡ Today's Activity (IST)</span></div>
+      <div class="section-heading"><span>⚡ Today's Activity</span></div>
       <div class="daily-perf-grid">
         <div class="perf-box">
           <div class="perf-num" id="group-today-total">0</div>
@@ -1153,6 +1263,38 @@
           <div class="perf-num" id="my-contrib-today">0</div>
           <div class="perf-label">Your Count Today</div>
         </div>
+      </div>
+
+      <!-- NEW SUMMARY 1: WEEKLY PERFORMANCE + TOP BY COUNTRY -->
+      <div class="section-heading"><span>Weekly Performance</span></div>
+      <div class="perf-summary-card">
+        <div class="perf-top-metric-row">
+          <div class="perf-top-metric-val" id="weekly-perf-group-total">0</div>
+          <div class="perf-top-metric-lbl">Total Recited This Week</div>
+        </div>
+        <div class="perf-top-metric-row" style="margin-bottom:0;">
+          <div class="perf-top-metric-val" id="weekly-perf-my-total">0</div>
+          <div class="perf-top-metric-lbl">Your contribution this week</div>
+        </div>
+        <div class="perf-divider"></div>
+        <div class="top-country-heading">Top by Country</div>
+        <div id="weekly-top-countries-list"></div>
+      </div>
+
+      <!-- NEW SUMMARY 2: MONTHLY PERFORMANCE + TOP BY COUNTRY -->
+      <div class="section-heading"><span>Monthly Performance</span></div>
+      <div class="perf-summary-card">
+        <div class="perf-top-metric-row">
+          <div class="perf-top-metric-val" id="monthly-perf-group-total">0</div>
+          <div class="perf-top-metric-lbl">Total Recited This Month</div>
+        </div>
+        <div class="perf-top-metric-row" style="margin-bottom:0;">
+          <div class="perf-top-metric-val" id="monthly-perf-my-total">0</div>
+          <div class="perf-top-metric-lbl">Your contribution this month</div>
+        </div>
+        <div class="perf-divider"></div>
+        <div class="top-country-heading">Top by Country</div>
+        <div id="monthly-top-countries-list"></div>
       </div>
 
       <div class="section-heading"><span>📊 Last 7 Days Trend</span></div>
@@ -1190,7 +1332,7 @@
       <div class="admin-card" id="admin-daily-inspector-card">
         <div class="admin-filter-grid">
           <div>
-            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Pick Any Date (IST):</label>
+            <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Pick Any Date:</label>
             <input type="date" id="admin-date-picker" class="select-input">
           </div>
           <div>
@@ -1206,7 +1348,7 @@
         <div id="admin-person-wise-list"></div>
       </div>
 
-      <!-- 2. INDIVIDUAL MEMBER MONTHLY COUNT VS TARGET (SINGLE CARD + AAMAAL DROPDOWN) -->
+      <!-- 2. INDIVIDUAL MEMBER MONTHLY COUNT VS TARGET -->
       <div class="section-heading">
         <span>🎯 Member Monthly Count vs. Target</span>
       </div>
@@ -1286,7 +1428,7 @@
 
   </div>
 
-  <!-- 3. SETTINGS MODAL (WITH USER RENAME FEATURE) -->
+  <!-- 3. SETTINGS MODAL (WITH RENAME + COUNTRY SELECTOR) -->
   <div id="settings-modal" class="modal-backdrop hidden">
     <div class="modal-sheet">
       <div class="modal-header-row">
@@ -1294,17 +1436,31 @@
         <button class="close-modal-btn" id="close-settings-btn" title="Close">✕</button>
       </div>
       <div class="modal-sub" id="modal-subheading">
-        Update your display name, add family members, or adjust leaderboard privacy for the currently selected profile.
+        Update your display name, country flag, family members, or leaderboard privacy.
       </div>
 
-      <!-- User Can Edit Their Own or Selected Family Member's Name -->
+      <!-- Edit Display Name & Country Flag -->
       <div>
         <label style="font-size:12px;font-weight:700;color:#0f766e;">
-          ✏️ Edit Display Name for Selected Profile:
+          ✏️ Edit Display Name & Country for Selected Profile:
         </label>
         <div class="input-row">
           <input type="text" id="edit-current-profile-name" class="text-input" placeholder="Enter preferred display name">
-          <button class="small-btn" id="save-profile-name-btn" style="background:#0d9488;">Save Name</button>
+          <button class="small-btn" id="save-profile-name-btn" style="background:#0d9488;">Save</button>
+        </div>
+        <div style="margin-top:8px;">
+          <select id="edit-current-profile-country" class="select-input">
+            <option value="India">🇮🇳 India</option>
+            <option value="United States">🇺🇸 United States</option>
+            <option value="United Kingdom">🇬🇧 United Kingdom</option>
+            <option value="United Arab Emirates">🇦🇪 United Arab Emirates</option>
+            <option value="Saudi Arabia">🇸🇦 Saudi Arabia</option>
+            <option value="Oman">🇴🇲 Oman</option>
+            <option value="Qatar">🇶🇦 Qatar</option>
+            <option value="Kuwait">🇰🇼 Kuwait</option>
+            <option value="Canada">🇨🇦 Canada</option>
+            <option value="Australia">🇦🇺 Australia</option>
+          </select>
         </div>
       </div>
 
@@ -1340,8 +1496,36 @@
         <div class="privacy-option-desc">Hidden from leaderboard. Only added to the group's total recitations.</div>
       </div>
 
-      <button class="action-btn" id="save-settings-btn" style="margin-top:10px;">Save Settings</button>
+      <button class="action-btn" id="save-settings-btn" style="margin-top:10px;">Save All Settings</button>
       <button class="signout-btn" id="signout-btn">Sign Out of Account</button>
+    </div>
+  </div>
+
+  <!-- 4. APPLE iOS / ANDROID PWA INSTALL GUIDE MODAL -->
+  <div id="pwa-install-modal" class="modal-backdrop hidden">
+    <div class="modal-sheet">
+      <div class="modal-header-row">
+        <div class="modal-title">📲 Install Aamaal Circle</div>
+        <button class="close-modal-btn" id="close-pwa-modal-btn" title="Close">✕</button>
+      </div>
+      <div class="modal-sub">
+        Install this app onto your phone's Home Screen so it opens full-screen with one tap:
+      </div>
+
+      <div class="ios-step-box">
+        🍎 <strong>On Apple iPhone / iPad (Safari):</strong><br>
+        1. Tap the <strong>Share icon (⬆️ square with arrow)</strong> at the bottom of Safari.<br>
+        2. Scroll down and tap <strong>"Add to Home Screen" (➕)</strong>.<br>
+        3. Tap <strong>"Add"</strong> in the top-right corner.
+      </div>
+
+      <div class="ios-step-box">
+        🤖 <strong>On Android (Chrome):</strong><br>
+        1. Tap the <strong>three dots (⋮)</strong> in the top-right corner of Chrome.<br>
+        2. Tap <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong>.
+      </div>
+
+      <button class="action-btn" id="got-it-pwa-btn" style="margin-top:8px;">Got It!</button>
     </div>
   </div>
 
@@ -1350,8 +1534,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { 
       getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged,
-      createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile,
-      RecaptchaVerifier, signInWithPhoneNumber
+      createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { 
       getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, query, getDocs 
@@ -1372,20 +1555,86 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    const INDIA_FLAG_SVG = `
-      <svg class="india-flag-icon" viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg">
-        <rect width="36" height="8" y="0" fill="#FF9933"/>
-        <rect width="36" height="8" y="8" fill="#FFFFFF"/>
-        <rect width="36" height="8" y="16" fill="#138808"/>
-        <circle cx="18" cy="12" r="3.2" fill="none" stroke="#000080" stroke-width="1"/>
-        <circle cx="18" cy="12" r="0.8" fill="#000080"/>
-      </svg>
-    `;
+    // --- 1. AUTO-DETECT COUNTRY & FLAG VIA DEVICE TIMEZONE ---
+    const COUNTRY_FLAGS = {
+      "India": "🇮🇳",
+      "United States": "🇺🇸",
+      "United Kingdom": "🇬🇧",
+      "United Arab Emirates": "🇦🇪",
+      "Saudi Arabia": "🇸🇦",
+      "Oman": "🇴🇲",
+      "Qatar": "🇶🇦",
+      "Kuwait": "🇰🇼",
+      "Canada": "🇨🇦",
+      "Australia": "🇦🇺"
+    };
+
+    function detectLocationFromTimezone() {
+      const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || "").toLowerCase();
+      if (tz.includes("kolkata") || tz.includes("calcutta") || tz.includes("india")) {
+        return { country: "India", flag: "🇮🇳", dial: "+91" };
+      }
+      if (tz.includes("toronto") || tz.includes("vancouver") || tz.includes("montreal") || tz.includes("edmonton") || tz.includes("winnipeg") || tz.includes("halifax")) {
+        return { country: "Canada", flag: "🇨🇦", dial: "+1" };
+      }
+      if (tz.startsWith("america/") || tz.startsWith("us/")) {
+        return { country: "United States", flag: "🇺🇸", dial: "+1" };
+      }
+      if (tz.includes("london") || tz.includes("europe/london") || tz.includes("belfast")) {
+        return { country: "United Kingdom", flag: "🇬🇧", dial: "+44" };
+      }
+      if (tz.includes("dubai") || tz.includes("muscat")) {
+        return tz.includes("muscat")
+          ? { country: "Oman", flag: "🇴🇲", dial: "+968" }
+          : { country: "United Arab Emirates", flag: "🇦🇪", dial: "+971" };
+      }
+      if (tz.includes("riyadh")) {
+        return { country: "Saudi Arabia", flag: "🇸🇦", dial: "+966" };
+      }
+      if (tz.includes("qatar")) {
+        return { country: "Qatar", flag: "🇶🇦", dial: "+974" };
+      }
+      if (tz.includes("kuwait")) {
+        return { country: "Kuwait", flag: "🇰🇼", dial: "+965" };
+      }
+      if (tz.startsWith("australia/")) {
+        return { country: "Australia", flag: "🇦🇺", dial: "+61" };
+      }
+      return { country: "India", flag: "🇮🇳", dial: "+91" };
+    }
+
+    const detectedLoc = detectLocationFromTimezone();
+    const phoneDialSelect = document.getElementById("phone-country-code");
+    if (phoneDialSelect && detectedLoc.dial) {
+      phoneDialSelect.value = detectedLoc.dial;
+    }
+
+    function getMemberCountry(member, memberMap) {
+      if (!member) return "India";
+      if (member.country) return member.country;
+      if (!member.isPrimary && memberMap && memberMap[member.parentUid]?.country) {
+        return memberMap[member.parentUid].country;
+      }
+      return "India";
+    }
+
+    function getMemberFlag(member, memberMap) {
+      const c = getMemberCountry(member, memberMap);
+      return COUNTRY_FLAGS[c] || member?.flag || "🇮🇳";
+    }
+
+    // --- 2. OPTION A: LOCAL DEVICE TIMEZONE DATE HELPERS ---
+    function getLocalDateString(dateObj = new Date()) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const d = String(dateObj.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
 
     let currentUser = null;
     let pendingPhoneSignupName = "";
     let pendingPhoneNumber = "";
-    let smsConfirmationResult = null;
+    let deferredInstallPrompt = null;
 
     let myProfiles = [];
     let allMembers = [];
@@ -1396,32 +1645,49 @@
     let allLogsForAamaal = [];
     let selectedPrivacy = "public";
     let isFirstLogin = false;
-    let selectedDateIST = getISTDateString();
+    let selectedDateLocal = getLocalDateString();
 
-    let adminFilterDate = getISTDateString();
+    let adminFilterDate = getLocalDateString();
     let adminFilterAamaalId = "";
     let adminMonthlyMemberId = "";
     let adminMonthlyAamaalId = "";
-    let adminMonthlyMonth = getISTDateString().slice(0, 7);
+    let adminMonthlyMonth = getLocalDateString().slice(0, 7);
 
     let userMonthlyAamaalId = "";
-    let userMonthlyReportMonth = getISTDateString().slice(0, 7);
+    let userMonthlyReportMonth = getLocalDateString().slice(0, 7);
 
-    function getISTDateString(dateObj = new Date()) {
-      return new Intl.DateTimeFormat('en-CA', {
-        timeZone: 'Asia/Kolkata',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      }).format(dateObj);
+    // --- PWA INSTALLATION HANDLER ---
+    const installPwaBtn = document.getElementById("install-pwa-btn");
+    const pwaInstallModal = document.getElementById("pwa-install-modal");
+
+    if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) {
+      installPwaBtn.classList.add("hidden");
     }
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      installPwaBtn.classList.remove("hidden");
+    });
+
+    installPwaBtn.addEventListener("click", async () => {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
+      } else {
+        pwaInstallModal.classList.remove("hidden");
+      }
+    });
+
+    document.getElementById("close-pwa-modal-btn").addEventListener("click", () => pwaInstallModal.classList.add("hidden"));
+    document.getElementById("got-it-pwa-btn").addEventListener("click", () => pwaInstallModal.classList.add("hidden"));
 
     function formatAnyDatePretty(dateKey) {
       if (!dateKey) return "";
       const [y, m, d] = dateKey.split("-").map(Number);
-      const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
-      return new Intl.DateTimeFormat('en-IN', {
-        timeZone: 'Asia/Kolkata',
+      const dt = new Date(y, m - 1, d, 12, 0, 0);
+      return new Intl.DateTimeFormat('en-US', {
         weekday: 'short',
         day: 'numeric',
         month: 'short',
@@ -1432,9 +1698,8 @@
     function formatMonthYearPretty(monthStr) {
       if (!monthStr) return "";
       const [y, m] = monthStr.split("-").map(Number);
-      const dt = new Date(Date.UTC(y, m - 1, 15, 12, 0, 0));
-      return new Intl.DateTimeFormat('en-IN', {
-        timeZone: 'Asia/Kolkata',
+      const dt = new Date(y, m - 1, 15, 12, 0, 0);
+      return new Intl.DateTimeFormat('en-US', {
         month: 'long',
         year: 'numeric'
       }).format(dt);
@@ -1443,14 +1708,14 @@
     function getMonthDetails(monthStr) {
       const [year, month] = monthStr.split("-").map(Number);
       const totalDaysInMonth = new Date(year, month, 0).getDate();
-      const todayIST = getISTDateString();
-      const currentMonthIST = todayIST.slice(0, 7);
-      const todayDayNum = Number(todayIST.slice(8, 10));
+      const todayLocal = getLocalDateString();
+      const currentMonthLocal = todayLocal.slice(0, 7);
+      const todayDayNum = Number(todayLocal.slice(8, 10));
 
       let elapsedDays = totalDaysInMonth;
-      if (monthStr === currentMonthIST) {
+      if (monthStr === currentMonthLocal) {
         elapsedDays = todayDayNum;
-      } else if (monthStr > currentMonthIST) {
+      } else if (monthStr > currentMonthLocal) {
         elapsedDays = 0;
       }
 
@@ -1459,7 +1724,7 @@
         month,
         totalDaysInMonth,
         elapsedDays,
-        isCurrentMonth: monthStr === currentMonthIST
+        isCurrentMonth: monthStr === currentMonthLocal
       };
     }
 
@@ -1467,21 +1732,21 @@
       const keys = new Set();
       const now = new Date();
       for (let i = 0; i < n; i++) {
-        keys.add(getISTDateString(new Date(now.getTime() - i * 86400000)));
+        keys.add(getLocalDateString(new Date(now.getTime() - i * 86400000)));
       }
       return keys;
     }
 
-    function getISTDaysList(numDays = 30) {
+    function getLocalDaysList(numDays = 30) {
       const days = [];
       const now = new Date();
       for (let i = numDays - 1; i >= 0; i--) {
         const d = new Date(now.getTime() - i * 86400000);
-        const dateKey = getISTDateString(d);
-        const weekday = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', weekday: 'short' }).format(d);
-        const monthShort = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', month: 'short' }).format(d);
-        const dayNum = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', day: 'numeric' }).format(d);
-        const prettyLabel = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', weekday: 'short', day: 'numeric', month: 'short' }).format(d);
+        const dateKey = getLocalDateString(d);
+        const weekday = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(d);
+        const monthShort = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(d);
+        const dayNum = new Intl.DateTimeFormat('en-US', { day: 'numeric' }).format(d);
+        const prettyLabel = new Intl.DateTimeFormat('en-US', { weekday: 'short', day: 'numeric', month: 'short' }).format(d);
         days.push({
           dateKey,
           shortDay: weekday.slice(0, 3),
@@ -1495,9 +1760,8 @@
     }
 
     function formatCompactNumber(num) {
-      if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-      if (num >= 10000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
-      return num.toLocaleString('en-IN');
+      if (num >= 1000000) return (num / 1000000).toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1') + 'M';
+      return num.toLocaleString('en-US');
     }
 
     function getPreferredGivenName(fullName = "") {
@@ -1564,17 +1828,17 @@
         currentUser = user;
         status.textContent = "Loading Aamaal Circle...";
         authBox.classList.add("hidden");
-        selectedDateIST = getISTDateString();
-        adminFilterDate = getISTDateString();
-        adminMonthlyMonth = getISTDateString().slice(0, 7);
-        userMonthlyReportMonth = getISTDateString().slice(0, 7);
+        selectedDateLocal = getLocalDateString();
+        adminFilterDate = getLocalDateString();
+        adminMonthlyMonth = getLocalDateString().slice(0, 7);
+        userMonthlyReportMonth = getLocalDateString().slice(0, 7);
         await bootApp(user);
       } else {
         currentUser = null;
         splash.classList.remove("hidden");
         appBox.classList.add("hidden");
         authBox.classList.remove("hidden");
-        status.textContent = "Sign in with Google or Mobile Number";
+        status.textContent = "Sign in with Google or Mobile & PIN";
       }
     });
 
@@ -1587,41 +1851,26 @@
       }
     });
 
-    // --- MOBILE NUMBER LOGIN UI TOGGLES ---
+    // --- MOBILE NUMBER + PIN LOGIN ---
     document.getElementById("toggle-phone-auth-btn").addEventListener("click", () => {
       document.getElementById("phone-auth-panel").classList.toggle("hidden");
     });
 
-    document.getElementById("tab-pin-mode").addEventListener("click", () => {
-      document.getElementById("tab-pin-mode").classList.add("active");
-      document.getElementById("tab-otp-mode").classList.remove("active");
-      document.getElementById("pin-mode-box").classList.remove("hidden");
-      document.getElementById("otp-mode-box").classList.add("hidden");
-    });
-
-    document.getElementById("tab-otp-mode").addEventListener("click", () => {
-      document.getElementById("tab-otp-mode").classList.add("active");
-      document.getElementById("tab-pin-mode").classList.remove("active");
-      document.getElementById("otp-mode-box").classList.remove("hidden");
-      document.getElementById("pin-mode-box").classList.add("hidden");
-    });
-
-    function normalizeIndianMobile(raw) {
-      const digits = raw.replace(/\D/g, "");
-      if (digits.length === 10) return "+91" + digits;
-      if (digits.length === 12 && digits.startsWith("91")) return "+" + digits;
-      if (digits.length >= 10) return "+" + digits;
-      return null;
+    function normalizePhoneWithCountry(rawPhone, dialCode) {
+      const digits = rawPhone.replace(/\D/g, "");
+      if (digits.length < 7) return null;
+      if (rawPhone.trim().startsWith("+")) return "+" + digits;
+      return `${dialCode}${digits}`;
     }
 
-    // Mode 1: Instant Mobile Number + 4-Digit PIN (Works 100% Free)
     document.getElementById("phone-pin-submit-btn").addEventListener("click", async () => {
       const rawName = document.getElementById("phone-user-name").value.trim();
+      const dialCode = document.getElementById("phone-country-code").value;
       const rawPhone = document.getElementById("phone-number-input").value.trim();
       const rawPin = document.getElementById("phone-pin-input").value.trim();
 
-      const e164Phone = normalizeIndianMobile(rawPhone);
-      if (!e164Phone) return alert("Please enter a valid 10-digit mobile number.");
+      const e164Phone = normalizePhoneWithCountry(rawPhone, dialCode);
+      if (!e164Phone) return alert("Please enter a valid mobile number.");
       if (!rawPin || rawPin.length < 4) return alert("Please enter at least a 4-digit PIN.");
 
       const syntheticEmail = `${e164Phone.replace("+", "")}@aamaalcircle.app`;
@@ -1630,15 +1879,16 @@
       pendingPhoneNumber = e164Phone;
 
       const status = document.getElementById("splash-status");
-      status.textContent = "Signing in with Mobile Number...";
+      status.textContent = "Signing in with Mobile & PIN...";
 
       try {
         await signInWithEmailAndPassword(auth, syntheticEmail, syntheticPass);
       } catch (signInErr) {
+        // Backward compatibility if an Indian 10-digit number was previously registered without +91 or with +91
         if (signInErr.code === "auth/user-not-found" || signInErr.code === "auth/invalid-credential") {
           if (!rawName) {
             status.textContent = "First-time user? Enter your Full Name above!";
-            return alert("If this is your first time signing up with this mobile number, please enter your Full Name in the top box! (Or check that your 4-digit PIN is correct).");
+            return alert("If this is your first time signing up with this mobile number, please enter your Full Name in the top box! (Or check that your 4-digit PIN & Country Code are correct).");
           }
           try {
             const cred = await createUserWithEmailAndPassword(auth, syntheticEmail, syntheticPass);
@@ -1647,57 +1897,24 @@
             if (createErr.code === "auth/email-already-in-use") {
               alert("Incorrect PIN for this mobile number. Please enter the 4-digit PIN you chose when signing up.");
             } else if (createErr.code === "auth/operation-not-allowed") {
-              alert("Admin Setup Needed: In Firebase Console -> Authentication -> Sign-in method, please enable 'Email/Password' so free Mobile+PIN login can work!");
+              alert("Admin Setup Needed: In Firebase Console -> Authentication -> Sign-in method, please enable 'Email/Password' so Mobile+PIN login can work!");
             } else {
               alert("Mobile signup error: " + createErr.message);
             }
           }
         } else if (signInErr.code === "auth/operation-not-allowed") {
-          alert("Admin Setup Needed: In Firebase Console -> Authentication -> Sign-in method, please enable 'Email/Password' so free Mobile+PIN login can work!");
+          alert("Admin Setup Needed: In Firebase Console -> Authentication -> Sign-in method, please enable 'Email/Password' so Mobile+PIN login can work!");
         } else {
           alert("Mobile login error: " + signInErr.message);
         }
       }
     });
 
-    // Mode 2: Real SMS OTP Verification
-    document.getElementById("send-otp-btn").addEventListener("click", async () => {
-      const rawName = document.getElementById("phone-user-name").value.trim();
-      const rawPhone = document.getElementById("phone-number-input").value.trim();
-      const e164Phone = normalizeIndianMobile(rawPhone);
-
-      if (!e164Phone) return alert("Please enter a valid 10-digit mobile number.");
-      pendingPhoneSignupName = rawName;
-      pendingPhoneNumber = e164Phone;
-
-      try {
-        if (!window.recaptchaVerifier) {
-          window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
-            size: "invisible"
-          });
-        }
-        document.getElementById("splash-status").textContent = `Sending SMS OTP to ${e164Phone}...`;
-        smsConfirmationResult = await signInWithPhoneNumber(auth, e164Phone, window.recaptchaVerifier);
-        document.getElementById("verify-otp-section").classList.remove("hidden");
-        alert(`OTP sent to ${e164Phone}! Please enter the 6-digit code.`);
-      } catch (err) {
-        alert("SMS OTP Error (Note: Firebase requires Phone Auth enabled & Blaze plan for real SMS, or use the free 'Mobile + PIN' tab!): " + err.message);
-      }
-    });
-
-    document.getElementById("verify-otp-btn").addEventListener("click", async () => {
-      const code = document.getElementById("otp-code-input").value.trim();
-      if (!code || !smsConfirmationResult) return alert("Please enter the 6-digit OTP code.");
-      try {
-        await smsConfirmationResult.confirm(code);
-      } catch (err) {
-        alert("Invalid OTP code: " + err.message);
-      }
-    });
-
     async function bootApp(user) {
       await ensureDefaultAamaal();
 
+      const autoLoc = detectLocationFromTimezone();
+      const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
       const mainRef = doc(db, "members", user.uid);
       const mainSnap = await getDoc(mainRef);
 
@@ -1713,11 +1930,24 @@
           customNameLocked: Boolean(pendingPhoneSignupName),
           phone: pendingPhoneNumber || user.phoneNumber || "",
           email: user.email || "",
+          country: autoLoc.country,
+          flag: autoLoc.flag,
+          timeZone: userTz,
           privacy: "public",
           role: isFirstEver ? "admin" : "member",
           createdAt: Date.now()
         });
         isFirstLogin = true;
+      } else {
+        // Auto-populate country & flag via timezone if not manually locked by the user yet
+        const existingData = mainSnap.data();
+        if (!existingData.countryLocked && (!existingData.country || existingData.timeZone !== userTz)) {
+          await updateDoc(mainRef, {
+            country: autoLoc.country,
+            flag: autoLoc.flag,
+            timeZone: userTz
+          });
+        }
       }
 
       await loadAamaalTabs();
@@ -1771,7 +2001,7 @@
         btn.addEventListener("click", async () => {
           activeAamaal = item;
           userMonthlyAamaalId = item.id;
-          selectedDateIST = getISTDateString();
+          selectedDateLocal = getLocalDateString();
           renderAamaalTabs();
           await loadLogsAndRender(true);
         });
@@ -1793,7 +2023,7 @@
       myProfiles.sort((a, b) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0));
 
       activeProfile = myProfiles.find(p => p.id === preferredProfileId) || myProfiles[0];
-      selectedPrivacy = activeProfile.privacy || "public";
+      selectedPrivacy = activeProfile ? (activeProfile.privacy || "public") : "public";
 
       if (!adminMonthlyMemberId || !allMembers.find(m => m.id === adminMonthlyMemberId)) {
         adminMonthlyMemberId = activeProfile ? activeProfile.id : (allMembers[0]?.id || "");
@@ -1803,10 +2033,13 @@
     }
 
     function updateTopBarUI() {
+      if (!activeProfile) return;
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
 
       const clearActiveName = getClearMemberName(activeProfile, memberMap);
+      const activeFlag = getMemberFlag(activeProfile, memberMap);
+      document.getElementById("active-member-flag").textContent = activeFlag;
       document.getElementById("active-member-name").textContent = clearActiveName;
       document.getElementById("privacy-target-name").textContent = clearActiveName;
 
@@ -1821,11 +2054,12 @@
         const item = document.createElement("div");
         item.className = "quick-dropdown-item" + (prof.id === activeProfile.id ? " active" : "");
         const displayName = getClearMemberName(prof, memberMap);
-        item.innerHTML = `<span>${displayName}</span><span>${prof.id === activeProfile.id ? "✓" : ""}</span>`;
+        const flag = getMemberFlag(prof, memberMap);
+        item.innerHTML = `<span>${flag} ${displayName}</span><span>${prof.id === activeProfile.id ? "✓" : ""}</span>`;
         item.addEventListener("click", async () => {
           activeProfile = prof;
           selectedPrivacy = prof.privacy || "public";
-          selectedDateIST = getISTDateString();
+          selectedDateLocal = getLocalDateString();
           menu.classList.add("hidden");
           updateTopBarUI();
           renderDailyScreen(true);
@@ -1847,7 +2081,7 @@
     function populateUserMonthlyDropdowns() {
       const aamaalSel = document.getElementById("user-monthly-aamaal-select");
       const monthInput = document.getElementById("user-monthly-month-picker");
-      const todayIST = getISTDateString();
+      const todayLocal = getLocalDateString();
 
       aamaalSel.innerHTML = "";
       aamaalList.forEach(a => {
@@ -1859,7 +2093,7 @@
       });
 
       monthInput.value = userMonthlyReportMonth;
-      monthInput.max = todayIST.slice(0, 7);
+      monthInput.max = todayLocal.slice(0, 7);
     }
 
     function populateAdminDropdowns() {
@@ -1869,9 +2103,9 @@
       const monthlyAamaalSel = document.getElementById("admin-monthly-aamaal-select");
       const monthInput = document.getElementById("admin-monthly-month-picker");
 
-      const todayIST = getISTDateString();
+      const todayLocal = getLocalDateString();
       dateInput.value = adminFilterDate;
-      dateInput.max = todayIST;
+      dateInput.max = todayLocal;
 
       aamaalSel.innerHTML = "";
       monthlyAamaalSel.innerHTML = "";
@@ -1900,13 +2134,13 @@
       sortedMembers.forEach(m => {
         const opt = document.createElement("option");
         opt.value = m.id;
-        opt.textContent = getClearMemberName(m, memberMap);
+        opt.textContent = `${getMemberFlag(m, memberMap)} ${getClearMemberName(m, memberMap)}`;
         if (m.id === adminMonthlyMemberId) opt.selected = true;
         memberSel.appendChild(opt);
       });
 
       monthInput.value = adminMonthlyMonth;
-      monthInput.max = todayIST.slice(0, 7);
+      monthInput.max = todayLocal.slice(0, 7);
     }
 
     document.getElementById("admin-date-picker").addEventListener("change", (e) => {
@@ -1952,7 +2186,7 @@
 
     document.getElementById("daily-any-date-picker").addEventListener("change", (e) => {
       if (e.target.value) {
-        selectedDateIST = e.target.value;
+        selectedDateLocal = e.target.value;
         renderDailyScreen(true);
       }
     });
@@ -1973,18 +2207,18 @@
     function renderDailyScreen(scrollStripToSelected = false) {
       if (!activeAamaal || !activeProfile) return;
 
-      const todayIST = getISTDateString();
-      const last30Days = getISTDaysList(30);
+      const todayLocal = getLocalDateString();
+      const last30Days = getLocalDaysList(30);
       const last7DaysKeys = getLastNDaysKeys(7);
 
       const dailyPicker = document.getElementById("daily-any-date-picker");
-      dailyPicker.value = selectedDateIST;
-      dailyPicker.max = todayIST;
+      dailyPicker.value = selectedDateLocal;
+      dailyPicker.max = todayLocal;
 
-      const selectedDayIn30 = last30Days.find(d => d.dateKey === selectedDateIST);
-      const friendlyDateText = (selectedDateIST === todayIST)
+      const selectedDayIn30 = last30Days.find(d => d.dateKey === selectedDateLocal);
+      const friendlyDateText = (selectedDateLocal === todayLocal)
         ? "Today"
-        : (selectedDayIn30 ? selectedDayIn30.prettyLabel : formatAnyDatePretty(selectedDateIST));
+        : (selectedDayIn30 ? selectedDayIn30.prettyLabel : formatAnyDatePretty(selectedDateLocal));
 
       document.getElementById("current-aamaal-title").textContent = activeAamaal.name;
       document.getElementById("current-aamaal-arabic").textContent = activeAamaal.arabic;
@@ -2002,7 +2236,7 @@
       document.getElementById("stats-top-title-text").textContent = dynamicSummaryText;
 
       const myLogs = allLogsForAamaal.filter(l => l.memberId === activeProfile.id && l.aamaalId === activeAamaal.id);
-      const selectedLog = myLogs.find(l => l.dateKey === selectedDateIST);
+      const selectedLog = myLogs.find(l => l.dateKey === selectedDateLocal);
 
       const notRecitedBox = document.getElementById("not-recited-box");
       const recitedBox = document.getElementById("recited-box");
@@ -2011,7 +2245,7 @@
       if (selectedLog) {
         notRecitedBox.classList.add("hidden");
         recitedBox.classList.remove("hidden");
-        document.getElementById("today-logged-num").textContent = selectedLog.count.toLocaleString('en-IN');
+        document.getElementById("today-logged-num").textContent = selectedLog.count.toLocaleString('en-US');
         document.getElementById("custom-count-input").value = selectedLog.count;
       } else {
         notRecitedBox.classList.remove("hidden");
@@ -2030,7 +2264,7 @@
       last30Days.forEach(d => {
         const count = myDoneMap[d.dateKey] || 0;
         const done = count > 0;
-        const isSelected = (d.dateKey === selectedDateIST);
+        const isSelected = (d.dateKey === selectedDateLocal);
         const cell = document.createElement("div");
         cell.className = "day-cell" + (isSelected ? " selected-day" : "") + (d.isToday ? " is-today" : "");
 
@@ -2042,7 +2276,7 @@
           <div class="day-mini-count">${done ? formatCompactNumber(count) : '–'}</div>
         `;
         cell.addEventListener("click", () => {
-          selectedDateIST = d.dateKey;
+          selectedDateLocal = d.dateKey;
           renderDailyScreen(false);
         });
         stripContainer.appendChild(cell);
@@ -2057,30 +2291,30 @@
         stripContainer.scrollLeft = previousScrollLeft;
       }
 
-      const todayLog = myLogs.find(l => l.dateKey === todayIST);
+      const todayLog = myLogs.find(l => l.dateKey === todayLocal);
       const myTodayCount = todayLog ? Number(todayLog.count) : 0;
       const myWeekCount = myLogs
         .filter(l => last7DaysKeys.has(l.dateKey))
         .reduce((sum, l) => sum + Number(l.count || 0), 0);
 
-      document.getElementById("my-today-total").textContent = myTodayCount.toLocaleString('en-IN');
-      document.getElementById("my-week-total").textContent = myWeekCount.toLocaleString('en-IN');
+      document.getElementById("my-today-total").textContent = myTodayCount.toLocaleString('en-US');
+      document.getElementById("my-week-total").textContent = myWeekCount.toLocaleString('en-US');
     }
 
     document.getElementById("reset-to-today-link").addEventListener("click", () => {
-      selectedDateIST = getISTDateString();
+      selectedDateLocal = getLocalDateString();
       renderDailyScreen(true);
     });
 
     document.getElementById("mark-recited-btn").addEventListener("click", async () => {
       if (!activeAamaal || !activeProfile) return;
-      const logId = `${selectedDateIST}_${activeAamaal.id}_${activeProfile.id}`;
+      const logId = `${selectedDateLocal}_${activeAamaal.id}_${activeProfile.id}`;
       await setDoc(doc(db, "logs", logId), {
         id: logId,
         aamaalId: activeAamaal.id,
         memberId: activeProfile.id,
         parentUid: currentUser.uid,
-        dateKey: selectedDateIST,
+        dateKey: selectedDateLocal,
         count: Number(activeAamaal.target),
         updatedAt: Date.now()
       });
@@ -2094,7 +2328,7 @@
     document.querySelectorAll(".chip-btn").forEach(chip => {
       chip.addEventListener("click", async () => {
         const addVal = Number(chip.dataset.add);
-        const logId = `${selectedDateIST}_${activeAamaal.id}_${activeProfile.id}`;
+        const logId = `${selectedDateLocal}_${activeAamaal.id}_${activeProfile.id}`;
         const existing = allLogsForAamaal.find(l => l.id === logId);
         const newTotal = (existing ? Number(existing.count) : 0) + addVal;
 
@@ -2103,7 +2337,7 @@
           aamaalId: activeAamaal.id,
           memberId: activeProfile.id,
           parentUid: currentUser.uid,
-          dateKey: selectedDateIST,
+          dateKey: selectedDateLocal,
           count: newTotal,
           updatedAt: Date.now()
         }, { merge: true });
@@ -2114,7 +2348,7 @@
     document.getElementById("save-custom-count-btn").addEventListener("click", async () => {
       const val = Number(document.getElementById("custom-count-input").value);
       if (val < 0) return alert("Please enter a valid number.");
-      const logId = `${selectedDateIST}_${activeAamaal.id}_${activeProfile.id}`;
+      const logId = `${selectedDateLocal}_${activeAamaal.id}_${activeProfile.id}`;
       
       if (val === 0) {
         await deleteDoc(doc(db, "logs", logId));
@@ -2124,7 +2358,7 @@
           aamaalId: activeAamaal.id,
           memberId: activeProfile.id,
           parentUid: currentUser.uid,
-          dateKey: selectedDateIST,
+          dateKey: selectedDateLocal,
           count: val,
           updatedAt: Date.now()
         }, { merge: true });
@@ -2134,15 +2368,60 @@
     });
 
     document.getElementById("undo-today-btn").addEventListener("click", async () => {
-      const logId = `${selectedDateIST}_${activeAamaal.id}_${activeProfile.id}`;
+      const logId = `${selectedDateLocal}_${activeAamaal.id}_${activeProfile.id}`;
       await deleteDoc(doc(db, "logs", logId));
       await loadLogsAndRender(false);
     });
 
+    // Helper: Render "Top by Country" bars inside Weekly & Monthly Performance Cards
+    function renderTopByCountryList(logsSubset, memberMap, containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = "";
+
+      const countryTotals = {};
+      logsSubset.forEach(l => {
+        const m = memberMap[l.memberId];
+        const country = getMemberCountry(m, memberMap);
+        countryTotals[country] = (countryTotals[country] || 0) + Number(l.count || 0);
+      });
+
+      const rows = Object.keys(countryTotals)
+        .map(country => ({
+          country,
+          flag: COUNTRY_FLAGS[country] || "🌍",
+          total: countryTotals[country]
+        }))
+        .filter(r => r.total > 0)
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 5);
+
+      if (rows.length === 0) {
+        container.innerHTML = `<div style="font-size:13px;color:#94a3b8;padding:6px 0;">No recitations logged for this period yet.</div>`;
+        return;
+      }
+
+      const maxVal = Math.max(...rows.map(r => r.total), 1);
+      rows.forEach(r => {
+        const pct = Math.max(Math.round((r.total / maxVal) * 100), 4);
+        const div = document.createElement("div");
+        div.className = "country-stat-row";
+        div.innerHTML = `
+          <div class="country-stat-name"><span>${r.flag}</span><span>${r.country}</span></div>
+          <div class="country-bar-track">
+            <div class="country-bar-fill" style="width:${pct}%;"></div>
+          </div>
+          <div class="country-stat-val">${formatCompactNumber(r.total)}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
     function renderStatsScreen() {
       if (!activeAamaal || !activeProfile) return;
-      const todayIST = getISTDateString();
-      const last7Days = getISTDaysList(7);
+      const todayLocal = getLocalDateString();
+      const currentMonthPrefix = todayLocal.slice(0, 7);
+      const last7Days = getLocalDaysList(7);
       const weekDateKeys = new Set(last7Days.map(d => d.dateKey));
 
       document.getElementById("lifetime-aamaal-name").textContent = activeAamaal.name;
@@ -2151,34 +2430,32 @@
       const aamaalLogs = allLogsForAamaal.filter(l => l.aamaalId === activeAamaal.id);
 
       const lifetimeTotal = aamaalLogs.reduce((sum, l) => sum + Number(l.count || 0), 0);
-      document.getElementById("group-lifetime-total").textContent = lifetimeTotal.toLocaleString('en-IN');
+      document.getElementById("group-lifetime-total").textContent = lifetimeTotal.toLocaleString('en-US');
 
-      const weekGroupTotal = aamaalLogs
-        .filter(l => weekDateKeys.has(l.dateKey))
-        .reduce((sum, l) => sum + Number(l.count || 0), 0);
+      const weekLogs = aamaalLogs.filter(l => weekDateKeys.has(l.dateKey));
+      const weekGroupTotal = weekLogs.reduce((sum, l) => sum + Number(l.count || 0), 0);
       document.getElementById("stats-week-group-total").textContent = formatCompactNumber(weekGroupTotal);
 
       const tenDaysAgo = Date.now() - (10 * 86400000);
       const newMembersCount = allMembers.filter(m => (m.createdAt || 0) >= tenDaysAgo).length;
       document.getElementById("stats-new-members").textContent = `+${newMembersCount}`;
-      document.getElementById("stats-total-members").textContent = allMembers.length.toLocaleString('en-IN');
+      document.getElementById("stats-total-members").textContent = allMembers.length.toLocaleString('en-US');
 
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
 
       const weeklyByMember = {};
-      aamaalLogs
-        .filter(l => weekDateKeys.has(l.dateKey))
-        .forEach(l => {
-          weeklyByMember[l.memberId] = (weeklyByMember[l.memberId] || 0) + Number(l.count || 0);
-        });
+      weekLogs.forEach(l => {
+        weeklyByMember[l.memberId] = (weeklyByMember[l.memberId] || 0) + Number(l.count || 0);
+      });
 
       const leaderboardRows = [];
       Object.keys(weeklyByMember).forEach(memberId => {
         const m = memberMap[memberId];
         if (!m || m.privacy === "anonymous") return;
         const displayName = getLeaderboardDisplayName(m, memberMap);
-        leaderboardRows.push({ name: displayName, score: weeklyByMember[memberId] });
+        const flag = getMemberFlag(m, memberMap);
+        leaderboardRows.push({ name: displayName, flag, score: weeklyByMember[memberId] });
       });
 
       leaderboardRows.sort((a, b) => b.score - a.score);
@@ -2199,10 +2476,10 @@
             <div class="leader-top-line">
               <div class="leader-left">
                 <div class="rank-circle ${rankClass}">${idx + 1}</div>
-                ${INDIA_FLAG_SVG}
+                <span class="flag-badge">${item.flag}</span>
                 <div class="leader-name">${item.name}</div>
               </div>
-              <div class="leader-score">${item.score.toLocaleString('en-IN')}</div>
+              <div class="leader-score">${item.score.toLocaleString('en-US')}</div>
             </div>
             <div class="leader-bar-track">
               <div class="leader-bar-fill" style="width:${pct}%;"></div>
@@ -2213,15 +2490,34 @@
       }
 
       const groupTodayTotal = aamaalLogs
-        .filter(l => l.dateKey === todayIST)
+        .filter(l => l.dateKey === todayLocal)
         .reduce((sum, l) => sum + Number(l.count || 0), 0);
 
-      const myTodayLog = aamaalLogs.find(l => l.dateKey === todayIST && l.memberId === activeProfile.id);
+      const myTodayLog = aamaalLogs.find(l => l.dateKey === todayLocal && l.memberId === activeProfile.id);
       const myTodayTotal = myTodayLog ? Number(myTodayLog.count) : 0;
 
-      document.getElementById("group-today-total").textContent = groupTodayTotal.toLocaleString('en-IN');
-      document.getElementById("my-contrib-today").textContent = myTodayTotal.toLocaleString('en-IN');
+      document.getElementById("group-today-total").textContent = groupTodayTotal.toLocaleString('en-US');
+      document.getElementById("my-contrib-today").textContent = myTodayTotal.toLocaleString('en-US');
 
+      // --- POPULATE NEW WEEKLY PERFORMANCE SUMMARY CARD ---
+      const myWeekTotal = weekLogs
+        .filter(l => l.memberId === activeProfile.id)
+        .reduce((sum, l) => sum + Number(l.count || 0), 0);
+      document.getElementById("weekly-perf-group-total").textContent = formatCompactNumber(weekGroupTotal);
+      document.getElementById("weekly-perf-my-total").textContent = myWeekTotal.toLocaleString('en-US');
+      renderTopByCountryList(weekLogs, memberMap, "weekly-top-countries-list");
+
+      // --- POPULATE NEW MONTHLY PERFORMANCE SUMMARY CARD ---
+      const monthLogs = aamaalLogs.filter(l => (l.dateKey || "").startsWith(currentMonthPrefix));
+      const monthGroupTotal = monthLogs.reduce((sum, l) => sum + Number(l.count || 0), 0);
+      const myMonthTotal = monthLogs
+        .filter(l => l.memberId === activeProfile.id)
+        .reduce((sum, l) => sum + Number(l.count || 0), 0);
+      document.getElementById("monthly-perf-group-total").textContent = formatCompactNumber(monthGroupTotal);
+      document.getElementById("monthly-perf-my-total").textContent = myMonthTotal.toLocaleString('en-US');
+      renderTopByCountryList(monthLogs, memberMap, "monthly-top-countries-list");
+
+      // 7-Day Bar Chart
       const barsContainer = document.getElementById("weekly-bars-container");
       barsContainer.innerHTML = "";
       const dailyTotals = last7Days.map(d => {
@@ -2254,13 +2550,14 @@
       allMembers.forEach(m => { memberMap[m.id] = m; });
 
       const clearName = getClearMemberName(member, memberMap);
+      const flag = getMemberFlag(member, memberMap);
       const mInfo = getMonthDetails(targetMonthStr);
       const prettyMonth = formatMonthYearPretty(targetMonthStr);
 
       const headerBanner = document.createElement("div");
       headerBanner.style.cssText = "background:#ecfdf5;border:1px solid #a7f3d0;padding:10px 12px;border-radius:14px;margin-bottom:12px;font-size:12.5px;color:#065f46;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;";
       headerBanner.innerHTML = `
-        <span>👤 <strong>${clearName}</strong> • ${prettyMonth}</span>
+        <span>${flag} <strong>${clearName}</strong> • ${prettyMonth}</span>
         <span>${mInfo.isCurrentMonth ? `Day ${mInfo.elapsedDays} of ${mInfo.totalDaysInMonth}` : `${mInfo.totalDaysInMonth} Days`}</span>
       `;
       containerEl.appendChild(headerBanner);
@@ -2293,9 +2590,9 @@
 
       let diffBadge = "";
       if (diff >= 0) {
-        diffBadge = `<span class="pill-tag ahead">✓ +${diff.toLocaleString('en-IN')} Ahead (${pct}%)</span>`;
+        diffBadge = `<span class="pill-tag ahead">✓ +${diff.toLocaleString('en-US')} Ahead (${pct}%)</span>`;
       } else {
-        diffBadge = `<span class="pill-tag behind">${Math.abs(diff).toLocaleString('en-IN')} Remaining (${pct}%)</span>`;
+        diffBadge = `<span class="pill-tag behind">${Math.abs(diff).toLocaleString('en-US')} Remaining (${pct}%)</span>`;
       }
 
       let daysGridHtml = "";
@@ -2318,29 +2615,29 @@
         <div class="admin-row-top">
           <div>
             <div style="font-weight:800;font-size:15px;color:#0f172a;">${aamaalObj.name}</div>
-            <div style="font-size:11px;color:#64748b;">Daily Target: ${dailyTarget.toLocaleString('en-IN')}/day</div>
+            <div style="font-size:11px;color:#64748b;">Daily Target: ${dailyTarget.toLocaleString('en-US')}/day</div>
           </div>
           ${diffBadge}
         </div>
 
         <div class="monthly-metrics-grid">
           <div class="monthly-metric-item">
-            <div class="monthly-metric-val" style="color:#0f766e;">${actualCount.toLocaleString('en-IN')}</div>
+            <div class="monthly-metric-val" style="color:#0f766e;">${actualCount.toLocaleString('en-US')}</div>
             <div class="monthly-metric-lbl">Actual Recited</div>
           </div>
           <div class="monthly-metric-item">
-            <div class="monthly-metric-val">${comparisonTarget.toLocaleString('en-IN')}</div>
+            <div class="monthly-metric-val">${comparisonTarget.toLocaleString('en-US')}</div>
             <div class="monthly-metric-lbl">${mInfo.isCurrentMonth ? `Target (${mInfo.elapsedDays}d)` : `Month Target (${mInfo.totalDaysInMonth}d)`}</div>
           </div>
           <div class="monthly-metric-item">
             <div class="monthly-metric-val" style="color:${daysMissed > 0 ? '#b91c1c' : '#166534'};">${daysMissed} Days</div>
-            <div class="monthly-metric-lbl">Missed (${totalMissedCount.toLocaleString('en-IN')})</div>
+            <div class="monthly-metric-lbl">Missed (${totalMissedCount.toLocaleString('en-US')})</div>
           </div>
         </div>
 
         <div style="font-size:11.5px;color:#475569;margin-bottom:6px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
           <span>Consistency: <strong>${daysCompleted}/${mInfo.elapsedDays} days logged</strong></span>
-          <span>Full ${mInfo.totalDaysInMonth}d Target: <strong>${fullMonthTarget.toLocaleString('en-IN')}</strong></span>
+          <span>Full ${mInfo.totalDaysInMonth}d Target: <strong>${fullMonthTarget.toLocaleString('en-US')}</strong></span>
         </div>
 
         <div class="leader-bar-track" style="height:7px;margin-bottom:10px;">
@@ -2358,7 +2655,7 @@
           const clickedDate = dayEl.dataset.date;
           if (!clickedDate) return;
           if (isUserReport) {
-            selectedDateIST = clickedDate;
+            selectedDateLocal = clickedDate;
             activeAamaal = aamaalObj;
             renderAamaalTabs();
             document.getElementById("user-monthly-view").classList.add("hidden");
@@ -2386,7 +2683,7 @@
       if (!container || !monthPicker || !aamaalSel) return;
 
       monthPicker.value = userMonthlyReportMonth;
-      monthPicker.max = getISTDateString().slice(0, 7);
+      monthPicker.max = getLocalDateString().slice(0, 7);
 
       if (!userMonthlyAamaalId && aamaalList.length > 0) {
         userMonthlyAamaalId = aamaalList[0].id;
@@ -2406,7 +2703,7 @@
       if (!container || !monthInput || !aamaalSel) return;
 
       monthInput.value = adminMonthlyMonth;
-      monthInput.max = getISTDateString().slice(0, 7);
+      monthInput.max = getLocalDateString().slice(0, 7);
 
       if (!adminMonthlyAamaalId && allAamaalRaw.length > 0) {
         adminMonthlyAamaalId = allAamaalRaw[0].id;
@@ -2434,6 +2731,7 @@
       if (!member || !chosenAamaal) return;
 
       const clearName = getClearMemberName(member, memberMap);
+      const flag = getMemberFlag(member, memberMap);
       const mInfo = getMonthDetails(adminMonthlyMonth);
       const prettyMonth = formatMonthYearPretty(adminMonthlyMonth);
 
@@ -2453,14 +2751,14 @@
       let lines = [];
       lines.push(`🌙 *Islaah Foundation's Aamaal Circle*`);
       lines.push(`📊 *Monthly Progress Report*`);
-      lines.push(`👤 *Member:* ${clearName}`);
+      lines.push(`👤 *Member:* ${flag} ${clearName}`);
       lines.push(`📿 *Aamaal:* ${chosenAamaal.name}`);
       lines.push(`🗓️ *Month:* ${prettyMonth} (${mInfo.isCurrentMonth ? `${mInfo.elapsedDays} days elapsed` : `${mInfo.totalDaysInMonth} days`})`);
       lines.push(`────────────────────`);
-      lines.push(`• Recited: *${actual.toLocaleString('en-IN')}* / ${comparisonTarget.toLocaleString('en-IN')} (${pct}%)`);
-      lines.push(`• Full Month Target: ${fullMonthTarget.toLocaleString('en-IN')}`);
+      lines.push(`• Recited: *${actual.toLocaleString('en-US')}* / ${comparisonTarget.toLocaleString('en-US')} (${pct}%)`);
+      lines.push(`• Full Month Target: ${fullMonthTarget.toLocaleString('en-US')}`);
       lines.push(`• Consistency: ${daysDone}/${mInfo.elapsedDays} days done`);
-      lines.push(`• Missed: *${daysMissed} days* (${missedCount.toLocaleString('en-IN')} count)`);
+      lines.push(`• Missed: *${daysMissed} days* (${missedCount.toLocaleString('en-US')} count)`);
 
       const textToCopy = lines.join("\n").trim();
       try {
@@ -2479,10 +2777,11 @@
       if (!member || !chosenAamaal) return;
 
       const clearName = getClearMemberName(member, memberMap);
+      const country = getMemberCountry(member, memberMap);
       const mInfo = getMonthDetails(adminMonthlyMonth);
 
       let csvRows = [];
-      csvRows.push(["Date (IST)", "Member Name", "Aamaal Name", "Daily Target", "Actual Recited", "Status"].join(","));
+      csvRows.push(["Date", "Member Name", "Country", "Aamaal Name", "Daily Target", "Actual Recited", "Status"].join(","));
 
       for (let d = 1; d <= mInfo.totalDaysInMonth; d++) {
         const dayStr = String(d).padStart(2, "0");
@@ -2490,7 +2789,7 @@
         const log = allLogsForAamaal.find(l => l.memberId === member.id && l.aamaalId === chosenAamaal.id && l.dateKey === dateKey);
         const actual = log ? Number(log.count || 0) : 0;
         const status = actual >= chosenAamaal.target ? "Target Met" : (actual > 0 ? "Partial" : (d <= mInfo.elapsedDays ? "Missed" : "Upcoming"));
-        csvRows.push(`"${dateKey}","${clearName.replace(/"/g, '""')}","${chosenAamaal.name.replace(/"/g, '""')}",${chosenAamaal.target},${actual},"${status}"`);
+        csvRows.push(`"${dateKey}","${clearName.replace(/"/g, '""')}","${country}","${chosenAamaal.name.replace(/"/g, '""')}",${chosenAamaal.target},${actual},"${status}"`);
       }
 
       const blob = new Blob([csvRows.join("\r\n")], { type: "text/csv;charset=utf-8;" });
@@ -2530,7 +2829,7 @@
         summaryBanner.style.cssText = "background:#f8fafc;padding:10px 12px;border-radius:12px;margin-bottom:10px;font-size:12.5px;font-weight:700;color:#0f766e;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;";
         summaryBanner.innerHTML = `
           <span>📅 ${formatAnyDatePretty(adminFilterDate)}</span>
-          <span>Done: ${logsForSelectedDate.length}/${allMembers.length} • Total: ${totalDateCount.toLocaleString('en-IN')}</span>
+          <span>Done: ${logsForSelectedDate.length}/${allMembers.length} • Total: ${totalDateCount.toLocaleString('en-US')}</span>
         `;
         personWiseBox.appendChild(summaryBanner);
 
@@ -2545,6 +2844,7 @@
           const logEntry = logByMember[m.id];
           const count = logEntry ? Number(logEntry.count) : 0;
           const clearName = getClearMemberName(m, memberMap);
+          const flag = getMemberFlag(m, memberMap);
 
           const row = document.createElement("div");
           row.className = "admin-sub-row";
@@ -2552,11 +2852,11 @@
             <div class="admin-row-top">
               <div>
                 <div style="font-weight:700;font-size:14px;color:#1e293b;">
-                  ${count > 0 ? '✅' : '⏳'} ${clearName}
+                  ${count > 0 ? '✅' : '⏳'} ${flag} ${clearName}
                 </div>
                 <div style="font-size:11px;color:#64748b;">
-                  Count: <strong style="color:${count > 0 ? '#0f766e' : '#ef4444'};font-size:13px;">${count.toLocaleString('en-IN')}</strong>
-                  • Privacy: ${m.privacy}
+                  Count: <strong style="color:${count > 0 ? '#0f766e' : '#ef4444'};font-size:13px;">${count.toLocaleString('en-US')}</strong>
+                  • ${getMemberCountry(m, memberMap)} • Privacy: ${m.privacy}
                 </div>
               </div>
               <div class="admin-btn-group">
@@ -2615,8 +2915,8 @@
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${a.name}</td>
-          <td>${sum7.toLocaleString('en-IN')}</td>
-          <td>${sum30.toLocaleString('en-IN')}</td>
+          <td>${sum7.toLocaleString('en-US')}</td>
+          <td>${sum30.toLocaleString('en-US')}</td>
         `;
         reportTbody.appendChild(tr);
       });
@@ -2673,9 +2973,12 @@
       memBox.innerHTML = "";
       allMembers.forEach(m => {
         const clearName = getClearMemberName(m, memberMap);
+        const flag = getMemberFlag(m, memberMap);
+        const country = getMemberCountry(m, memberMap);
         const parent = memberMap[m.parentUid];
         const isAdminRole = m.role === "admin";
         const userLogCount = allLogsForAamaal.filter(l => l.memberId === m.id).length;
+        const isSelfPrimary = (m.id === currentUser.uid);
 
         const row = document.createElement("div");
         row.className = "admin-sub-row";
@@ -2683,18 +2986,18 @@
           <div class="admin-row-top">
             <div>
               <div style="font-weight:700;font-size:14px;">
-                ${clearName} ${isAdminRole ? '👑' : ''}
+                ${flag} ${clearName} ${isAdminRole ? '👑' : ''} ${isSelfPrimary ? '(You)' : ''}
               </div>
               <div style="font-size:11.5px;color:#64748b;">
-                ${m.isPrimary ? 'Core Member' : `Family (via ${parent ? parent.name : 'Member'})`} ${m.phone ? `• 📱 ${m.phone}` : ''} • Privacy: <strong style="text-transform:capitalize;">${m.privacy}</strong> • Logs: <strong>${userLogCount}</strong>
+                ${m.isPrimary ? 'Core Member' : `Family (via ${parent ? parent.name : 'Member'})`} • ${country} ${m.phone ? `• 📱 ${m.phone}` : ''} • Privacy: <strong style="text-transform:capitalize;">${m.privacy}</strong> • Logs: <strong>${userLogCount}</strong>
               </div>
             </div>
           </div>
           <div class="admin-btn-group" style="margin-top:4px;">
             <button class="mini-btn rename-mem-btn">✏️ Rename</button>
             <button class="mini-btn warning reset-user-logs-btn">🔄 Reset Data (${userLogCount})</button>
-            ${m.isPrimary && m.id !== currentUser.uid ? `<button class="mini-btn teal role-btn">${isAdminRole ? 'Remove Admin' : 'Make Admin'}</button>` : ''}
-            ${!m.isPrimary ? `<button class="mini-btn danger del-mem-btn">🗑️ Remove Member</button>` : ''}
+            ${m.isPrimary && !isSelfPrimary ? `<button class="mini-btn teal role-btn">${isAdminRole ? 'Remove Admin' : 'Make Admin'}</button>` : ''}
+            ${!isSelfPrimary ? `<button class="mini-btn danger del-mem-btn">🗑️ Remove Member</button>` : ''}
           </div>
         `;
 
@@ -2737,12 +3040,23 @@
         const delBtn = row.querySelector(".del-mem-btn");
         if (delBtn) {
           delBtn.addEventListener("click", async () => {
-            if (!confirm(`Remove member profile "${clearName}" and all their logs?`)) return;
-            const userLogs = allLogsForAamaal.filter(l => l.memberId === m.id);
-            for (const logItem of userLogs) {
+            const dependentFamily = m.isPrimary ? allMembers.filter(f => !f.isPrimary && f.parentUid === m.id) : [];
+            const confirmMsg = m.isPrimary
+              ? `⚠️ Remove Core Member "${clearName}"${dependentFamily.length > 0 ? ` along with their ${dependentFamily.length} family profile(s)` : ""} and all their recitation logs?`
+              : `Remove family member "${clearName}" and all their logs?`;
+
+            if (!confirm(confirmMsg)) return;
+
+            const idsToRemove = new Set([m.id, ...dependentFamily.map(f => f.id)]);
+            const logsToDelete = allLogsForAamaal.filter(l => idsToRemove.has(l.memberId));
+
+            for (const logItem of logsToDelete) {
               await deleteDoc(doc(db, "logs", logItem.id));
             }
-            await deleteDoc(doc(db, "members", m.id));
+            for (const remId of idsToRemove) {
+              await deleteDoc(doc(db, "members", remId));
+            }
+
             await loadMembersAndProfiles(currentUser.uid);
             populateAdminDropdowns();
             await loadLogsAndRender(false);
@@ -2775,11 +3089,12 @@
       allMembers.forEach(m => {
         const c = logByMember[m.id] ? Number(logByMember[m.id].count) : 0;
         const name = getClearMemberName(m, memberMap);
-        lines.push(`${c > 0 ? '✅' : '⏳'} ${name}: *${c.toLocaleString('en-IN')}*`);
+        const flag = getMemberFlag(m, memberMap);
+        lines.push(`${c > 0 ? '✅' : '⏳'} ${flag} ${name}: *${c.toLocaleString('en-US')}*`);
       });
 
       lines.push(`────────────────────`);
-      lines.push(`✨ *Total Recited:* ${totalCount.toLocaleString('en-IN')}`);
+      lines.push(`✨ *Total Recited:* ${totalCount.toLocaleString('en-US')}`);
 
       const textToCopy = lines.join("\n");
       try {
@@ -2801,7 +3116,7 @@
       allAamaalRaw.forEach(a => { aamaalMap[a.id] = a.name; });
 
       let csvRows = [];
-      csvRows.push(["Date (IST)", "Aamaal Name", "Member Name", "Member Type", "Added By (Core Member)", "Privacy Setting", "Recitation Count"].join(","));
+      csvRows.push(["Date", "Aamaal Name", "Member Name", "Country", "Member Type", "Added By (Core Member)", "Privacy Setting", "Recitation Count"].join(","));
 
       const sortedLogs = [...allLogsForAamaal].sort((a, b) => b.dateKey.localeCompare(a.dateKey));
 
@@ -2809,18 +3124,19 @@
         const m = memberMap[l.memberId];
         const parent = m ? memberMap[m.parentUid] : null;
         const clearName = getClearMemberName(m, memberMap).replace(/"/g, '""');
+        const country = getMemberCountry(m, memberMap).replace(/"/g, '""');
         const memType = (m && m.isPrimary) ? "Core Member" : "Family Member";
         const parentName = (parent ? parent.name : "").replace(/"/g, '""');
         const priv = m ? m.privacy : "public";
         const aamaalName = (aamaalMap[l.aamaalId] || l.aamaalId).replace(/"/g, '""');
-        csvRows.push(`"${l.dateKey}","${aamaalName}","${clearName}","${memType}","${parentName}","${priv}",${l.count}`);
+        csvRows.push(`"${l.dateKey}","${aamaalName}","${clearName}","${country}","${memType}","${parentName}","${priv}",${l.count}`);
       });
 
       const blob = new Blob([csvRows.join("\r\n")], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.setAttribute("href", url);
-      link.setAttribute("download", `islaah_aamaal_report_${getISTDateString()}.csv`);
+      link.setAttribute("download", `islaah_aamaal_report_${getLocalDateString()}.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -2948,8 +3264,10 @@
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
       const currentClearName = getClearMemberName(activeProfile, memberMap);
+      const currentCountry = getMemberCountry(activeProfile, memberMap);
       document.getElementById("privacy-target-name").textContent = currentClearName;
       document.getElementById("edit-current-profile-name").value = currentClearName;
+      document.getElementById("edit-current-profile-country").value = currentCountry;
       highlightPrivacyOption(activeProfile.privacy || "public");
       settingsModal.classList.remove("hidden");
     }
@@ -2959,15 +3277,24 @@
 
     document.getElementById("save-profile-name-btn").addEventListener("click", async () => {
       const nameInput = document.getElementById("edit-current-profile-name");
+      const countrySelect = document.getElementById("edit-current-profile-country");
       const newName = nameInput.value.trim();
+      const newCountry = countrySelect.value;
+      const newFlag = COUNTRY_FLAGS[newCountry] || "🇮🇳";
       if (!newName) return alert("Please enter a valid display name.");
 
       await updateDoc(doc(db, "members", activeProfile.id), {
         name: newName,
-        customNameLocked: true
+        customNameLocked: true,
+        country: newCountry,
+        flag: newFlag,
+        countryLocked: true
       });
       activeProfile.name = newName;
       activeProfile.customNameLocked = true;
+      activeProfile.country = newCountry;
+      activeProfile.flag = newFlag;
+      activeProfile.countryLocked = true;
 
       await loadMembersAndProfiles(activeProfile.id);
       populateAdminDropdowns();
@@ -2975,7 +3302,7 @@
       renderDailyScreen(false);
       renderStatsScreen();
       renderAdminScreen();
-      alert(`Display name updated to "${newName}"!`);
+      alert(`Profile updated to "${newFlag} ${newName}"!`);
     });
 
     document.getElementById("add-family-btn").addEventListener("click", async () => {
@@ -2983,7 +3310,12 @@
       const rawName = input.value.trim();
       if (!rawName) return alert("Please enter a family member's name or relation (e.g., Mom, Wife).");
 
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m.id] = m; });
       const primary = myProfiles.find(p => p.isPrimary) || { name: currentUser.displayName || "Member" };
+      const parentCountry = getMemberCountry(primary, memberMap);
+      const parentFlag = getMemberFlag(primary, memberMap);
+
       const preferredName = getPreferredGivenName(primary.name);
       const hasCustomApostrophe = rawName.includes("'s") || rawName.includes("’s");
       const formattedName = (hasCustomApostrophe || rawName.toLowerCase().includes(preferredName.toLowerCase()))
@@ -2997,6 +3329,8 @@
         isPrimary: false,
         name: formattedName,
         customNameLocked: true,
+        country: parentCountry,
+        flag: parentFlag,
         email: "",
         privacy: "public",
         role: "family",
@@ -3006,16 +3340,25 @@
       await loadMembersAndProfiles(famId);
       populateAdminDropdowns();
       document.getElementById("edit-current-profile-name").value = formattedName;
+      document.getElementById("edit-current-profile-country").value = parentCountry;
       document.getElementById("privacy-target-name").textContent = formattedName;
       highlightPrivacyOption(activeProfile.privacy);
-      alert(`"${formattedName}" added!`);
+      alert(`"${parentFlag} ${formattedName}" added!`);
     });
 
     document.getElementById("save-settings-btn").addEventListener("click", async () => {
       const nameInput = document.getElementById("edit-current-profile-name");
+      const countrySelect = document.getElementById("edit-current-profile-country");
       const newName = nameInput.value.trim();
+      const newCountry = countrySelect.value;
+      const newFlag = COUNTRY_FLAGS[newCountry] || "🇮🇳";
 
-      const updates = { privacy: selectedPrivacy };
+      const updates = {
+        privacy: selectedPrivacy,
+        country: newCountry,
+        flag: newFlag,
+        countryLocked: true
+      };
       if (newName && newName !== activeProfile.name) {
         updates.name = newName;
         updates.customNameLocked = true;
@@ -3024,6 +3367,9 @@
       if (activeProfile) {
         await updateDoc(doc(db, "members", activeProfile.id), updates);
         activeProfile.privacy = selectedPrivacy;
+        activeProfile.country = newCountry;
+        activeProfile.flag = newFlag;
+        activeProfile.countryLocked = true;
         if (updates.name) {
           activeProfile.name = updates.name;
           activeProfile.customNameLocked = true;
