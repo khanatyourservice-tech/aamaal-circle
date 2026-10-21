@@ -28,7 +28,7 @@
     }
     .hidden { display: none !important; }
 
-    /* 1. SPLASH SCREEN */
+    /* 1. SPLASH & MULTI-LOGIN SCREEN */
     #splash-screen {
       background: linear-gradient(160deg, var(--teal-dark) 0%, var(--teal-mid) 55%, var(--teal-deep) 100%);
       color: #ffffff;
@@ -38,53 +38,149 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 28px 24px;
+      padding: 24px 20px;
     }
     .welcome-label {
-      font-size: 13px;
+      font-size: 12px;
       letter-spacing: 4px;
       text-transform: uppercase;
       color: #a7f3d0;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
       font-weight: 600;
     }
     .logo-wrap {
-      width: 180px;
-      height: 180px;
-      margin-bottom: 24px;
+      width: 140px;
+      height: 140px;
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .brand-title {
-      font-size: 25px;
+      font-size: 23px;
       font-weight: 800;
       line-height: 1.25;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       letter-spacing: -0.5px;
     }
     .brand-subtitle {
-      font-size: 14px;
+      font-size: 13px;
       letter-spacing: 3.5px;
       text-transform: uppercase;
       color: var(--accent-green);
       font-weight: 700;
-      margin-bottom: 40px;
+      margin-bottom: 24px;
+    }
+    .auth-box {
+      width: 100%;
+      max-width: 360px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 24px;
+      padding: 18px 16px;
+      backdrop-filter: blur(8px);
     }
     .google-btn {
+      width: 100%;
       background: linear-gradient(90deg, #d9f99d 0%, #a7f3d0 100%);
       color: #062c28;
       border: none;
-      padding: 16px 28px;
+      padding: 14px 20px;
       border-radius: 999px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       font-family: inherit;
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: center;
+      gap: 10px;
       cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+    }
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .or-divider::before, .or-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.16);
+    }
+    .phone-toggle-btn {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 13px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .phone-auth-panel {
+      margin-top: 14px;
+      text-align: left;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 14px;
+      border-radius: 18px;
+    }
+    .phone-mode-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 12px;
+      background: rgba(255,255,255,0.08);
+      padding: 4px;
+      border-radius: 12px;
+    }
+    .phone-mode-tab {
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      padding: 7px 6px;
+      border-radius: 9px;
+      font-size: 11.5px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .phone-mode-tab.active {
+      background: #bef264;
+      color: #062c28;
+    }
+    .auth-input {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.95);
+      color: #0f172a;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .phone-submit-btn {
+      width: 100%;
+      background: #14b8a6;
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 4px;
     }
     .splash-loader { font-size: 13px; color: #a7f3d0; margin-top: 14px; }
 
@@ -790,11 +886,11 @@
 </head>
 <body>
 
-  <!-- 1. SPLASH SCREEN -->
+  <!-- 1. SPLASH & MULTI-AUTH SCREEN (GOOGLE + MOBILE NUMBER) -->
   <div id="splash-screen">
     <div class="welcome-label">Welcome To</div>
     <div class="logo-wrap">
-      <svg viewBox="0 0 220 200" width="180" height="180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 220 200" width="140" height="140" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="circleGrad" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#14b8a6"/>
@@ -831,15 +927,53 @@
     <h1 class="brand-title">ISLAAH FOUNDATION'S</h1>
     <div class="brand-subtitle">Aamaal Circle</div>
 
-    <button id="login-btn" class="google-btn hidden">
-      <svg width="20" height="20" viewBox="0 0 48 48">
-        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-      </svg>
-      Continue with Google
-    </button>
+    <!-- LOGIN OPTIONS CONTAINER -->
+    <div id="auth-options-box" class="auth-box hidden">
+      <button id="login-btn" class="google-btn">
+        <svg width="20" height="20" viewBox="0 0 48 48">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <div class="or-divider">OR</div>
+
+      <button id="toggle-phone-auth-btn" class="phone-toggle-btn">
+        📱 Sign In / Sign Up with Mobile Number
+      </button>
+
+      <!-- EXPANDABLE MOBILE NUMBER LOGIN PANEL -->
+      <div id="phone-auth-panel" class="phone-auth-panel hidden">
+        <div class="phone-mode-tabs">
+          <button class="phone-mode-tab active" id="tab-pin-mode">⚡ Mobile + PIN (Free)</button>
+          <button class="phone-mode-tab" id="tab-otp-mode">📩 Mobile + SMS OTP</button>
+        </div>
+
+        <input type="text" id="phone-user-name" class="auth-input" placeholder="Your Full Name (for first-time sign up)">
+        <input type="tel" id="phone-number-input" class="auth-input" placeholder="10-Digit Mobile Number (e.g. 9876543210)" maxlength="15">
+
+        <!-- Mode 1: Instant Mobile + PIN (Works on Free Firebase Spark Plan) -->
+        <div id="pin-mode-box">
+          <input type="password" id="phone-pin-input" class="auth-input" placeholder="Create or Enter 4-Digit PIN (e.g. 1234)" inputmode="numeric" maxlength="8">
+          <button class="phone-submit-btn" id="phone-pin-submit-btn">Continue with Mobile & PIN →</button>
+        </div>
+
+        <!-- Mode 2: Real SMS OTP (Requires Firebase Phone Auth Enabled) -->
+        <div id="otp-mode-box" class="hidden">
+          <div id="recaptcha-container"></div>
+          <button class="phone-submit-btn" id="send-otp-btn">Send 6-Digit SMS OTP</button>
+
+          <div id="verify-otp-section" class="hidden" style="margin-top:10px;">
+            <input type="text" id="otp-code-input" class="auth-input" placeholder="Enter 6-Digit OTP Code" inputmode="numeric" maxlength="6">
+            <button class="phone-submit-btn" id="verify-otp-btn" style="background:#84cc16;color:#062c28;">Verify OTP & Sign In</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="splash-status" class="splash-loader">Connecting to Aamaal Circle...</div>
   </div>
 
@@ -1163,7 +1297,7 @@
         Update your display name, add family members, or adjust leaderboard privacy for the currently selected profile.
       </div>
 
-      <!-- NEW: User Can Edit Their Own or Selected Family Member's Name -->
+      <!-- User Can Edit Their Own or Selected Family Member's Name -->
       <div>
         <label style="font-size:12px;font-weight:700;color:#0f766e;">
           ✏️ Edit Display Name for Selected Profile:
@@ -1207,7 +1341,7 @@
       </div>
 
       <button class="action-btn" id="save-settings-btn" style="margin-top:10px;">Save Settings</button>
-      <button class="signout-btn" id="signout-btn">Sign Out of Google Account</button>
+      <button class="signout-btn" id="signout-btn">Sign Out of Account</button>
     </div>
   </div>
 
@@ -1215,7 +1349,9 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { 
-      getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged 
+      getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged,
+      createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile,
+      RecaptchaVerifier, signInWithPhoneNumber
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { 
       getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, query, getDocs 
@@ -1247,6 +1383,10 @@
     `;
 
     let currentUser = null;
+    let pendingPhoneSignupName = "";
+    let pendingPhoneNumber = "";
+    let smsConfirmationResult = null;
+
     let myProfiles = [];
     let allMembers = [];
     let activeProfile = null;
@@ -1258,7 +1398,6 @@
     let isFirstLogin = false;
     let selectedDateIST = getISTDateString();
 
-    // Filters for Admin & User Monthly Single-Card Views
     let adminFilterDate = getISTDateString();
     let adminFilterAamaalId = "";
     let adminMonthlyMemberId = "";
@@ -1418,13 +1557,13 @@
     onAuthStateChanged(auth, async (user) => {
       const splash = document.getElementById("splash-screen");
       const appBox = document.getElementById("app-container");
-      const loginBtn = document.getElementById("login-btn");
+      const authBox = document.getElementById("auth-options-box");
       const status = document.getElementById("splash-status");
 
       if (user) {
         currentUser = user;
         status.textContent = "Loading Aamaal Circle...";
-        loginBtn.classList.add("hidden");
+        authBox.classList.add("hidden");
         selectedDateIST = getISTDateString();
         adminFilterDate = getISTDateString();
         adminMonthlyMonth = getISTDateString().slice(0, 7);
@@ -1434,16 +1573,125 @@
         currentUser = null;
         splash.classList.remove("hidden");
         appBox.classList.add("hidden");
-        loginBtn.classList.remove("hidden");
-        status.textContent = "Sign in with Google to join the circle";
+        authBox.classList.remove("hidden");
+        status.textContent = "Sign in with Google or Mobile Number";
       }
     });
 
+    // --- GOOGLE LOGIN ---
     document.getElementById("login-btn").addEventListener("click", async () => {
       try {
         await signInWithPopup(auth, provider);
       } catch (err) {
-        alert("Sign-in error: " + err.message);
+        alert("Google Sign-in error: " + err.message);
+      }
+    });
+
+    // --- MOBILE NUMBER LOGIN UI TOGGLES ---
+    document.getElementById("toggle-phone-auth-btn").addEventListener("click", () => {
+      document.getElementById("phone-auth-panel").classList.toggle("hidden");
+    });
+
+    document.getElementById("tab-pin-mode").addEventListener("click", () => {
+      document.getElementById("tab-pin-mode").classList.add("active");
+      document.getElementById("tab-otp-mode").classList.remove("active");
+      document.getElementById("pin-mode-box").classList.remove("hidden");
+      document.getElementById("otp-mode-box").classList.add("hidden");
+    });
+
+    document.getElementById("tab-otp-mode").addEventListener("click", () => {
+      document.getElementById("tab-otp-mode").classList.add("active");
+      document.getElementById("tab-pin-mode").classList.remove("active");
+      document.getElementById("otp-mode-box").classList.remove("hidden");
+      document.getElementById("pin-mode-box").classList.add("hidden");
+    });
+
+    function normalizeIndianMobile(raw) {
+      const digits = raw.replace(/\D/g, "");
+      if (digits.length === 10) return "+91" + digits;
+      if (digits.length === 12 && digits.startsWith("91")) return "+" + digits;
+      if (digits.length >= 10) return "+" + digits;
+      return null;
+    }
+
+    // Mode 1: Instant Mobile Number + 4-Digit PIN (Works 100% Free)
+    document.getElementById("phone-pin-submit-btn").addEventListener("click", async () => {
+      const rawName = document.getElementById("phone-user-name").value.trim();
+      const rawPhone = document.getElementById("phone-number-input").value.trim();
+      const rawPin = document.getElementById("phone-pin-input").value.trim();
+
+      const e164Phone = normalizeIndianMobile(rawPhone);
+      if (!e164Phone) return alert("Please enter a valid 10-digit mobile number.");
+      if (!rawPin || rawPin.length < 4) return alert("Please enter at least a 4-digit PIN.");
+
+      const syntheticEmail = `${e164Phone.replace("+", "")}@aamaalcircle.app`;
+      const syntheticPass = `Pin_${rawPin}_Islaah`;
+      pendingPhoneSignupName = rawName;
+      pendingPhoneNumber = e164Phone;
+
+      const status = document.getElementById("splash-status");
+      status.textContent = "Signing in with Mobile Number...";
+
+      try {
+        await signInWithEmailAndPassword(auth, syntheticEmail, syntheticPass);
+      } catch (signInErr) {
+        if (signInErr.code === "auth/user-not-found" || signInErr.code === "auth/invalid-credential") {
+          if (!rawName) {
+            status.textContent = "First-time user? Enter your Full Name above!";
+            return alert("If this is your first time signing up with this mobile number, please enter your Full Name in the top box! (Or check that your 4-digit PIN is correct).");
+          }
+          try {
+            const cred = await createUserWithEmailAndPassword(auth, syntheticEmail, syntheticPass);
+            await updateProfile(cred.user, { displayName: rawName });
+          } catch (createErr) {
+            if (createErr.code === "auth/email-already-in-use") {
+              alert("Incorrect PIN for this mobile number. Please enter the 4-digit PIN you chose when signing up.");
+            } else if (createErr.code === "auth/operation-not-allowed") {
+              alert("Admin Setup Needed: In Firebase Console -> Authentication -> Sign-in method, please enable 'Email/Password' so free Mobile+PIN login can work!");
+            } else {
+              alert("Mobile signup error: " + createErr.message);
+            }
+          }
+        } else if (signInErr.code === "auth/operation-not-allowed") {
+          alert("Admin Setup Needed: In Firebase Console -> Authentication -> Sign-in method, please enable 'Email/Password' so free Mobile+PIN login can work!");
+        } else {
+          alert("Mobile login error: " + signInErr.message);
+        }
+      }
+    });
+
+    // Mode 2: Real SMS OTP Verification
+    document.getElementById("send-otp-btn").addEventListener("click", async () => {
+      const rawName = document.getElementById("phone-user-name").value.trim();
+      const rawPhone = document.getElementById("phone-number-input").value.trim();
+      const e164Phone = normalizeIndianMobile(rawPhone);
+
+      if (!e164Phone) return alert("Please enter a valid 10-digit mobile number.");
+      pendingPhoneSignupName = rawName;
+      pendingPhoneNumber = e164Phone;
+
+      try {
+        if (!window.recaptchaVerifier) {
+          window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
+            size: "invisible"
+          });
+        }
+        document.getElementById("splash-status").textContent = `Sending SMS OTP to ${e164Phone}...`;
+        smsConfirmationResult = await signInWithPhoneNumber(auth, e164Phone, window.recaptchaVerifier);
+        document.getElementById("verify-otp-section").classList.remove("hidden");
+        alert(`OTP sent to ${e164Phone}! Please enter the 6-digit code.`);
+      } catch (err) {
+        alert("SMS OTP Error (Note: Firebase requires Phone Auth enabled & Blaze plan for real SMS, or use the free 'Mobile + PIN' tab!): " + err.message);
+      }
+    });
+
+    document.getElementById("verify-otp-btn").addEventListener("click", async () => {
+      const code = document.getElementById("otp-code-input").value.trim();
+      if (!code || !smsConfirmationResult) return alert("Please enter the 6-digit OTP code.");
+      try {
+        await smsConfirmationResult.confirm(code);
+      } catch (err) {
+        alert("Invalid OTP code: " + err.message);
       }
     });
 
@@ -1456,11 +1704,14 @@
       if (!mainSnap.exists()) {
         const allSnap = await getDocs(collection(db, "members"));
         const isFirstEver = allSnap.empty;
+        const chosenName = pendingPhoneSignupName || user.displayName || user.phoneNumber || "Circle Member";
         await setDoc(mainRef, {
           id: user.uid,
           parentUid: user.uid,
           isPrimary: true,
-          name: user.displayName || "Member",
+          name: chosenName,
+          customNameLocked: Boolean(pendingPhoneSignupName),
+          phone: pendingPhoneNumber || user.phoneNumber || "",
           email: user.email || "",
           privacy: "public",
           role: isFirstEver ? "admin" : "member",
@@ -2128,7 +2379,6 @@
       containerEl.appendChild(box);
     }
 
-    // Render User Monthly Report Screen (Single Card)
     function renderUserMonthlyReport() {
       const container = document.getElementById("user-monthly-breakdown-container");
       const monthPicker = document.getElementById("user-monthly-month-picker");
@@ -2149,7 +2399,6 @@
       }
     }
 
-    // Render Admin Member Monthly Report (Single Card)
     function renderAdminMemberMonthlyReport() {
       const container = document.getElementById("admin-member-monthly-breakdown");
       const monthInput = document.getElementById("admin-monthly-month-picker");
@@ -2177,7 +2426,6 @@
       buildSingleAamaalMonthlyCard(member, chosenAamaal, adminMonthlyMonth, container, false);
     }
 
-    // Copy Admin Member Monthly WhatsApp Report
     document.getElementById("copy-monthly-whatsapp-btn").addEventListener("click", async () => {
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
@@ -2223,7 +2471,6 @@
       }
     });
 
-    // Export Selected Member's Monthly Breakdown to CSV
     document.getElementById("export-member-month-csv-btn").addEventListener("click", () => {
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
@@ -2256,7 +2503,6 @@
       document.body.removeChild(link);
     });
 
-    // --- ADMIN SCREEN ---
     function renderAdminScreen() {
       const keys7 = getLastNDaysKeys(7);
       const keys30 = getLastNDaysKeys(30);
@@ -2440,7 +2686,7 @@
                 ${clearName} ${isAdminRole ? '👑' : ''}
               </div>
               <div style="font-size:11.5px;color:#64748b;">
-                ${m.isPrimary ? 'Core Member' : `Family (via ${parent ? parent.name : 'Member'})`} • Privacy: <strong style="text-transform:capitalize;">${m.privacy}</strong> • Logs: <strong>${userLogCount}</strong>
+                ${m.isPrimary ? 'Core Member' : `Family (via ${parent ? parent.name : 'Member'})`} ${m.phone ? `• 📱 ${m.phone}` : ''} • Privacy: <strong style="text-transform:capitalize;">${m.privacy}</strong> • Logs: <strong>${userLogCount}</strong>
               </div>
             </div>
           </div>
@@ -2506,7 +2752,6 @@
       });
     }
 
-    // Copy WhatsApp Daily Report Button
     document.getElementById("copy-whatsapp-btn").addEventListener("click", async () => {
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m.id] = m; });
@@ -2545,7 +2790,6 @@
       }
     });
 
-    // Export All Data to Excel (CSV format)
     document.getElementById("export-excel-btn").addEventListener("click", () => {
       if (allLogsForAamaal.length === 0) {
         return alert("No recitation logs found to export yet.");
@@ -2632,7 +2876,6 @@
       alert("Aamaal saved!");
     });
 
-    // Screen Navigation Handlers
     document.getElementById("open-user-monthly-btn").addEventListener("click", () => {
       if (activeAamaal) userMonthlyAamaalId = activeAamaal.id;
       populateUserMonthlyDropdowns();
@@ -2683,7 +2926,6 @@
       window.scrollTo(0, 0);
     });
 
-    // Settings Modal (Including User Self-Rename & Family Rename)
     const settingsModal = document.getElementById("settings-modal");
     const privacyOptions = document.querySelectorAll(".privacy-option");
 
@@ -2715,7 +2957,6 @@
     document.getElementById("open-settings-btn").addEventListener("click", () => openSettingsModal());
     document.getElementById("close-settings-btn").addEventListener("click", () => settingsModal.classList.add("hidden"));
 
-    // User Saves Updated Display Name
     document.getElementById("save-profile-name-btn").addEventListener("click", async () => {
       const nameInput = document.getElementById("edit-current-profile-name");
       const newName = nameInput.value.trim();
