@@ -144,6 +144,31 @@
       padding: 14px;
       border-radius: 18px;
     }
+    .phone-mode-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 4px;
+      border-radius: 12px;
+    }
+    .phone-mode-tab {
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      padding: 8px 6px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .phone-mode-tab.active {
+      background: #bef264;
+      color: #062c28;
+    }
     .auth-input {
       width: 100%;
       padding: 11px 12px;
@@ -185,6 +210,10 @@
       font-family: inherit;
       cursor: pointer;
       margin-top: 4px;
+    }
+    .phone-submit-btn.register-mode {
+      background: linear-gradient(90deg, #bef264 0%, #86efac 100%);
+      color: #062c28;
     }
     .splash-loader { font-size: 13px; color: #a7f3d0; margin-top: 14px; }
 
@@ -995,7 +1024,7 @@
 </head>
 <body>
 
-  <!-- 1. SPLASH & LOGIN SCREEN (GOOGLE + MOBILE & PIN ONLY) -->
+  <!-- 1. SPLASH & LOGIN SCREEN (GOOGLE + SEPARATE MOBILE SIGN IN & REGISTER) -->
   <div id="splash-screen">
     <div class="welcome-label">Welcome To</div>
     <div class="logo-wrap">
@@ -1051,15 +1080,21 @@
       <div class="or-divider">OR</div>
 
       <button id="toggle-phone-auth-btn" class="phone-toggle-btn">
-        📱 Sign In / Sign Up with Mobile & PIN
+        📱 Use Mobile Number & PIN
       </button>
 
-      <!-- MOBILE NUMBER + PIN PANEL (SUPPORTS INDIA, USA, & GLOBAL NUMBERS) -->
+      <!-- MOBILE NUMBER + PIN PANEL (SEPARATE SIGN IN vs REGISTER TABS) -->
       <div id="phone-auth-panel" class="phone-auth-panel hidden">
-        <div style="font-size:12px;color:#a7f3d0;font-weight:700;margin-bottom:8px;">
-          Enter Mobile & 4-Digit PIN (First time? Enter your Full Name too):
+        <div class="phone-mode-tabs">
+          <button class="phone-mode-tab active" id="tab-mobile-signin">🔑 Sign In (Existing)</button>
+          <button class="phone-mode-tab" id="tab-mobile-register">✨ Register (New)</button>
         </div>
-        <input type="text" id="phone-user-name" class="auth-input" placeholder="Full Name (only needed first time)">
+
+        <!-- Full Name Box: ONLY shown when "Register (New)" tab is selected -->
+        <div id="register-name-wrap" class="hidden">
+          <input type="text" id="phone-user-name" class="auth-input" placeholder="Enter Your Full Name">
+        </div>
+
         <div class="phone-row">
           <select id="phone-country-code" class="country-code-select">
             <option value="+91">🇮🇳 +91</option>
@@ -1074,8 +1109,12 @@
           </select>
           <input type="tel" id="phone-number-input" class="auth-input" style="margin-bottom:0;" placeholder="Mobile Number" maxlength="15">
         </div>
-        <input type="password" id="phone-pin-input" class="auth-input" placeholder="4-Digit Secret PIN (e.g. 1234)" inputmode="numeric" maxlength="8">
-        <button class="phone-submit-btn" id="phone-pin-submit-btn">Continue with Mobile & PIN →</button>
+
+        <input type="password" id="phone-pin-input" class="auth-input" placeholder="Enter 4-Digit PIN" inputmode="numeric" maxlength="8">
+
+        <!-- Separate Buttons for Sign In vs Register -->
+        <button class="phone-submit-btn" id="phone-signin-btn">Sign In with Mobile & PIN →</button>
+        <button class="phone-submit-btn register-mode hidden" id="phone-register-btn">Create New Account →</button>
       </div>
     </div>
 
@@ -1265,7 +1304,7 @@
         </div>
       </div>
 
-      <!-- NEW SUMMARY 1: WEEKLY PERFORMANCE + TOP BY COUNTRY -->
+      <!-- SUMMARY 1: WEEKLY PERFORMANCE + TOP BY COUNTRY -->
       <div class="section-heading"><span>Weekly Performance</span></div>
       <div class="perf-summary-card">
         <div class="perf-top-metric-row">
@@ -1281,7 +1320,7 @@
         <div id="weekly-top-countries-list"></div>
       </div>
 
-      <!-- NEW SUMMARY 2: MONTHLY PERFORMANCE + TOP BY COUNTRY -->
+      <!-- SUMMARY 2: MONTHLY PERFORMANCE + TOP BY COUNTRY -->
       <div class="section-heading"><span>Monthly Performance</span></div>
       <div class="perf-summary-card">
         <div class="perf-top-metric-row">
@@ -1851,9 +1890,34 @@
       }
     });
 
-    // --- MOBILE NUMBER + PIN LOGIN ---
+    // --- MOBILE NUMBER + PIN: SEPARATE SIGN IN vs REGISTER TABS ---
     document.getElementById("toggle-phone-auth-btn").addEventListener("click", () => {
       document.getElementById("phone-auth-panel").classList.toggle("hidden");
+    });
+
+    const tabSignIn = document.getElementById("tab-mobile-signin");
+    const tabRegister = document.getElementById("tab-mobile-register");
+    const registerNameWrap = document.getElementById("register-name-wrap");
+    const phoneSignInBtn = document.getElementById("phone-signin-btn");
+    const phoneRegisterBtn = document.getElementById("phone-register-btn");
+    const phonePinInput = document.getElementById("phone-pin-input");
+
+    tabSignIn.addEventListener("click", () => {
+      tabSignIn.classList.add("active");
+      tabRegister.classList.remove("active");
+      registerNameWrap.classList.add("hidden");
+      phoneSignInBtn.classList.remove("hidden");
+      phoneRegisterBtn.classList.add("hidden");
+      phonePinInput.placeholder = "Enter Your 4-Digit PIN";
+    });
+
+    tabRegister.addEventListener("click", () => {
+      tabRegister.classList.add("active");
+      tabSignIn.classList.remove("active");
+      registerNameWrap.classList.remove("hidden");
+      phoneRegisterBtn.classList.remove("hidden");
+      phoneSignInBtn.classList.add("hidden");
+      phonePinInput.placeholder = "Create a 4-Digit Secret PIN (e.g. 1234)";
     });
 
     function normalizePhoneWithCountry(rawPhone, dialCode) {
@@ -1863,15 +1927,49 @@
       return `${dialCode}${digits}`;
     }
 
-    document.getElementById("phone-pin-submit-btn").addEventListener("click", async () => {
+    // 1. EXISTING MEMBER SIGN IN BUTTON (Never asks for Name)
+    phoneSignInBtn.addEventListener("click", async () => {
+      const dialCode = document.getElementById("phone-country-code").value;
+      const rawPhone = document.getElementById("phone-number-input").value.trim();
+      const rawPin = phonePinInput.value.trim();
+
+      const e164Phone = normalizePhoneWithCountry(rawPhone, dialCode);
+      if (!e164Phone) return alert("Please enter your registered mobile number.");
+      if (!rawPin || rawPin.length < 4) return alert("Please enter your 4-digit PIN.");
+
+      const syntheticEmail = `${e164Phone.replace("+", "")}@aamaalcircle.app`;
+      const syntheticPass = `Pin_${rawPin}_Islaah`;
+      pendingPhoneSignupName = "";
+      pendingPhoneNumber = e164Phone;
+
+      const status = document.getElementById("splash-status");
+      status.textContent = "Signing in...";
+
+      try {
+        await signInWithEmailAndPassword(auth, syntheticEmail, syntheticPass);
+      } catch (err) {
+        status.textContent = "Sign-in failed.";
+        if (err.code === "auth/invalid-credential" || err.code === "auth/user-not-found" || err.code === "auth/wrong-password") {
+          alert("❌ Incorrect Mobile Number or 4-Digit PIN.\n\n• If you are already registered, double-check your PIN and Country Code.\n• If you are a new member, tap the '✨ Register (New)' tab above!");
+        } else if (err.code === "auth/operation-not-allowed") {
+          alert("Admin Setup Needed: In Firebase Console -> Authentication -> Sign-in method, please enable 'Email/Password'!");
+        } else {
+          alert("Sign-in error: " + err.message);
+        }
+      }
+    });
+
+    // 2. NEW MEMBER REGISTER BUTTON (Requires Full Name)
+    phoneRegisterBtn.addEventListener("click", async () => {
       const rawName = document.getElementById("phone-user-name").value.trim();
       const dialCode = document.getElementById("phone-country-code").value;
       const rawPhone = document.getElementById("phone-number-input").value.trim();
-      const rawPin = document.getElementById("phone-pin-input").value.trim();
+      const rawPin = phonePinInput.value.trim();
 
+      if (!rawName) return alert("Please enter your Full Name to register.");
       const e164Phone = normalizePhoneWithCountry(rawPhone, dialCode);
       if (!e164Phone) return alert("Please enter a valid mobile number.");
-      if (!rawPin || rawPin.length < 4) return alert("Please enter at least a 4-digit PIN.");
+      if (!rawPin || rawPin.length < 4) return alert("Please create at least a 4-digit PIN.");
 
       const syntheticEmail = `${e164Phone.replace("+", "")}@aamaalcircle.app`;
       const syntheticPass = `Pin_${rawPin}_Islaah`;
@@ -1879,33 +1977,20 @@
       pendingPhoneNumber = e164Phone;
 
       const status = document.getElementById("splash-status");
-      status.textContent = "Signing in with Mobile & PIN...";
+      status.textContent = "Creating your account...";
 
       try {
-        await signInWithEmailAndPassword(auth, syntheticEmail, syntheticPass);
-      } catch (signInErr) {
-        // Backward compatibility if an Indian 10-digit number was previously registered without +91 or with +91
-        if (signInErr.code === "auth/user-not-found" || signInErr.code === "auth/invalid-credential") {
-          if (!rawName) {
-            status.textContent = "First-time user? Enter your Full Name above!";
-            return alert("If this is your first time signing up with this mobile number, please enter your Full Name in the top box! (Or check that your 4-digit PIN & Country Code are correct).");
-          }
-          try {
-            const cred = await createUserWithEmailAndPassword(auth, syntheticEmail, syntheticPass);
-            await updateProfile(cred.user, { displayName: rawName });
-          } catch (createErr) {
-            if (createErr.code === "auth/email-already-in-use") {
-              alert("Incorrect PIN for this mobile number. Please enter the 4-digit PIN you chose when signing up.");
-            } else if (createErr.code === "auth/operation-not-allowed") {
-              alert("Admin Setup Needed: In Firebase Console -> Authentication -> Sign-in method, please enable 'Email/Password' so Mobile+PIN login can work!");
-            } else {
-              alert("Mobile signup error: " + createErr.message);
-            }
-          }
-        } else if (signInErr.code === "auth/operation-not-allowed") {
-          alert("Admin Setup Needed: In Firebase Console -> Authentication -> Sign-in method, please enable 'Email/Password' so Mobile+PIN login can work!");
+        const cred = await createUserWithEmailAndPassword(auth, syntheticEmail, syntheticPass);
+        await updateProfile(cred.user, { displayName: rawName });
+      } catch (createErr) {
+        status.textContent = "Registration failed.";
+        if (createErr.code === "auth/email-already-in-use") {
+          alert("ℹ️ This mobile number is already registered! Switching you to the '🔑 Sign In (Existing)' tab—just enter your PIN to sign in.");
+          tabSignIn.click();
+        } else if (createErr.code === "auth/operation-not-allowed") {
+          alert("Admin Setup Needed: In Firebase Console -> Authentication -> Sign-in method, please enable 'Email/Password'!");
         } else {
-          alert("Mobile login error: " + signInErr.message);
+          alert("Registration error: " + createErr.message);
         }
       }
     });
@@ -1939,7 +2024,6 @@
         });
         isFirstLogin = true;
       } else {
-        // Auto-populate country & flag via timezone if not manually locked by the user yet
         const existingData = mainSnap.data();
         if (!existingData.countryLocked && (!existingData.country || existingData.timeZone !== userTz)) {
           await updateDoc(mainRef, {
@@ -2373,7 +2457,6 @@
       await loadLogsAndRender(false);
     });
 
-    // Helper: Render "Top by Country" bars inside Weekly & Monthly Performance Cards
     function renderTopByCountryList(logsSubset, memberMap, containerId) {
       const container = document.getElementById(containerId);
       if (!container) return;
@@ -2499,7 +2582,6 @@
       document.getElementById("group-today-total").textContent = groupTodayTotal.toLocaleString('en-US');
       document.getElementById("my-contrib-today").textContent = myTodayTotal.toLocaleString('en-US');
 
-      // --- POPULATE NEW WEEKLY PERFORMANCE SUMMARY CARD ---
       const myWeekTotal = weekLogs
         .filter(l => l.memberId === activeProfile.id)
         .reduce((sum, l) => sum + Number(l.count || 0), 0);
@@ -2507,7 +2589,6 @@
       document.getElementById("weekly-perf-my-total").textContent = myWeekTotal.toLocaleString('en-US');
       renderTopByCountryList(weekLogs, memberMap, "weekly-top-countries-list");
 
-      // --- POPULATE NEW MONTHLY PERFORMANCE SUMMARY CARD ---
       const monthLogs = aamaalLogs.filter(l => (l.dateKey || "").startsWith(currentMonthPrefix));
       const monthGroupTotal = monthLogs.reduce((sum, l) => sum + Number(l.count || 0), 0);
       const myMonthTotal = monthLogs
@@ -2517,7 +2598,6 @@
       document.getElementById("monthly-perf-my-total").textContent = myMonthTotal.toLocaleString('en-US');
       renderTopByCountryList(monthLogs, memberMap, "monthly-top-countries-list");
 
-      // 7-Day Bar Chart
       const barsContainer = document.getElementById("weekly-bars-container");
       barsContainer.innerHTML = "";
       const dailyTotals = last7Days.map(d => {
@@ -2541,7 +2621,6 @@
       });
     }
 
-    // --- SHARED HELPER: RENDERS ONE SINGLE BREAKDOWN CARD FOR THE SELECTED AAMAAL ---
     function buildSingleAamaalMonthlyCard(member, aamaalObj, targetMonthStr, containerEl, isUserReport = false) {
       containerEl.innerHTML = "";
       if (!member || !aamaalObj) return;
