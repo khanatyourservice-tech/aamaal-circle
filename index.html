@@ -10,11 +10,17 @@
   <meta name="theme-color" content="#072c28">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <!-- Apple iOS / iPadOS PWA Support -->
+  <!-- Apple iOS / iPadOS PWA & Official Logo Support -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Aamaal Circle">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3059/3059518.png">
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+  <link rel="apple-touch-icon" href="logo.jpg">
+
+  <!-- WhatsApp & Social Link Preview -->
+  <meta property="og:title" content="Islaah Foundation's Aamaal Circle">
+  <meta property="og:description" content="Track and log daily aamaal together with our circle.">
+  <meta property="og:image" content="https://khanatyourservice-tech.github.io/aamaal-circle/logo.jpg">
 
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -1024,43 +1030,11 @@
 </head>
 <body>
 
-  <!-- 1. SPLASH & LOGIN SCREEN (GOOGLE + SEPARATE MOBILE SIGN IN & REGISTER) -->
+  <!-- 1. SPLASH & LOGIN SCREEN (WITH OFFICIAL LOGO.JPG) -->
   <div id="splash-screen">
     <div class="welcome-label">Welcome To</div>
     <div class="logo-wrap">
-      <svg viewBox="0 0 220 200" width="140" height="140" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="circleGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#14b8a6"/>
-            <stop offset="100%" stop-color="#84cc16"/>
-          </linearGradient>
-          <linearGradient id="mosqueGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#ffffff"/>
-            <stop offset="100%" stop-color="#d9f99d"/>
-          </linearGradient>
-        </defs>
-        <circle cx="135" cy="40" r="6" stroke="#bef264" stroke-width="3"/>
-        <circle cx="152" cy="44" r="6" stroke="#bef264" stroke-width="3"/>
-        <circle cx="166" cy="54" r="6" stroke="#bef264" stroke-width="3"/>
-        <circle cx="174" cy="70" r="6" stroke="#bef264" stroke-width="3"/>
-        <circle cx="172" cy="88" r="6" stroke="#bef264" stroke-width="3"/>
-        <circle cx="163" cy="104" r="6" stroke="#bef264" stroke-width="3"/>
-        <circle cx="155" cy="120" r="6" stroke="#bef264" stroke-width="3"/>
-        <circle cx="150" cy="138" r="6" stroke="#bef264" stroke-width="3"/>
-        <circle cx="138" cy="152" r="6" stroke="#bef264" stroke-width="3"/>
-        <circle cx="121" cy="158" r="6" stroke="#bef264" stroke-width="3"/>
-        <path d="M180 70 C192 75, 195 90, 195 105" stroke="#bef264" stroke-width="3" stroke-linecap="round"/>
-        <rect x="189" y="105" width="12" height="16" rx="3" stroke="#bef264" stroke-width="3"/>
-        <circle cx="90" cy="100" r="68" fill="url(#circleGrad)" stroke="#ecfccb" stroke-width="2" stroke-dasharray="4 4"/>
-        <rect x="52" y="75" width="12" height="75" rx="2" fill="url(#mosqueGrad)"/>
-        <polygon points="58,60 50,75 66,75" fill="url(#mosqueGrad)"/>
-        <rect x="116" y="75" width="12" height="75" rx="2" fill="url(#mosqueGrad)"/>
-        <polygon points="122,60 114,75 130,75" fill="url(#mosqueGrad)"/>
-        <path d="M68 115 C68 88, 112 88, 112 115 Z" fill="url(#mosqueGrad)"/>
-        <circle cx="90" cy="84" r="4" fill="#ecfccb"/>
-        <rect x="68" y="115" width="44" height="35" fill="url(#mosqueGrad)"/>
-        <path d="M82 150 L82 132 C82 124, 98 124, 98 132 L98 150 Z" fill="#062c28"/>
-      </svg>
+      <img src="logo.jpg" alt="Islaah Foundation Logo" style="width: 140px; height: 140px; object-fit: contain; border-radius: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);">
     </div>
     <h1 class="brand-title">ISLAAH FOUNDATION'S</h1>
     <div class="brand-subtitle">Aamaal Circle</div>
